@@ -287,10 +287,20 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 /* ── Public Booking Picker ── */
 .pk-wrap{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin-bottom:14px}
 .pk-months{display:grid;grid-template-columns:1fr 1fr;gap:0}
-@media(max-width:480px){.pk-months{grid-template-columns:1fr}}
-.pk-month{padding:16px}
+.pk-month{padding:12px}
 .pk-month+.pk-month{border-left:1px solid var(--border)}
-@media(max-width:480px){.pk-month+.pk-month{border-left:none;border-top:1px solid var(--border)}}
+@media(max-width:560px){
+  .pk-months{grid-template-columns:1fr}
+  .pk-month+.pk-month{display:none}
+  .pk-month{padding:8px 10px}
+  .pk-d{font-size:14px}
+  .pk-h{font-size:11px;padding:3px 0}
+  .pk-grid{gap:1px}
+  .pk-nav-btn{width:36px;height:36px;font-size:20px}
+  .pk-month-title{font-size:16px}
+  .pk-chips{padding:0 10px 10px}
+  .pk-btn{margin:0 10px 10px;width:calc(100% - 20px);padding:14px}
+}
 .pk-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .pk-nav-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid #C8960C;background:transparent;color:#C8960C;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .pk-nav-btn:disabled{opacity:.2;cursor:default}
@@ -920,6 +930,9 @@ function pkNav(d){
 }
 
 function renderPicker(){
+  // On mobile show next arrow in first month
+  const nm=document.getElementById('pkNextMobile');
+  if(nm) nm.style.display=window.innerWidth<=560?'flex':'none';
   for(let mi=0;mi<2;mi++){
     let y=pkYear,m=pkMonth+mi;
     if(m>11){m-=12;y++;}
