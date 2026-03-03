@@ -847,6 +847,13 @@ if(IS_ADMIN){
   document.getElementById('t1').style.display='none';
   document.getElementById('adminHint').style.display='block';
   document.getElementById('printBtn').style.display='block';
+} else {
+  document.getElementById('tabBar').style.display='none';
+  document.getElementById('tab0').classList.remove('on');
+  document.getElementById('tab4').classList.add('on');
+  document.getElementById('tab1').classList.add('on');
+  document.getElementById('tab1').style.display='block';
+  document.getElementById('pubHint').style.display='block';
 }
 
 // Expose to global scope (required for onclick handlers with type="module")
