@@ -381,7 +381,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 <div class="tabs" id="tabBar">
   <div class="tab on"  id="t0" onclick="sw(0)">📅 Kalender</div>
   <div class="tab"     id="t4" onclick="sw(4)">🗓️ Buchen</div>
-  <div class="tab"     id="t5" onclick="sw(5)">🏠 Info</div>
   <div class="tab"     id="t1" onclick="sw(1)" style="display:none">📩 Anfrage</div>
   <div class="tab"    id="t2" onclick="sw(2)" style="display:none">✏️ Buchung eintragen</div>
   <div class="tab"     id="t3" onclick="sw(3)" style="display:none">📋 Anfragen</div>
@@ -456,8 +455,22 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
   </div>
 </div>
 
+  <!-- Public Nav Buttons -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px">
+    <button onclick="sw(1)" style="padding:15px 10px;background:#fff;border:2px solid var(--border);border-radius:var(--r-sm);font-size:13px;font-weight:700;color:var(--text);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px" id="navBtnInq">
+      📩 Anfrage senden
+    </button>
+    <button onclick="sw(5)" style="padding:15px 10px;background:#fff;border:2px solid var(--border);border-radius:var(--r-sm);font-size:13px;font-weight:700;color:var(--text);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px" id="navBtnInfo">
+      🏠 Infos zur Wohnung
+    </button>
+  </div>
+</div>
+
 <!-- TAB 1: ANFRAGE (extern) -->
 <div id="tab1" class="tc">
+  <button onclick="sw(4)" style="display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;padding:4px 0;margin-bottom:10px">
+    ← Zurück
+  </button>
   <div class="card">
     <div class="card-title">📩 Verfügbarkeit anfragen</div>
 
@@ -520,6 +533,9 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 5: INFO (Public) -->
 <div id="tab5" class="tc">
+  <button onclick="sw(4)" style="display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;padding:4px 0;margin-bottom:10px">
+    ← Zurück
+  </button>
 
   <!-- Adresse & Anfahrt -->
   <div class="card">
@@ -1122,10 +1138,8 @@ function pkSubmit(){
   document.getElementById('rFrom').value=fmt(pkF);
   document.getElementById('rTo').value=fmt(pkT);
   // Show form below picker smoothly
-  const t1=document.getElementById('tab1');
-  t1.style.display='block';
-  t1.classList.add('on');
-  t1.scrollIntoView({behavior:'smooth',block:'start'});
+  sw(1);
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 window.sw=sw;window.changeYear=changeYear;window.changeBookMonth=changeBookMonth;
