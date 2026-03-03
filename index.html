@@ -8,23 +8,23 @@
 <title>Egmond</title>
 <style>
 :root {
-  --bg:#FFFDF5; --card:#fff; --border:#E8DFC8; --text:#1A1A2E; --muted:#7A7A9A;
-  --accent:#1565C0; --accent-dark:#0D47A1; --accent2:#C8960C;
-  --shadow-sm:0 1px 4px rgba(0,0,0,.06); --shadow:0 4px 16px rgba(0,0,0,.08); --shadow-lg:0 8px 32px rgba(0,0,0,.12);
+  --bg:#0F1923; --card:#1A2535; --border:#2A3A50; --text:#E8E0CC; --muted:#7A8FA8;
+  --accent:#4A90D9; --accent-dark:#2E6FBF; --accent2:#C8960C;
+  --shadow-sm:0 1px 4px rgba(0,0,0,.3); --shadow:0 4px 16px rgba(0,0,0,.4); --shadow-lg:0 8px 32px rgba(0,0,0,.5);
   --r:16px; --r-sm:10px;
-  --free:#F7F3E8; --free-t:#5A5030; --free-d:#9A8A50;
-  --booked:#FFCDD2; --booked-t:#B71C1C; --booked-d:#D32F2F;
-  --holiday:#FFF3E0; --holiday-t:#BF6000;
-  --bridge:#FFF8DC; --bridge-t:#9A7000;
-  --school:#FFF9C4; --school-t:#F57F17;
-  --weekend:#EEF0FB; --weekend-t:#3949AB;
+  --free:#1E2D3D; --free-t:#8AAFCC; --free-d:#4A90D9;
+  --booked:#3D1A1A; --booked-t:#FF6B6B; --booked-d:#CC3333;
+  --holiday:#2D2010; --holiday-t:#E8A050;
+  --bridge:#2A2510; --bridge-t:#C8A830;
+  --school:#2A2A10; --school-t:#C8C030;
+  --weekend:#1A1F35; --weekend-t:#6A80CC;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
 
 /* ── Header ── */
-.header{background:linear-gradient(135deg,#1565C0 0%,#0D47A1 100%);color:#fff;padding:16px 20px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.header{background:linear-gradient(135deg,#0D2137 0%,#091929 100%);border-bottom:2px solid #C8960C;color:#fff;padding:16px 20px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.2)}
 .header-left{display:flex;align-items:center;gap:10px}
 .header-icon{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
 .header h1{font-size:20px;font-weight:800;letter-spacing:-.4px;line-height:1.1}
@@ -32,9 +32,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .admin-badge{background:rgba(200,150,12,.25);border:1px solid rgba(200,150,12,.6);color:#FFE082;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;letter-spacing:.3px}
 
 /* ── Tabs ── */
-.tabs{display:flex;background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:69px;z-index:199;box-shadow:var(--shadow-sm)}
-.tab{flex:1;padding:14px 6px 12px;text-align:center;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;transition:all .2s;letter-spacing:.2px;user-select:none}
-.tab.on{color:var(--accent);border-bottom-color:var(--accent2);background:linear-gradient(to bottom,transparent,#FFFBEE)}
+.tabs{display:flex;background:#0F1923;border-bottom:2px solid #C8960C;position:sticky;top:69px;z-index:199;box-shadow:var(--shadow-sm)}
+.tab{flex:1;padding:14px 6px 12px;text-align:center;font-size:12px;font-weight:700;color:#5A7A9A;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;transition:all .2s;letter-spacing:.2px;user-select:none}
+.tab.on{color:#C8960C;border-bottom-color:#C8960C;background:linear-gradient(to bottom,transparent,rgba(200,150,12,.08))}
 
 /* ── Layout ── */
 .wrap{padding:16px;max-width:560px;margin:0 auto;padding-bottom:60px}
@@ -45,12 +45,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 /* ── Jahr-Nav ── */
 .year-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .year-nav h2{font-size:24px;font-weight:900;letter-spacing:-.5px}
-.yn-btn{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--border);background:var(--bg);color:var(--accent);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:var(--shadow-sm)}
+.yn-btn{width:40px;height:40px;border-radius:50%;border:1.5px solid #C8960C;background:#0F1923;color:#C8960C;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:var(--shadow-sm)}
 .yn-btn:active{background:var(--border);transform:scale(.92)}
 
 /* ── Matrix ── */
 .mx-outer{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.mx-mo{background:var(--card);border-radius:var(--r-sm);box-shadow:var(--shadow-sm);padding:9px 10px;border:1px solid rgba(0,0,0,.04)}
+.mx-mo{background:#1A2535;border-radius:var(--r-sm);box-shadow:var(--shadow-sm);padding:9px 10px;border:1px solid #2A3A50}
 .mx-ttl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;font-size:12px;font-weight:800;letter-spacing:-.2px}
 .mx-stat{font-size:9px;font-weight:700}
 .mx-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
@@ -73,7 +73,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 
 /* ── Ladeanimation ── */
 .loading{text-align:center;padding:40px 0;color:var(--muted)}
-.spin{display:inline-block;width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+.spin{display:inline-block;width:30px;height:30px;border:3px solid #2A3A50;border-top-color:#C8960C;border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ── Buchungs-Kalender ── */
@@ -101,8 +101,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .chip{background:var(--bg);border:2px solid var(--border);border-radius:var(--r-sm);padding:12px;text-align:center;transition:all .2s}
 .chip-lbl{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
 .chip-val{font-size:16px;font-weight:800;margin-top:4px;letter-spacing:-.3px}
-.chip.af{border-color:#C8960C;background:#FFFBEE}.chip.af .chip-val{color:#7A6000}
-.chip.at{border-color:#C8960C;background:#FFFBEE}.chip.at .chip-val{color:#7A6000}
+.chip.af{border-color:#C8960C;background:#1E1A0A}.chip.af .chip-val{color:#C8960C}
+.chip.at{border-color:#C8960C;background:#1E1A0A}.chip.at .chip-val{color:#C8960C}
 .pick-hint{text-align:center;font-size:12px;color:var(--muted);margin-top:10px;font-style:italic}
 .clr-btn{display:block;margin:8px auto 0;background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;text-decoration:underline;padding:4px}
 
@@ -110,44 +110,44 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .st-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .st-btn{padding:14px;border:2px solid var(--border);border-radius:var(--r-sm);cursor:pointer;font-size:14px;font-weight:800;background:var(--bg);color:var(--muted);transition:all .15s;text-align:center}
 .st-btn:active{transform:scale(.97)}
-.st-btn.af{background:var(--free);color:var(--free-t);border-color:var(--free-d);box-shadow:0 2px 8px rgba(56,142,60,.2)}
+.st-btn.af{background:#1E2D3D;color:#8AAFCC;border-color:#4A90D9;box-shadow:0 2px 8px rgba(74,144,217,.2)}
 .st-btn.ab{background:var(--booked);color:var(--booked-t);border-color:var(--booked-d);box-shadow:0 2px 8px rgba(211,47,47,.2)}
 
 /* ── Inputs ── */
 .field{margin-bottom:12px}
 .field-lbl{font-size:11px;font-weight:800;color:var(--muted);margin-bottom:6px;display:block;letter-spacing:.5px;text-transform:uppercase}
 input,textarea{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:15px;color:var(--text);background:var(--bg);outline:none;font-family:inherit;-webkit-appearance:none;transition:border-color .2s,box-shadow .2s}
-input:focus,textarea:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(46,125,50,.1)}
+input:focus,textarea:focus{border-color:#C8960C;background:#1E2D3D;box-shadow:0 0 0 3px rgba(200,150,12,.15)}
 textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 /* ── Buttons ── */
 .btn{width:100%;padding:16px;border:none;border-radius:var(--r-sm);font-size:16px;font-weight:800;cursor:pointer;transition:all .15s;letter-spacing:-.2px}
 .btn:active{transform:scale(.98)}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.btn-green{background:linear-gradient(135deg,#1565C0,#0D47A1);color:#fff;box-shadow:0 4px 14px rgba(21,101,192,.35)}
+.btn-green{background:linear-gradient(135deg,#C8960C,#A07008);color:#fff;box-shadow:0 4px 14px rgba(200,150,12,.35)}
 .btn-red{background:linear-gradient(135deg,#C62828,#B71C1C);color:#fff;box-shadow:0 4px 14px rgba(198,40,40,.3);margin-top:10px}
 .spin-sm{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
 
 /* ── Result ── */
 .result{border-radius:var(--r-sm);padding:14px 16px;margin-bottom:14px;font-size:14px;font-weight:700;display:none;border:1px solid transparent}
-.result.ok{background:#E8F5E9;color:#1B5E20;border-color:#A5D6A7;display:block}
-.result.err{background:#FFEBEE;color:#B71C1C;border-color:#FFCDD2;display:block}
+.result.ok{background:#1A2D1A;color:#6EC87A;border-color:#2A5A2A;display:block}
+.result.err{background:#2D1A1A;color:#FF6B6B;border-color:#5A2A2A;display:block}
 
 /* ── Anfragen ── */
-.inq{padding:16px;border-radius:var(--r-sm);background:var(--bg);border:1.5px solid var(--border);margin-bottom:10px;transition:box-shadow .2s}
-.inq.new{border-color:#FFA726;background:#FFFDE7;box-shadow:0 2px 8px rgba(255,167,38,.2)}
+.inq{padding:16px;border-radius:var(--r-sm);background:#1A2535;border:1.5px solid #2A3A50;margin-bottom:10px;transition:box-shadow .2s}
+.inq.new{border-color:#C8960C;background:#1E1A0A;box-shadow:0 2px 8px rgba(200,150,12,.25)}
 .inq-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
 .inq-name{font-weight:800;font-size:15px}
 .inq-ts{font-size:11px;color:var(--muted)}
 .inq-period{font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:4px}
 .inq-mail{font-size:12px;color:var(--muted);margin-bottom:4px}
-.inq-msg{font-size:13px;color:#546E7A;line-height:1.5;background:#fff;padding:8px 10px;border-radius:8px;margin-top:6px}
+.inq-msg{font-size:13px;color:#8AAFCC;line-height:1.5;background:#0F1923;padding:8px 10px;border-radius:8px;margin-top:6px}
 .badge{font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;background:#FF8F00;color:#fff;letter-spacing:.3px}
 .inq-btns{display:flex;gap:8px;margin-top:12px}
 .inq-btn{flex:1;padding:10px 6px;border-radius:8px;border:none;font-size:12px;font-weight:800;cursor:pointer;transition:all .15s}
 .inq-btn:active{transform:scale(.95)}
-.inq-btn.acc{background:var(--free);color:var(--free-t)}
-.inq-btn.dec{background:var(--booked);color:var(--booked-t)}
-.inq-btn.seen{background:#ECEFF1;color:#546E7A}
+.inq-btn.acc{background:#1E3A1E;color:#6EC87A;border:1px solid #2A5A2A}
+.inq-btn.dec{background:#3D1A1A;color:#FF6B6B;border:1px solid #5A2A2A}
+.inq-btn.seen{background:#1A2535;color:#7A8FA8;border:1px solid #2A3A50}
 
 /* ── Legende ── */
 .lg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
@@ -199,9 +199,9 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 0: KALENDER -->
 <div id="tab0" class="tc on">
-  <div id="adminHint" style="display:none;padding:12px 16px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:var(--r);margin-bottom:14px;box-shadow:var(--shadow)">
-    <div style="font-size:10px;font-weight:800;color:#1565C0;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">💡 Kurzanleitung</div>
-    <p style="font-size:12px;color:#1e40af;line-height:1.8"><strong>Variante 1 – Direkt eintragen:</strong><br>Von- und Bis-Datum auswählen → „Buchung eintragen“ öffnen → Name eintragen → Speichern.<br><br><strong>Variante 2 – Anfrage annehmen:</strong><br>„Anfragen“ öffnen → ✅ Annehmen tippen → Zeitraum &amp; Name werden automatisch übernommen → nur noch Speichern.</p>
+  <div id="adminHint" style="display:none;padding:12px 16px;background:#0D1E30;border:1px solid #2A5A8A;border-radius:var(--r);margin-bottom:14px;box-shadow:var(--shadow)">
+    <div style="font-size:10px;font-weight:800;color:#4A90D9;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">💡 Kurzanleitung</div>
+    <p style="font-size:12px;color:#8AAFCC;line-height:1.8"><strong>Variante 1 – Direkt eintragen:</strong><br>Von- und Bis-Datum auswählen → „Buchung eintragen“ öffnen → Name eintragen → Speichern.<br><br><strong>Variante 2 – Anfrage annehmen:</strong><br>„Anfragen“ öffnen → ✅ Annehmen tippen → Zeitraum &amp; Name werden automatisch übernommen → nur noch Speichern.</p>
   </div>
   <div class="card" style="padding:14px 18px">
     <div class="year-nav">
