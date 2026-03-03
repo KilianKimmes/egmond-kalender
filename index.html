@@ -49,13 +49,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .yn-btn:active{background:var(--border);transform:scale(.92)}
 
 /* ── Matrix ── */
-.mx-outer{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mx-outer{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .mx-mo{background:#1A2535;border-radius:var(--r-sm);box-shadow:var(--shadow-sm);padding:9px 10px;border:1px solid #2A3A50}
 .mx-ttl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;font-size:12px;font-weight:800;letter-spacing:-.2px}
 .mx-stat{font-size:9px;font-weight:700}
 .mx-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
 .mx-h{text-align:center;font-size:7px;color:#B0BEC5;font-weight:700;padding:1px 0}
-.is-admin .mx-outer{grid-template-columns:repeat(2,1fr)}
 .is-admin .mx-d{font-size:11px;min-height:32px}
 .is-admin .mx-name{font-size:7px}
 @media(max-width:480px){.is-admin .mx-outer{grid-template-columns:1fr}}
@@ -73,8 +72,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .mx-sf{background:#C8960C!important;color:#fff!important;border-radius:4px}
 .mx-st{background:#C8960C!important;color:#fff!important;border-radius:4px}
 .mx-sr{background:#FFF8DC!important;color:#7A6000!important}
-.IS_ADMIN .mx-outer{grid-template-columns:repeat(2,1fr)}
-@media(max-width:600px){.mx-outer{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.mx-outer{grid-template-columns:1fr}}
 @media(max-width:480px){.mx-outer{grid-template-columns:1fr}}
 
 /* ── Ladeanimation ── */
@@ -221,18 +219,14 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 .pr-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 85px);
   gap: 3px;
-  height: calc(100vh - 20px);
-  box-sizing: border-box;
 }
 
 .pr-mo {
   border: 1px solid #999;
   padding: 3px 4px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+
 }
 .pr-mo-title {
   font-size: 9px;
@@ -248,8 +242,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0;
-  flex: 1;
-  align-content: start;
+align-content: start;
 }
 .pr-h {
   font-size: 7px;
@@ -314,7 +307,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
       <h2 id="yearTitle">2026</h2>
       <button class="yn-btn" onclick="changeYear(1)">&#8250;</button>
     </div>
-    <div style="text-align:right;margin-bottom:12px"><button onclick="printCal()" style="background:none;border:1px solid #C8960C;color:#C8960C;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">🖨️ Drucken</button></div>
+    <div id="printBtn" style="display:none;text-align:right;margin-bottom:12px"><button onclick="printCal()" style="background:none;border:1px solid #C8960C;color:#C8960C;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">🖨️ Drucken</button></div>
     <div id="calLoading" class="loading"><div class="spin"></div><br><br>Lade…</div>
     <div id="pubHint" style="display:none;margin-top:12px;padding:12px 14px;background:var(--bg);border-radius:10px;border-left:3px solid #C8960C;font-size:13px;color:var(--muted);line-height:1.7">👆 <strong>Schritt 1:</strong> Von-Datum antippen, dann Bis-Datum – der Zeitraum wird automatisch ins Anfrageformular übernommen.<br>✏️ <strong>Schritt 2:</strong> Name und E-Mail ausfüllen und Anfrage absenden. Wir melden uns schnell zurück!</div>
     <div id="matrixWrap" style="display:none"><div class="mx-outer" id="matrix"></div></div>
@@ -769,6 +762,7 @@ if(IS_ADMIN){
   document.getElementById('t3').style.display='';
   document.getElementById('t1').style.display='none';
   document.getElementById('adminHint').style.display='block';
+  document.getElementById('printBtn').style.display='block';
 }
 
 // Expose to global scope (required for onclick handlers with type="module")
