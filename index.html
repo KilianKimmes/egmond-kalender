@@ -574,6 +574,7 @@ async function loadYear(year){
     bk=snap.exists()?(snap.data().days||{}):{};
   }catch(e){bk={};toast('Verbindungsfehler – offline?');}
   renderMatrix(year);
+  if(!IS_ADMIN) renderPicker();
 }
 
 async function saveBooking(){
@@ -1023,9 +1024,8 @@ window.dayClick=dayClick;window.bookDayClick=bookDayClick;
 window.updInq=updInq;window.acceptInq=acceptInq;window.printCal=printCal;window.pkDay=pkDay;window.pkNav=pkNav;window.pkSubmit=pkSubmit;window.pkOpen=pkOpen;
 
 setSt('Belegt');
-loadYear(curYear);
-renderBookCal();
-renderPicker();
+loadYear(curYear);  // also calls renderPicker() for public after bk loaded
+if(IS_ADMIN) renderBookCal();
 </script>
 </body>
 </html>
