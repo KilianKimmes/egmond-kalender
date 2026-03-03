@@ -291,7 +291,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getFirestore,doc,getDoc,setDoc,addDoc,updateDoc,collection,query,orderBy,limit,getDocs,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const ADMIN_KEY = "FiegePils";
+const ADMIN_KEY = "egmond2026";
 const db = getFirestore(initializeApp({
   apiKey:            "AIzaSyCDvWD8YZxhJlWYeZHQ1VgvTSg879AoL9A",
   authDomain:        "egmond-kalender-649b2.firebaseapp.com",
@@ -518,7 +518,7 @@ function renderMatrix(year){
       cls+=' click';
       cells+=`<div class="${cls}" onclick="dayClick(${year},${m},${day})" title="${isB&&!IS_ADMIN?'Belegt':(isB?info.name||'Belegt':(sp2?sp2.name:'Frei'))}"><span>${day}</span></div>`;
     }
-    html+=`<div class="mx-mo"><div class="mx-ttl"><span>${MNS[m]}</span><span class="mx-stat"><span style="color:var(--free-t)">${fc}✓</span><span style="color:var(--booked-t)"> ${bc}✗</span></span></div><div class="mx-grid">${cells}</div></div>`;
+    html+=`<div class="mx-mo"><div class="mx-ttl"><span>${MNS[m]}</span></div><div class="mx-grid">${cells}</div></div>`;
   }
   wrap.innerHTML=html;
   document.getElementById('calLoading').style.display='none';
