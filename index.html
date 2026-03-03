@@ -349,12 +349,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
     <div style="font-size:10px;font-weight:800;color:#4A90D9;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">📅 Anfrage stellen</div>
     <p style="font-size:12px;color:#8AAFCC;line-height:1.8"><strong>Schritt 1:</strong> Von-Datum antippen, dann Bis-Datum – der Zeitraum wird automatisch ins Anfrageformular übernommen.<br><br><strong>Schritt 2:</strong> Name und E-Mail ausfüllen und Anfrage absenden. Wir melden uns schnell zurück!</p>
   </div>
-  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;font-size:11px;font-weight:700">
-    <span style="padding:4px 10px;border-radius:6px;background:var(--booked);color:var(--booked-t)">🔴 Belegt</span>
-    <span style="padding:4px 10px;border-radius:6px;background:var(--holiday);color:var(--holiday-t)">🎉 Feiertag NRW</span>
-    <span style="padding:4px 10px;border-radius:6px;background:var(--bridge);color:var(--bridge-t)">🌉 Brückentag</span>
-    <span style="padding:4px 10px;border-radius:6px;background:var(--school);color:var(--school-t)">🏖️ Schulferien</span>
-  </div>
   <div class="card" style="padding:14px 18px">
     <div class="year-nav">
       <button class="yn-btn" onclick="changeYear(-1)">&#8249;</button>
@@ -370,15 +364,15 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 4: BUCHEN (Public Picker) -->
 <div id="tab4" class="tc">
-  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;font-size:11px;font-weight:700">
+  <div id="pkHint" style="padding:12px 16px;background:#0D1E30;border:1px solid #2A5A8A;border-radius:var(--r);margin-bottom:14px;box-shadow:var(--shadow)">
+    <div style="font-size:10px;font-weight:800;color:#4A90D9;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">📅 Zeitraum wählen</div>
+    <p style="font-size:12px;color:#8AAFCC;line-height:1.7">Anreise antippen, dann Abreise – dann Anfrage absenden.</p>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;font-size:11px;font-weight:700">
     <span style="padding:4px 10px;border-radius:6px;background:var(--booked);color:var(--booked-t)">🔴 Belegt</span>
     <span style="padding:4px 10px;border-radius:6px;background:var(--holiday);color:var(--holiday-t)">🎉 Feiertag NRW</span>
     <span style="padding:4px 10px;border-radius:6px;background:var(--bridge);color:var(--bridge-t)">🌉 Brückentag</span>
     <span style="padding:4px 10px;border-radius:6px;background:var(--school);color:var(--school-t)">🏖️ Schulferien</span>
-  </div>
-  <div id="pkHint" style="padding:12px 16px;background:#0D1E30;border:1px solid #2A5A8A;border-radius:var(--r);margin-bottom:14px;box-shadow:var(--shadow)">
-    <div style="font-size:10px;font-weight:800;color:#4A90D9;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">📅 Zeitraum wählen</div>
-    <p style="font-size:12px;color:#8AAFCC;line-height:1.7">Anreise antippen, dann Abreise – dann Anfrage absenden.</p>
   </div>
   <div class="pk-wrap">
     <div class="pk-months">
@@ -844,6 +838,7 @@ if(IS_ADMIN){
   document.body.classList.add('is-admin');
   document.getElementById('t2').style.display='';
   document.getElementById('t3').style.display='';
+  document.getElementById('t4').style.display='none';
   document.getElementById('t1').style.display='none';
   document.getElementById('adminHint').style.display='block';
   document.getElementById('printBtn').style.display='block';
@@ -851,8 +846,6 @@ if(IS_ADMIN){
   document.getElementById('tabBar').style.display='none';
   document.getElementById('tab0').classList.remove('on');
   document.getElementById('tab4').classList.add('on');
-  document.getElementById('tab1').classList.add('on');
-  document.getElementById('tab1').style.display='block';
   document.getElementById('pubHint').style.display='block';
 }
 
@@ -975,11 +968,13 @@ function pkDay(year,month,day){
 
 function pkSubmit(){
   if(!pkF||!pkT)return;
-  // Pre-fill inquiry form and switch to tab1
-  selF=pkF;selT=pkT;
   document.getElementById('rFrom').value=fmt(pkF);
   document.getElementById('rTo').value=fmt(pkT);
-  sw(1);
+  // Show form below picker smoothly
+  const t1=document.getElementById('tab1');
+  t1.style.display='block';
+  t1.classList.add('on');
+  t1.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 window.sw=sw;window.changeYear=changeYear;window.changeBookMonth=changeBookMonth;
