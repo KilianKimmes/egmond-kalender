@@ -2,7 +2,6 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googleapis.com https://*.gstatic.com https://*.firebaseio.com https://*.firebaseapp.com https://www.gstatic.com;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Egmond">
@@ -239,14 +238,18 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 2: BUCHEN (Admin) -->
 <div id="tab2" class="tc">
-  <div class="card">
-    <div class="card-title">📅 Zeitraum wählen</div>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:10px">Im Kalender antippen: erst Von-Datum, dann Bis-Datum</p>
+  <div class="card" style="padding:12px 14px">
+    <div class="bk-nav">
+      <button class="yn-btn" onclick="changeBookMonth(-1)">&#8249;</button>
+      <span id="bookMonthTitle" class="bk-month-title"></span>
+      <button class="yn-btn" onclick="changeBookMonth(1)">&#8250;</button>
+    </div>
+    <div id="bookCal"></div>
     <div class="chips">
       <div class="chip" id="chipF"><div class="chip-lbl">Von</div><div class="chip-val" id="chipFv">—</div></div>
       <div class="chip" id="chipT"><div class="chip-lbl">Bis</div><div class="chip-val" id="chipTv">—</div></div>
     </div>
-    <div class="pick-hint" id="pickHint">Zuerst im Kalender Von-Datum antippen</div>
+    <div class="pick-hint" id="pickHint">Von-Datum antippen</div>
     <button class="clr-btn" onclick="clearSel()">Auswahl zurücksetzen</button>
   </div>
   <div class="card">
@@ -493,7 +496,6 @@ function renderMatrix(year){
       else if(sp2?.type==='bridge')cls+=' mx-bridge';
       else if(sp2?.type==='school')cls+=' mx-school';
       else cls+=' mx-free';
-      else cls+=' mx-free';
       if(isTd)cls+=' mx-today';
       if(IS_ADMIN)cls+=' click';
       cells+=`<div class="${cls}" onclick="dayClick(${year},${m},${day})" title="${isB&&!IS_ADMIN?'Belegt':(isB?info.name||'Belegt':(sp2?sp2.name:'Frei'))}"><span>${day}</span></div>`;
@@ -576,7 +578,6 @@ function renderBookCal(){
     else if(sp2?.type==='holiday')cls+=' bk-holiday';
     else if(sp2?.type==='bridge')cls+=' bk-bridge';
     else if(sp2?.type==='school')cls+=' bk-school';
-    else cls+=' bk-free';
     else cls+=' bk-free';
     if(isTd)cls+=' bk-today';
     if(isPast&&!isSF&&!isST&&!isSR)cls+=' bk-past';
