@@ -200,6 +200,10 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 0: KALENDER -->
 <div id="tab0" class="tc on">
+  <div id="adminHint" style="display:none;padding:12px 16px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:var(--r);margin-bottom:14px;box-shadow:var(--shadow)">
+    <div style="font-size:10px;font-weight:800;color:#1565C0;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">💡 Kurzanleitung</div>
+    <p style="font-size:12px;color:#1e40af;line-height:1.8"><strong>Variante 1 – Direkt eintragen:</strong><br>Im Kalender Von- und Bis-Datum antippen → Tab "Buchung eintragen" öffnen → Name eintragen → Speichern.<br><br><strong>Variante 2 – Anfrage annehmen:</strong><br>Im Tab "Anfragen" auf ✅ Annehmen tippen → Zeitraum &amp; Name werden automatisch übernommen → nur noch Speichern.</p>
+  </div>
   <div class="card" style="padding:14px 18px">
     <div class="year-nav">
       <button class="yn-btn" onclick="changeYear(-1)">&#8249;</button>
@@ -245,10 +249,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 2: BUCHEN (Admin) -->
 <div id="tab2" class="tc">
-  <div class="card" style="padding:12px 16px;background:#EFF6FF;border:1px solid #BFDBFE">
-    <div class="card-title" style="color:#1565C0;margin-bottom:8px">💡 Kurzanleitung</div>
-    <p style="font-size:12px;color:#1e40af;line-height:1.7"><strong>Buchung eintragen:</strong> Im Kalender unten Von- und Bis-Datum antippen → Status und Name eintragen → Speichern.<br><br><strong>Anfrage annehmen:</strong> Im Tab "Anfragen" auf ✅ Annehmen tippen → Zeitraum wird automatisch eingetragen → nur noch Speichern.</p>
-  </div>
   <div class="card" style="padding:12px 14px">
     <div class="bk-nav">
       <button class="yn-btn" onclick="changeBookMonth(-1)">&#8249;</button>
@@ -666,6 +666,7 @@ if(IS_ADMIN){
   document.getElementById('t2').style.display='';
   document.getElementById('t3').style.display='';
   document.getElementById('t1').style.display='none';
+  document.getElementById('adminHint').style.display='block';
 }
 
 // Expose to global scope (required for onclick handlers with type="module")
