@@ -484,19 +484,33 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
     <span style="padding:3px 8px;border-radius:6px;background:var(--holiday);color:var(--holiday-t);white-space:nowrap">🎉 Feier- &amp; Brückentage</span>
     <span style="padding:3px 8px;border-radius:6px;background:var(--school);color:var(--school-t);white-space:nowrap">🏖️ Ferien NRW</span>
   </div>
-  <div class="card" style="padding:12px 14px;max-width:460px;margin-left:auto;margin-right:auto">
-    <div class="bk-nav">
-      <button class="yn-btn" onclick="changeBookMonth(-1)">&#8249;</button>
-      <span id="bookMonthTitle" class="bk-month-title"></span>
-      <button class="yn-btn" onclick="changeBookMonth(1)">&#8250;</button>
+  <div class="pk-wrap" style="max-width:680px;margin-left:auto;margin-right:auto">
+    <div class="pk-months" id="adminPickerMonths">
+      <div class="pk-month" id="bkM0">
+        <div class="pk-nav">
+          <button class="pk-nav-btn" id="bkPrev" onclick="changeBookMonth(-1)">&#8249;</button>
+          <span class="pk-month-title" id="bkT0"></span>
+          <button class="pk-nav-btn" style="visibility:hidden">&#8250;</button>
+        </div>
+        <div class="pk-grid" id="bkG0"></div>
+      </div>
+      <div class="pk-month" id="bkM1">
+        <div class="pk-nav">
+          <button class="pk-nav-btn" style="visibility:hidden">&#8249;</button>
+          <span class="pk-month-title" id="bkT1"></span>
+          <button class="pk-nav-btn" id="bkNext" onclick="changeBookMonth(1)">&#8250;</button>
+        </div>
+        <div class="pk-grid" id="bkG1"></div>
+      </div>
     </div>
-    <div id="bookCal"></div>
-    <div class="chips">
-      <div class="chip" id="chipF"><div class="chip-lbl">Von</div><div class="chip-val" id="chipFv">—</div></div>
-      <div class="chip" id="chipT"><div class="chip-lbl">Bis</div><div class="chip-val" id="chipTv">—</div></div>
+    <div class="pk-chips">
+      <div class="pk-chip" id="chipF"><div class="pk-chip-lbl">Von</div><div class="pk-chip-val" id="chipFv">—</div></div>
+      <div class="pk-chip" id="chipT"><div class="pk-chip-lbl">Bis</div><div class="pk-chip-val" id="chipTv">—</div></div>
     </div>
-    <div class="pick-hint" id="pickHint">Von-Datum antippen</div>
-    <button class="clr-btn" onclick="clearSel()">Auswahl zurücksetzen</button>
+    <div class="pk-hint" id="pickHint">Von-Datum antippen</div>
+    <div style="padding:0 16px 12px;text-align:center">
+      <button class="clr-btn" onclick="clearSel()">Auswahl zurücksetzen</button>
+    </div>
   </div>
   <div class="card">
     <div class="card-title">🏷️ Status</div>
@@ -883,10 +897,10 @@ function clearSel(){selF=null;selT=null;picking='from';updateChips();renderMatri
 function updateChips(){
   document.getElementById('chipFv').textContent=fmt(selF);
   document.getElementById('chipTv').textContent=fmt(selT);
-  document.getElementById('chipF').className='chip'+(selF?' af':'');
-  document.getElementById('chipT').className='chip'+(selT?' at':'');
+  document.getElementById('chipF').className='pk-chip'+(selF?' sel':'');
+  document.getElementById('chipT').className='pk-chip'+(selT?' sel':'');
   document.getElementById('pickHint').textContent=
-    picking==='from'?(selF&&selT?'Zeitraum gewaehlt – jetzt speichern':'Zuerst Von-Datum antippen'):'Jetzt Bis-Datum antippen';
+    picking==='from'?(selF&&selT?'Zeitraum gewählt – jetzt speichern':'Von-Datum antippen'):'Bis-Datum antippen';
   if(selF)document.getElementById('rFrom').value=fmt(selF);
   if(selT)document.getElementById('rTo').value=fmt(selT);
 }
@@ -911,42 +925,46 @@ function changeBookMonth(d){
 }
 
 function renderBookCal(){
-  const sp=getSpecial(bookYear);
-  const dim=new Date(bookYear,bookMonth+1,0).getDate();
-  const fw=(new Date(bookYear,bookMonth,1).getDay()+6)%7;
-  document.getElementById('bookMonthTitle').textContent=MNL[bookMonth]+' '+bookYear;
-  let cells='<div class="bk-grid">';
-  cells+='<div class="bk-h">Mo</div><div class="bk-h">Di</div><div class="bk-h">Mi</div><div class="bk-h">Do</div><div class="bk-h">Fr</div><div class="bk-h" style="opacity:.5">Sa</div><div class="bk-h" style="opacity:.5">So</div>';
-  for(let i=0;i<fw;i++)cells+='<div class="bk-em"></div>';
-  for(let day=1;day<=dim;day++){
-    const d=new Date(bookYear,bookMonth,day),dow=(d.getDay()+6)%7,key=dk(d);
-    const info=bk[key]||{},sp2=sp[key],isB=info.status==='Belegt';
-    const isTd=d.toDateString()===TODAY.toDateString();
-    const isPast=d<new Date(TODAY.getFullYear(),TODAY.getMonth(),TODAY.getDate());
-    const isSF=selF&&dk(d)===dk(selF),isST=selT&&dk(d)===dk(selT);
-    const isSR=selF&&selT&&d>selF&&d<selT;
-    let cls='bk-d';
-    if(isSF&&isST)cls+=' bk-sf bk-st';
-    else if(isSF)cls+=' bk-sf';
-    else if(isST)cls+=' bk-st';
-    else if(isSR)cls+=' bk-sr';
-    else if(isB)cls+=' bk-booked';
-    else if(sp2?.type==='holiday')cls+=' bk-holiday';
-    else if(sp2?.type==='bridge')cls+=' bk-bridge';
-    else if(sp2?.type==='school')cls+=' bk-school';
-    else cls+=' bk-free';
-    if(isTd)cls+=' bk-today';
-    if(isPast&&!isSF&&!isST&&!isSR)cls+=' bk-past';
-    cells+=`<div class="${cls}" onclick="bookDayClick(${bookYear},${bookMonth},${day})">${day}</div>`;
+  for(let mi=0;mi<2;mi++){
+    let y=bookYear,m=bookMonth+mi;
+    if(m>11){m-=12;y++;}
+    const sp=getSpecial(y);
+    document.getElementById('bkT'+mi).textContent=MNL[m]+' '+y;
+    const dim=new Date(y,m+1,0).getDate();
+    const fw=(new Date(y,m,1).getDay()+6)%7;
+    let cells='<div class="pk-h">Mo</div><div class="pk-h">Di</div><div class="pk-h">Mi</div><div class="pk-h">Do</div><div class="pk-h">Fr</div><div class="pk-h">Sa</div><div class="pk-h">So</div>';
+    for(let i=0;i<fw;i++)cells+='<div class="pk-em"></div>';
+    for(let day=1;day<=dim;day++){
+      const d=new Date(y,m,day),key=dk(d);
+      const info=bk[key]||{},sp2=sp[key],isB=info.status==='Belegt';
+      const isTd=d.toDateString()===TODAY.toDateString();
+      const isPast=d<new Date(TODAY.getFullYear(),TODAY.getMonth(),TODAY.getDate());
+      const dkD=dk(d);
+      const isSF=selF&&dkD===dk(selF),isST=selT&&dkD===dk(selT);
+      const isSR=selF&&selT&&d>selF&&d<selT;
+      let cls='pk-d';
+      if(isSF&&isST)cls+=' pk-sf pk-st';
+      else if(isSF)cls+=' pk-sf';
+      else if(isST)cls+=' pk-st';
+      else if(isSR)cls+=' pk-sr';
+      else if(isB)cls+=' pk-booked';
+      else if(sp2?.type==='holiday'||sp2?.type==='bridge')cls+=' pk-free pk-holiday';
+      else if(sp2?.type==='school')cls+=' pk-free pk-school';
+      else cls+=' pk-free';
+      if(isTd&&!isSF&&!isST)cls+=' pk-today';
+      if(isPast&&!isSF&&!isST&&!isSR)cls+=' pk-past';
+      cells+=`<div class="${cls}" onclick="bookDayClick(${y},${m},${day})" title="${isB?info.name||'Belegt':''}">${day}</div>`;
+    }
+    document.getElementById('bkG'+mi).innerHTML=cells;
   }
-  cells+='</div>';
-  document.getElementById('bookCal').innerHTML=cells;
 }
 
 function bookDayClick(year,month,day){
   const d=new Date(year,month,day);
   if(picking==='from'){selF=d;selT=null;picking='to';}
-  else{if(d<selF){selT=selF;selF=d;}else selT=d;picking='from';}
+  else{if(d<=selF){selF=d;selT=null;picking='to';}else{selT=d;picking='from';}}
+  bookYear=year;bookMonth=month;
+  if(bookMonth>0)bookMonth--;  // zeige den Monat mit dem ersten gewählten Datum
   updateChips();renderBookCal();renderMatrix(curYear);
   if(selF&&selT){
     let hasB=false;
