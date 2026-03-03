@@ -300,15 +300,16 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 .pk-d{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;border-radius:50%;cursor:pointer;transition:all .15s;position:relative;user-select:none}
 .pk-d:hover:not(.pk-booked):not(.pk-past):not(.pk-em){background:rgba(200,150,12,.2);color:#C8960C}
 .pk-em{aspect-ratio:1}
-.pk-free{color:var(--text)}
-.pk-booked{color:#555;cursor:default;text-decoration:line-through}
-.pk-past{color:#444;cursor:default}
-.pk-today{font-weight:900;color:#C8960C}
-.pk-holiday{color:#6A9A60}
-.pk-school{color:#6070A0}
+.pk-free{color:var(--text);background:var(--free);border-radius:4px}
+.pk-booked{background:var(--booked);color:var(--booked-t);cursor:default;border-radius:4px}
+.pk-past{color:#333;cursor:default}
+.pk-today{font-weight:900;outline:2px solid #C8960C;outline-offset:-2px;border-radius:50%}
+.pk-holiday{background:var(--holiday);color:var(--holiday-t)}
+.pk-school{background:var(--school);color:var(--school-t)}
+.pk-bridge{background:var(--bridge);color:var(--bridge-t)}
 .pk-sf{background:#C8960C!important;color:#fff!important;border-radius:50%}
 .pk-st{background:#C8960C!important;color:#fff!important;border-radius:50%}
-.pk-sr{background:rgba(200,150,12,.18);color:var(--text);border-radius:0}
+.pk-sr{background:rgba(200,150,12,.2);color:var(--text);border-radius:0}
 .pk-sr-start{border-radius:50% 0 0 50%!important}
 .pk-sr-end{border-radius:0 50% 50% 0!important}
 .pk-chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 16px}
@@ -369,6 +370,12 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 4: BUCHEN (Public Picker) -->
 <div id="tab4" class="tc">
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;font-size:11px;font-weight:700">
+    <span style="padding:4px 10px;border-radius:6px;background:var(--booked);color:var(--booked-t)">🔴 Belegt</span>
+    <span style="padding:4px 10px;border-radius:6px;background:var(--holiday);color:var(--holiday-t)">🎉 Feiertag NRW</span>
+    <span style="padding:4px 10px;border-radius:6px;background:var(--bridge);color:var(--bridge-t)">🌉 Brückentag</span>
+    <span style="padding:4px 10px;border-radius:6px;background:var(--school);color:var(--school-t)">🏖️ Schulferien</span>
+  </div>
   <div id="pkHint" style="padding:12px 16px;background:#0D1E30;border:1px solid #2A5A8A;border-radius:var(--r);margin-bottom:14px;box-shadow:var(--shadow)">
     <div style="font-size:10px;font-weight:800;color:#4A90D9;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">📅 Zeitraum wählen</div>
     <p style="font-size:12px;color:#8AAFCC;line-height:1.7">Anreise antippen, dann Abreise – dann Anfrage absenden.</p>
@@ -920,7 +927,7 @@ function renderPicker(){
       else if(isST) cls+=' pk-st';
       else if(isSR) cls+=' pk-sr';
       else if(sp2?.type==='holiday') cls+=' pk-free pk-holiday';
-      else if(sp2?.type==='bridge') cls+=' pk-free pk-holiday';
+      else if(sp2?.type==='bridge') cls+=' pk-free pk-bridge';
       else if(sp2?.type==='school') cls+=' pk-free pk-school';
       else cls+=' pk-free';
       if(isTd&&!isSF&&!isST) cls+=' pk-today';
