@@ -968,10 +968,11 @@ function renderPicker(){
   if(df){df.textContent=pkF?fmt(pkF):'Datum wählen';df.style.color=pkF?'#C8960C':'#C8960C';}
   if(dt){dt.textContent=pkT?fmt(pkT):'Datum wählen';dt.style.color=pkT?'#C8960C':'var(--muted)';}
   // Highlight active field
-  document.getElementById('pkTriggerF').style.background=pkPicking==='from'?'rgba(200,150,12,.08)':'';
-  document.getElementById('pkTriggerT').style.background=pkPicking==='to'?'rgba(200,150,12,.08)':'';
-  // Hide calendar when both selected
-  if(pkF&&pkT) document.getElementById('pkCalWrap').style.display='none';
+  const tf=document.getElementById('pkTriggerF'),tt=document.getElementById('pkTriggerT');
+  if(tf) tf.style.background=pkPicking==='from'?'rgba(200,150,12,.08)':'';
+  if(tt) tt.style.background=pkPicking==='to'?'rgba(200,150,12,.08)':'';
+  // Hide calendar only when both selected (with short delay so user sees selection)
+  if(pkF&&pkT) setTimeout(()=>{document.getElementById('pkCalWrap').style.display='none';},400);
 }
 
 function pkDay(year,month,day){
