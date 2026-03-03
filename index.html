@@ -67,10 +67,10 @@ body{font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,"Segoe UI",san
 .tab.on{color:var(--sunset-orange);border-bottom-color:var(--sunset-orange);background:linear-gradient(to bottom,transparent,rgba(232,101,10,.06))}
 
 /* ── Layout ── */
-.wrap{padding:0 20px 60px;max-width:680px;margin:0 auto}
+.wrap{padding:1px 20px 60px;max-width:680px;margin:0 auto}
 .card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:18px;margin-bottom:12px;border:1px solid var(--border)}
 .card-title{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:14px}
-.tc{display:none}.tc.on{display:block;max-width:680px;margin-left:auto;margin-right:auto;padding-top:12px}
+.tc{display:none}.tc.on{display:block;max-width:680px;margin-left:auto;margin-right:auto}
 
 /* ── Jahr-Nav ── */
 .year-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
@@ -204,7 +204,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
   .header p{font-size:9px!important;letter-spacing:1.2px!important}
   .header-icon{width:34px!important;height:34px!important;font-size:18px!important}
   .tabs{top:123px!important}
-  .tc.on{padding-top:10px!important}
   .card{margin-bottom:10px!important}
   .wrap{padding:0 10px 40px}
   .card{padding:10px;border-radius:12px}
@@ -395,11 +394,11 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 0: KALENDER -->
 <div id="tab0" class="tc on">
-  <div id="adminHint" style="display:none;padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-bottom:12px;box-shadow:var(--shadow-sm)">
+  <div id="adminHint" style="display:none;padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-top:11px;margin-bottom:12px;box-shadow:var(--shadow-sm)">
     <div style="font-size:10px;font-weight:800;color:var(--sunset-orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">💡 Kurzanleitung</div>
     <p style="font-size:12px;color:#3A2810;line-height:1.8"><strong>Variante 1 – Direkt eintragen:</strong><br>Von- und Bis-Datum auswählen → „Buchung eintragen" öffnen → Name eintragen → Speichern.<br><br><strong>Variante 2 – Anfrage annehmen:</strong><br>„Anfragen" öffnen → ✅ Annehmen tippen → Zeitraum &amp; Name werden automatisch übernommen → nur noch Speichern.</p>
   </div>
-  <div id="legendBar" style="display:none;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:6px;margin-bottom:12px">
+  <div id="legendBar" style="display:none;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:6px;margin-top:11px;margin-bottom:12px">
     <div style="display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;font-size:10px;font-weight:700">
       <span style="padding:4px 10px;border-radius:20px;background:#FDF0EC;color:var(--egmond-red);border:1px solid #EEC8A8;white-space:nowrap">🔴 Belegt</span>
       <span style="padding:4px 10px;border-radius:20px;background:#FFFBE8;color:#8A6000;border:1px solid #E8D898;white-space:nowrap">🎉 Feier- &amp; Brückentage</span>
@@ -407,7 +406,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
     </div>
     <button onclick="printCal()" style="flex-shrink:0;background:#fff;border:1.5px solid var(--egmond-red);color:var(--egmond-red);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">🖨️ Drucken</button>
   </div>
-  <div id="pubHint" style="display:none;padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-bottom:12px;box-shadow:var(--shadow-sm)">
+  <div id="pubHint" style="display:none;padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-top:11px;margin-bottom:12px;box-shadow:var(--shadow-sm)">
     <div style="font-size:10px;font-weight:800;color:var(--sunset-orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">💡 Anfrage stellen</div>
     <p style="font-size:12px;color:#3A2810;line-height:1.8"><strong>Schritt 1:</strong> Von-Datum antippen, dann Bis-Datum – der Zeitraum wird automatisch ins Anfrageformular übernommen.<br><br><strong>Schritt 2:</strong> Name und E-Mail ausfüllen und Anfrage absenden. Wir melden uns schnell zurück!</p>
   </div>
@@ -425,7 +424,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 4: BUCHEN (Public Picker) -->
 <div id="tab4" class="tc">
-  <div style="padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-bottom:12px;box-shadow:var(--shadow-sm)">
+  <div style="padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-top:11px;margin-bottom:12px;box-shadow:var(--shadow-sm)">
     <div style="font-size:10px;font-weight:800;color:var(--sunset-orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">💡 Zeitraum wählen</div>
     <p style="font-size:12px;color:#3A2810;line-height:1.7">Anreise antippen, dann Abreise – dann Anfrage absenden.</p>
   </div>
@@ -466,7 +465,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 1: ANFRAGE (extern) -->
 <div id="tab1" class="tc">
-  <div class="card">
+  <div class="card" style="margin-top:12px">
     <div class="card-title">📩 Verfügbarkeit anfragen</div>
 
     <div id="reqResult" class="result"></div>
@@ -481,7 +480,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 2: BUCHEN (Admin) -->
 <div id="tab2" class="tc">
-  <div style="padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-bottom:10px;box-shadow:var(--shadow-sm)"><div style="font-size:10px;font-weight:800;color:var(--sunset-orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">💡 Kurzanleitung</div><p style="font-size:12px;color:#3A2810;line-height:1.8">Anreise antippen → Abreise antippen → Name des Mieters eintragen → 💾 Buchung speichern</p></div>
+  <div style="padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-top:11px;margin-bottom:12px;box-shadow:var(--shadow-sm)"><div style="font-size:10px;font-weight:800;color:var(--sunset-orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">💡 Kurzanleitung</div><p style="font-size:12px;color:#3A2810;line-height:1.8">Anreise antippen → Abreise antippen → Name des Mieters eintragen → 💾 Buchung speichern</p></div>
   <div style="display:flex;flex-wrap:nowrap;gap:5px;margin-bottom:10px;font-size:10px;font-weight:700;overflow-x:auto">
     <span style="padding:3px 8px;border-radius:6px;background:var(--booked);color:var(--booked-t);white-space:nowrap">🔴 Belegt</span>
     <span style="padding:3px 8px;border-radius:6px;background:var(--holiday);color:var(--holiday-t);white-space:nowrap">🎉 Feier- &amp; Brückentage</span>
@@ -533,7 +532,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 3: ANFRAGEN (Admin) -->
 <div id="tab3" class="tc">
-  <div style="padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-bottom:10px;box-shadow:var(--shadow-sm)"><div style="font-size:10px;font-weight:800;color:var(--sunset-orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">💡 Kurzanleitung</div><p style="font-size:12px;color:#3A2810;line-height:1.8">Buchung annehmen → Buchung eintragen → 💾 Buchung speichern</p></div>
+  <div style="padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-top:11px;margin-bottom:12px;box-shadow:var(--shadow-sm)"><div style="font-size:10px;font-weight:800;color:var(--sunset-orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">💡 Kurzanleitung</div><p style="font-size:12px;color:#3A2810;line-height:1.8">Buchung annehmen → Buchung eintragen → 💾 Buchung speichern</p></div>
   <div class="card" style="padding:12px 18px;display:flex;align-items:center;justify-content:space-between">
     <span class="card-title" style="margin:0">📋 Eingehende Anfragen</span>
     <button onclick="loadInquiries()" style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;color:var(--muted);transition:all .15s">↻ Laden</button>
@@ -544,7 +543,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 5: INFO (Public) -->
 <div id="tab5" class="tc">
-  <div style="padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-bottom:10px;box-shadow:var(--shadow-sm)"><div style="font-size:10px;font-weight:800;color:var(--sunset-orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">💡 Informationen</div><p style="font-size:12px;color:#3A2810;line-height:1.8">Wir sind stetig bemüht die Infos zu verbessern. Gerne Feedback zu Ergänzungen.</p></div>
+  <div style="padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-top:11px;margin-bottom:12px;box-shadow:var(--shadow-sm)"><div style="font-size:10px;font-weight:800;color:var(--sunset-orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">💡 Informationen</div><p style="font-size:12px;color:#3A2810;line-height:1.8">Wir sind stetig bemüht die Infos zu verbessern. Gerne Feedback zu Ergänzungen.</p></div>
 
   <!-- Adresse -->
   <div class="card">
