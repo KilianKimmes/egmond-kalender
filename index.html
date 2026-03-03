@@ -185,97 +185,104 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 }
 
 @media print {
-  @page { size: A4 landscape; margin: 5mm; }
-  html, body { height: auto !important; overflow: visible !important; }
+  @page { size: A4 landscape; margin: 6mm; }
   body > *:not(#printArea) { display: none !important; }
-  #printArea {
-    display: block !important;
-    position: static !important;
-    width: 100% !important;
-    page-break-after: avoid;
-  }
+  #printArea { display: block !important; }
 }
 
 #printArea {
   display: none;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #fff;
+  font-family: Arial, sans-serif;
   color: #000;
+  background: #fff;
   width: 100%;
-  box-sizing: border-box;
 }
 
 .pr-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 1.5px solid #000;
-  padding-bottom: 2px;
-  margin-bottom: 4px;
+  font-size: 10pt;
+  font-weight: 900;
+  border-bottom: 1.5pt solid #000;
+  padding-bottom: 2pt;
+  margin-bottom: 4pt;
 }
-.pr-title { font-size: 11px; font-weight: 900; }
-.pr-year  { font-size: 11px; }
 
 .pr-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(3, 85px);
-  gap: 3px;
+  gap: 3pt;
+  width: 100%;
 }
 
 .pr-mo {
-  border: 1px solid #999;
-  padding: 3px 4px;
-
+  border: 0.5pt solid #888;
+  padding: 2pt 3pt;
+  page-break-inside: avoid;
 }
+
 .pr-mo-title {
-  font-size: 9px;
+  font-size: 7pt;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: .3px;
-  margin-bottom: 2px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 1px;
-  flex-shrink: 0;
+  border-bottom: 0.5pt solid #bbb;
+  margin-bottom: 2pt;
+  padding-bottom: 1pt;
+  letter-spacing: .3pt;
 }
+
 .pr-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 0;
-align-content: start;
 }
+
 .pr-h {
-  font-size: 7px;
+  font-size: 5.5pt;
   text-align: center;
   color: #666;
   font-weight: 800;
-  padding: 1px 0;
+  padding-bottom: 1pt;
 }
+
 .pr-d {
-  font-size: 9px;
+  font-size: 7pt;
   font-weight: 600;
   text-align: center;
-  padding: 2px 1px;
-  line-height: 1.15;
-  border-radius: 2px;
+  padding: 1.2pt 0;
+  line-height: 1;
 }
-.pr-em { }
-.pr-booked { background: #ccc; font-weight: 900; border-radius: 2px; }
-.pr-name { font-size: 6px; display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-style: italic; line-height: 1; }
-.pr-holiday { font-style: italic; color: #555; font-weight: 800; }
-.pr-school { color: #aaa; }
+
+.pr-booked {
+  background: #bbb !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  font-weight: 900;
+  border-radius: 1pt;
+}
+
+.pr-name {
+  font-size: 5pt;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-style: italic;
+  line-height: 1;
+}
+
+.pr-holiday { font-style: italic; font-weight: 800; }
+.pr-school  { color: #999; }
 .pr-weekend { color: #bbb; }
-.pr-today { text-decoration: underline; font-weight: 900; }
+.pr-today   { text-decoration: underline; font-weight: 900; }
 
 .pr-legend {
-  margin-top: 3px;
+  margin-top: 4pt;
   display: flex;
-  gap: 14px;
-  font-size: 7px;
-  color: #444;
-  border-top: 1px solid #ccc;
-  padding-top: 2px;
-  flex-shrink: 0;
+  gap: 12pt;
+  font-size: 6pt;
+  color: #555;
+  border-top: 0.5pt solid #ccc;
+  padding-top: 2pt;
 }
 </style>
 </head>
