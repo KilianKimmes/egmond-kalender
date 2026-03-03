@@ -68,9 +68,9 @@ body{font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,"Segoe UI",san
 
 /* ── Layout ── */
 .wrap{padding:0 20px 60px;max-width:680px;margin:0 auto}
-.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:18px;margin-bottom:10px;margin-top:10px;border:1px solid var(--border)}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:18px;margin-bottom:12px;border:1px solid var(--border)}
 .card-title{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:14px}
-.tc{display:none}.tc.on{display:block;max-width:680px;margin-left:auto;margin-right:auto}
+.tc{display:none}.tc.on{display:block;max-width:680px;margin-left:auto;margin-right:auto;padding-top:12px}
 
 /* ── Jahr-Nav ── */
 .year-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
@@ -204,7 +204,9 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
   .header p{font-size:9px!important;letter-spacing:1.2px!important}
   .header-icon{width:34px!important;height:34px!important;font-size:18px!important}
   .tabs{top:123px!important}
-  .wrap{padding:8px}
+  .tc.on{padding-top:10px!important}
+  .card{margin-bottom:10px!important}
+  .wrap{padding:0 10px 40px}
   .card{padding:10px;border-radius:12px}
   .year-nav h2{font-size:22px}
   .bk-d{font-size:14px;border-radius:6px}
@@ -393,11 +395,11 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 0: KALENDER -->
 <div id="tab0" class="tc on">
-  <div id="adminHint" style="display:none;padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-top:10px;margin-bottom:10px;box-shadow:var(--shadow-sm)">
+  <div id="adminHint" style="display:none;padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-bottom:12px;box-shadow:var(--shadow-sm)">
     <div style="font-size:10px;font-weight:800;color:var(--sunset-orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">💡 Kurzanleitung</div>
     <p style="font-size:12px;color:#3A2810;line-height:1.8"><strong>Variante 1 – Direkt eintragen:</strong><br>Von- und Bis-Datum auswählen → „Buchung eintragen" öffnen → Name eintragen → Speichern.<br><br><strong>Variante 2 – Anfrage annehmen:</strong><br>„Anfragen" öffnen → ✅ Annehmen tippen → Zeitraum &amp; Name werden automatisch übernommen → nur noch Speichern.</p>
   </div>
-  <div id="legendBar" style="display:none;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:6px;margin-top:10px;margin-bottom:10px">
+  <div id="legendBar" style="display:none;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:6px;margin-bottom:12px">
     <div style="display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;font-size:10px;font-weight:700">
       <span style="padding:4px 10px;border-radius:20px;background:#FDF0EC;color:var(--egmond-red);border:1px solid #EEC8A8;white-space:nowrap">🔴 Belegt</span>
       <span style="padding:4px 10px;border-radius:20px;background:#FFFBE8;color:#8A6000;border:1px solid #E8D898;white-space:nowrap">🎉 Feier- &amp; Brückentage</span>
@@ -405,9 +407,9 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
     </div>
     <button onclick="printCal()" style="flex-shrink:0;background:#fff;border:1.5px solid var(--egmond-red);color:var(--egmond-red);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">🖨️ Drucken</button>
   </div>
-  <div id="pubHint" style="display:none;padding:14px 16px;background:#D8EAF8;border:1.5px solid #8ABCE0;border-radius:var(--r);margin-top:10px;margin-bottom:10px;box-shadow:var(--shadow-sm)">
-    <div style="font-size:10px;font-weight:800;color:#0E4A7A;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">📅 Anfrage stellen</div>
-    <p style="font-size:12px;color:#1A3A5A;line-height:1.8"><strong>Schritt 1:</strong> Von-Datum antippen, dann Bis-Datum – der Zeitraum wird automatisch ins Anfrageformular übernommen.<br><br><strong>Schritt 2:</strong> Name und E-Mail ausfüllen und Anfrage absenden. Wir melden uns schnell zurück!</p>
+  <div id="pubHint" style="display:none;padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-bottom:12px;box-shadow:var(--shadow-sm)">
+    <div style="font-size:10px;font-weight:800;color:var(--sunset-orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">💡 Anfrage stellen</div>
+    <p style="font-size:12px;color:#3A2810;line-height:1.8"><strong>Schritt 1:</strong> Von-Datum antippen, dann Bis-Datum – der Zeitraum wird automatisch ins Anfrageformular übernommen.<br><br><strong>Schritt 2:</strong> Name und E-Mail ausfüllen und Anfrage absenden. Wir melden uns schnell zurück!</p>
   </div>
   <div class="card" style="padding:14px 18px">
     <div class="year-nav">
@@ -423,7 +425,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 4: BUCHEN (Public Picker) -->
 <div id="tab4" class="tc">
-  <div style="padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-top:10px;margin-bottom:12px;box-shadow:var(--shadow-sm)">
+  <div style="padding:14px 16px;background:#FFF8F0;border:1.5px solid #E8C890;border-radius:var(--r);margin-bottom:12px;box-shadow:var(--shadow-sm)">
     <div style="font-size:10px;font-weight:800;color:var(--sunset-orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">💡 Zeitraum wählen</div>
     <p style="font-size:12px;color:#3A2810;line-height:1.7">Anreise antippen, dann Abreise – dann Anfrage absenden.</p>
   </div>
