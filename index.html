@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googleapis.com https://*.gstatic.com https://*.firebaseio.com https://*.firebaseapp.com https://www.gstatic.com;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Egmond">
@@ -55,7 +56,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .mx-stat{font-size:9px;font-weight:700}
 .mx-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
 .mx-h{text-align:center;font-size:7px;color:#B0BEC5;font-weight:700;padding:1px 0}
-.mx-d{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:3px;font-size:8px;font-weight:700;cursor:default}
+.mx-d{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:4px;font-size:9px;font-weight:700;cursor:default}
 .mx-d.click{cursor:pointer;transition:transform .1s}.mx-d.click:active{transform:scale(.78)}
 .mx-em{aspect-ratio:1}
 .mx-free{background:var(--free);color:var(--free-t)}
@@ -63,12 +64,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .mx-holiday{background:var(--holiday);color:var(--holiday-t);outline:1px solid #FB8C00;outline-offset:-1px}
 .mx-bridge{background:var(--bridge);color:var(--bridge-t);outline:1px solid #F9A825;outline-offset:-1px}
 .mx-school{background:var(--school);color:var(--school-t)}
-.mx-weekend{opacity:.6}
+.mx-weekend{opacity:1}
 .mx-today{outline:2px solid var(--accent2)!important;outline-offset:-1px;font-weight:900}
 .mx-sf{background:var(--free-d)!important;color:#fff!important;border-radius:4px 0 0 4px}
 .mx-st{background:var(--booked-d)!important;color:#fff!important;border-radius:0 4px 4px 0}
 .mx-sr{background:var(--weekend)!important;color:var(--weekend-t)!important}
-@media(max-width:360px){.mx-outer{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.mx-outer{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.mx-outer{grid-template-columns:1fr}}
 
 /* ── Ladeanimation ── */
 .loading{text-align:center;padding:40px 0;color:var(--muted)}
@@ -88,7 +90,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .bk-holiday{background:var(--holiday);color:var(--holiday-t);outline:1px solid #FB8C00;outline-offset:-1px}
 .bk-bridge{background:var(--bridge);color:var(--bridge-t)}
 .bk-school{background:var(--school);color:var(--school-t)}
-.bk-we{opacity:.65}
+.bk-we{opacity:1}
 .bk-today{outline:2.5px solid var(--accent2);outline-offset:-2px;font-weight:900}
 .bk-sf{background:var(--free-d)!important;color:#fff!important;border-radius:7px 0 0 7px}
 .bk-st{background:var(--booked-d)!important;color:#fff!important;border-radius:0 7px 7px 0}
@@ -149,8 +151,8 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 .inq-btn.seen{background:#ECEFF1;color:#546E7A}
 
 /* ── Legende ── */
-.lg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.lg-item{padding:11px 13px;border-radius:8px;font-size:12px;font-weight:700;letter-spacing:-.1px}
+.lg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.lg-item{padding:7px 10px;border-radius:7px;font-size:11px;font-weight:700}
 
 /* ── Anfrage-Intro ── */
 .req-intro{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:18px;padding:12px 14px;background:var(--bg);border-radius:8px;border-left:3px solid var(--accent)}
@@ -207,15 +209,15 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
     <div id="calLoading" class="loading"><div class="spin"></div><br><br>Lade…</div>
     <div id="matrixWrap" style="display:none"><div class="mx-outer" id="matrix"></div></div>
   </div>
-  <div class="card">
-    <div class="card-title">Legende</div>
+  <div class="card" style="padding:12px 14px">
+    <div class="card-title" style="margin-bottom:10px">Legende</div>
     <div class="lg">
       <div class="lg-item" style="background:var(--free);color:var(--free-t)">✅ Frei</div>
       <div class="lg-item" style="background:var(--booked);color:var(--booked-t)">🔴 Belegt</div>
       <div class="lg-item" style="background:var(--holiday);color:var(--holiday-t)">🎉 Feiertag NRW</div>
       <div class="lg-item" style="background:var(--bridge);color:var(--bridge-t)">🌉 Brückentag</div>
       <div class="lg-item" style="background:var(--school);color:var(--school-t)">🏖️ Schulferien</div>
-      <div class="lg-item" style="background:var(--weekend);color:var(--weekend-t)">📅 Wochenende</div>
+
     </div>
   </div>
 </div>
@@ -275,27 +277,20 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 </div>
 <div class="toast" id="toast"></div>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<!-- Firebase SDK (modular - kein eval benoetigt) -->
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,doc,getDoc,setDoc,addDoc,updateDoc,collection,query,orderBy,limit,getDocs,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-<script>
-// ══════════════════════════════════════════════
-// ► HIER ANPASSEN
-// ══════════════════════════════════════════════
-const FIREBASE_CONFIG = {
+const ADMIN_KEY = "egmond2026";
+const db = getFirestore(initializeApp({
   apiKey:            "AIzaSyCDvWD8YZxhJlWYeZHQ1VgvTSg879AoL9A",
   authDomain:        "egmond-kalender-649b2.firebaseapp.com",
   projectId:         "egmond-kalender-649b2",
   storageBucket:     "egmond-kalender-649b2.firebasestorage.app",
   messagingSenderId: "841553122795",
   appId:             "1:841553122795:web:81aa058d4a5dc049b675ae"
-};
-const ADMIN_KEY = "egmond2026"; // Geheimer Link-Code – ändern!
-// ══════════════════════════════════════════════
-
-firebase.initializeApp(FIREBASE_CONFIG);
-const db = firebase.firestore();
+}));
 
 const IS_ADMIN = new URLSearchParams(location.search).get('admin') === ADMIN_KEY;
 const TODAY    = new Date();
@@ -359,8 +354,8 @@ async function loadYear(year){
   document.getElementById('calLoading').style.display='block';
   document.getElementById('matrixWrap').style.display='none';
   try{
-    const snap=await db.collection('bookings').doc(String(year)).get();
-    bk=snap.exists?(snap.data().days||{}):{};
+    const snap=await getDoc(doc(db,'bookings',String(year)));
+    bk=snap.exists()?(snap.data().days||{}):{};
   }catch(e){bk={};toast('Verbindungsfehler – offline?');}
   renderMatrix(year);
 }
@@ -378,7 +373,7 @@ async function saveBooking(){
     updates[dk(d)]={status:curSt,name:curSt==='Belegt'?name:''};
   }
   try{
-    await db.collection('bookings').doc(String(curYear)).set({days:updates},{merge:true});
+    await setDoc(doc(db,'bookings',String(curYear)),{days:updates},{merge:true});
     Object.assign(bk,updates);
     renderMatrix(curYear);clearSel();
     document.getElementById('bookName').value='';
@@ -397,7 +392,7 @@ async function deleteBooking(){
     updates[dk(d)]={status:'Frei',name:''};
   }
   try{
-    await db.collection('bookings').doc(String(curYear)).set({days:updates},{merge:true});
+    await setDoc(doc(db,'bookings',String(curYear)),{days:updates},{merge:true});
     Object.assign(bk,updates);renderMatrix(curYear);clearSel();toast('Geloescht');
   }catch(e){toast('Fehler: '+e.message);}
 }
@@ -414,9 +409,9 @@ async function sendInquiry(){
   if(!/\S+@\S+\.\S+/.test(email)){res.className='result err';res.textContent='Bitte gueltige E-Mail eingeben.';return;}
   btn.disabled=true;btn.innerHTML='<span class="spin-sm"></span>Wird gesendet…';
   try{
-    await db.collection('inquiries').add({
+    await addDoc(collection(db,'inquiries'),{
       name,email,from,to,message:msg,
-      timestamp:firebase.firestore.FieldValue.serverTimestamp(),
+      timestamp:serverTimestamp(),
       status:'new'
     });
     res.className='result ok';res.textContent='Anfrage gesendet! Wir melden uns.';
@@ -429,11 +424,11 @@ async function loadInquiries(){
   const list=document.getElementById('inqList');
   list.innerHTML='<div class="loading"><div class="spin"></div></div>';
   try{
-    const snap=await db.collection('inquiries').orderBy('timestamp','desc').limit(50).get();
+    const snap=await getDocs(query(collection(db,'inquiries'),orderBy('timestamp','desc'),limit(50)));
     if(snap.empty){list.innerHTML='<div class="empty">Noch keine Anfragen.</div>';return;}
     let html='';
-    snap.forEach(doc=>{
-      const d=doc.data(),id=doc.id,isNew=d.status==='new';
+    snap.forEach(ds=>{const doc=ds;
+      const d=ds.data(),id=ds.id,isNew=d.status==='new';
       const ts=d.timestamp?new Date(d.timestamp.seconds*1000).toLocaleDateString('de-DE'):'';
       html+=`<div class="inq${isNew?' new':''}" id="inq-${id}">
         <div class="inq-top">
@@ -455,7 +450,7 @@ async function loadInquiries(){
 }
 
 async function updInq(id,status){
-  await db.collection('inquiries').doc(id).update({status});
+  await updateDoc(doc(db,'inquiries',id),{status});
   document.getElementById('inq-'+id)?.remove();
   toast(status==='declined'?'Abgelehnt':'Als gesehen markiert');
 }
@@ -497,7 +492,7 @@ function renderMatrix(year){
       else if(sp2?.type==='holiday')cls+=' mx-holiday';
       else if(sp2?.type==='bridge')cls+=' mx-bridge';
       else if(sp2?.type==='school')cls+=' mx-school';
-      else if(dow>=5)cls+=' mx-free mx-weekend';
+      else cls+=' mx-free';
       else cls+=' mx-free';
       if(isTd)cls+=' mx-today';
       if(IS_ADMIN)cls+=' click';
@@ -581,7 +576,7 @@ function renderBookCal(){
     else if(sp2?.type==='holiday')cls+=' bk-holiday';
     else if(sp2?.type==='bridge')cls+=' bk-bridge';
     else if(sp2?.type==='school')cls+=' bk-school';
-    else if(dow>=5)cls+=' bk-free bk-we';
+    else cls+=' bk-free';
     else cls+=' bk-free';
     if(isTd)cls+=' bk-today';
     if(isPast&&!isSF&&!isST&&!isSR)cls+=' bk-past';
@@ -622,6 +617,14 @@ if(IS_ADMIN){
   document.getElementById('t3').style.display='';
   document.getElementById('t1').style.display='none';
 }
+
+// Expose to global scope (required for onclick handlers with type="module")
+window.sw=sw;window.changeYear=changeYear;window.changeBookMonth=changeBookMonth;
+window.clearSel=clearSel;window.setSt=setSt;window.saveBooking=saveBooking;
+window.deleteBooking=deleteBooking;window.sendInquiry=sendInquiry;window.loadInquiries=loadInquiries;
+window.dayClick=dayClick;window.bookDayClick=bookDayClick;
+window.updInq=updInq;window.acceptInq=acceptInq;
+
 setSt('Frei');
 loadYear(curYear);
 renderBookCal();
