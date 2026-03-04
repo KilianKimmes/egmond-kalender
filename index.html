@@ -772,6 +772,8 @@ async function sendInquiry(){
     });
     res.className='result ok';res.textContent='Anfrage gesendet! Wir melden uns.';
     ['rName','rEmail','rFrom','rTo','rMsg'].forEach(id=>document.getElementById(id).value='');
+    pkF=null;pkT=null;pkPicking='from';
+    setTimeout(()=>{ sw(4); document.getElementById('t0').style.display='none'; document.getElementById('t5').style.display=''; }, 2000);
   }catch(e){res.className='result err';res.textContent='Fehler: '+e.message;}
   btn.disabled=false;btn.textContent='Anfrage senden';
 }
@@ -1131,7 +1133,11 @@ function pkSubmit(){
   if(!pkF||!pkT)return;
   document.getElementById('rFrom').value=fmt(pkF);
   document.getElementById('rTo').value=fmt(pkT);
-  // Show form below picker smoothly
+  // Hide picker (tab4), show inquiry form (tab1), hide info (tab5)
+  document.getElementById('tab4').classList.remove('on');
+  document.getElementById('tab5').classList.remove('on');
+  document.getElementById('t4').classList.remove('on');
+  document.getElementById('t5').classList.remove('on');
   const t1=document.getElementById('tab1');
   t1.style.display='block';
   t1.classList.add('on');
