@@ -872,7 +872,7 @@ async function deleteBooking(){
 
 async function sendInquiry(){
   const res=document.getElementById('reqResult'),btn=document.getElementById('reqBtn');
-  const form=btn.closest('.card');
+  const formContainer=document.getElementById('pkForm');
   res.className='result';
   const name=document.getElementById('rName').value.trim();
   const email=document.getElementById('rEmail').value.trim();
@@ -889,13 +889,12 @@ async function sendInquiry(){
       timestamp:serverTimestamp(),
       status:'new'
     });
-    // Verstecke Formular, zeige nur Bestätigung
-    form.style.display='none';
-    res.className='result ok';res.innerHTML='✅ Anfrage gesendet!<br>Wir melden uns bald.';
+    // Verstecke komplettes Formular, zeige nur Bestätigung
+    formContainer.innerHTML='<div class="result ok" style="padding:32px 16px;font-size:18px;text-align:center;border-radius:16px;margin:0">✅ Anfrage gesendet!<br>Wir melden uns bald.</div>';
     ['rName','rEmail','rPhone','rFrom','rTo','rMsg'].forEach(id=>document.getElementById(id).value='');
     pkF=null;pkT=null;pkPicking='from';
     // Längere Wartezeit (3500ms) für bessere Sichtbarkeit
-    setTimeout(()=>{ form.style.display='block'; pkBackToPicker(); renderPicker(); }, 3500);
+    setTimeout(()=>{ pkBackToPicker(); renderPicker(); }, 3500);
   }catch(e){res.className='result err';res.textContent='Fehler: '+e.message;}
   btn.disabled=false;btn.textContent='Anfrage senden';
 }
