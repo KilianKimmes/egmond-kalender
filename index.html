@@ -5,7 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Egmond">
-<title>Egmond</title>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#A90100">
+<meta name="description" content="Ferienwohnung Egmond aan Zee – Verfügbarkeit prüfen und Aufenthalt anfragen.">
+<meta property="og:title" content="Ferienwohnung Egmond aan Zee">
+<meta property="og:description" content="Verfügbarkeit prüfen und Aufenthalt anfragen – direkt im Buchungskalender.">
+<meta property="og:image" content="images/header_neu.jpg">
+<meta property="og:type" content="website">
+<title>Egmond aan Zee – Ferienwohnung</title>
+<link rel="icon" type="image/png" href="images/wappen_neu.png">
+<link rel="apple-touch-icon" href="images/wappen_neu.png">
+<link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -195,6 +205,14 @@ input[readonly]{background:var(--bg);cursor:default}
 .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .gallery-grid .gp{aspect-ratio:1;border-radius:8px;overflow:hidden;cursor:pointer;background-size:cover;background-position:center;transition:transform .15s ease,box-shadow .15s ease;box-shadow:0 1px 4px rgba(0,0,0,.1)}
 .gallery-grid .gp:hover{transform:scale(1.03);box-shadow:0 4px 16px rgba(0,0,0,.2)}
+
+/* ── Buchungsliste ── */
+.bl-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.bl-item:last-child{border-bottom:none}
+.bl-name{font-weight:800;font-size:14px;color:var(--text)}
+.bl-dates{font-size:12px;color:var(--egmond-red);font-weight:700}
+.bl-nights{font-size:11px;color:var(--muted);font-weight:600;margin-left:8px}
+.bl-empty{text-align:center;color:var(--muted);padding:20px 0;font-size:13px;font-style:italic}
 
 /* ── Lightbox ── */
 .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;flex-direction:column;opacity:0;transition:opacity .25s ease}
@@ -475,6 +493,14 @@ input[readonly]{background:var(--bg);cursor:default}
     </div>
     <div id="calLoading" class="loading"><div class="spin"></div><br><br>Lade…</div>
     <div id="matrixWrap" style="display:none"><div class="mx-outer" id="matrix"></div></div>
+  </div>
+
+  <div id="bookingList" class="card" style="display:none;margin-top:12px">
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0">
+      <span>📋 Buchungsübersicht</span>
+      <span id="blCount" style="font-size:11px;color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0"></span>
+    </div>
+    <div id="blBody"></div>
   </div>
 
 </div><!-- /tab0 -->
@@ -1234,6 +1260,40 @@ function renderMatrix(year){
   document.getElementById('calLoading').style.display='none';
   document.getElementById('matrixWrap').style.display='block';
   if(!IS_ADMIN && document.getElementById('pubHint')) document.getElementById('pubHint').style.display='block';
+  if(IS_ADMIN) renderBookingList(year);
+}
+
+function renderBookingList(year){
+  const el=document.getElementById('bookingList'),body=document.getElementById('blBody');
+  if(!el)return;
+  el.style.display='block';
+  // Zusammenhängende Buchungen gruppieren
+  const bookings=[];
+  const sorted=Object.keys(bk).filter(k=>k.startsWith(year+'')&&bk[k].status==='Belegt').sort();
+  let cur=null;
+  for(const key of sorted){
+    const info=bk[key],name=info.name||'',name2=info.name2||'';
+    const mainName=info.half==='pm'?name:(name2||name);
+    // Gehört zum aktuellen Block?
+    if(cur&&mainName===cur.name){
+      const prev=new Date(cur.end+'T12:00:00');prev.setDate(prev.getDate()+1);
+      if(key===dk(prev)){cur.end=key;continue;}
+    }
+    if(cur)bookings.push(cur);
+    cur={name:mainName,start:key,end:key};
+  }
+  if(cur)bookings.push(cur);
+  // Filtern: nur echte Buchungen mit Namen
+  const filtered=bookings.filter(b=>b.name);
+  document.getElementById('blCount').textContent=filtered.length+' Buchung'+(filtered.length!==1?'en':'');
+  if(!filtered.length){body.innerHTML='<div class="bl-empty">Keine Buchungen für '+year+'</div>';return;}
+  body.innerHTML=filtered.map(b=>{
+    const fs=b.start.split('-'),fe=b.end.split('-');
+    const from=fs[2]+'.'+fs[1]+'.'+fs[0],to=fe[2]+'.'+fe[1]+'.'+fe[0];
+    const d0=new Date(b.start+'T12:00:00'),d1=new Date(b.end+'T12:00:00');
+    const nights=Math.round((d1-d0)/(1000*60*60*24));
+    return`<div class="bl-item"><div><div class="bl-name">${x(b.name)}</div><div class="bl-dates">${from} – ${to}</div></div><span class="bl-nights">🌙 ${nights} ${nights===1?'Nacht':'Nächte'}</span></div>`;
+  }).join('');
 }
 
 function dayClick(year,month,day){
