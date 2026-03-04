@@ -9,19 +9,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* Sonnenuntergang Nordsee: Orange, Gold, Meeres-Dunkelblau */
-  --bg:#F0EBE3; --card:#FAF7F4; --border:#D8CCBE; --text:#1C1408; --muted:#7A6850;
-  --accent:#1E3A5C; --accent-dark:#122540; --accent2:#C8820A;
+  /* Egmond Wappen: Rot, Gold, Blau */
+  --bg:#F5F3F0; --card:#FAF8F5; --border:#E0D9D0; --text:#1C1408; --muted:#7A6850;
+  --accent:#0066AB; --accent-dark:#00447A; --accent2:#FFDA4E;
   --shadow-sm:0 1px 6px rgba(20,12,4,.09); --shadow:0 4px 20px rgba(20,12,4,.11); --shadow-lg:0 8px 40px rgba(20,12,4,.16);
   --r:14px; --r-sm:9px;
-  --free:#E8E2D6; --free-t:#3A2A14; --free-d:#1E3A5C;
-  --booked:#FDF0EC; --booked-t:#A81800; --booked-d:#C03010;
-  --holiday:#FFF4E0; --holiday-t:#7A5000; --holiday-d:#C8820A;
-  --bridge:#FFF4E0; --bridge-t:#7A5000; --bridge-d:#C8820A;
-  --school:#E0EAF4; --school-t:#1E3A5C; --school-d:#3A6A9C;
+  --free:#E8E2D6; --free-t:#3A2A14; --free-d:#0066AB;
+  --booked:#FFF0E8; --booked-t:#A90100; --booked-d:#A90100;
+  --holiday:#FFF9E6; --holiday-t:#8B6F47; --holiday-d:#FFDA4E;
+  --bridge:#FFF9E6; --bridge-t:#8B6F47; --bridge-d:#FFDA4E;
+  --school:#E8F0F8; --school-t:#0066AB; --school-d:#0066AB;
   --weekend:#EDE6DC; --weekend-t:#7A6850;
-  --egmond-red:#C03010; --egmond-gold:#C8820A; --egmond-blue:#1E3A5C;
-  --sunset-orange:#E8650A; --sunset-sky:#2A3A52;
+  --egmond-red:#A90100; --egmond-gold:#FFDA4E; --egmond-blue:#0066AB;
+  --sunset-orange:#A90100; --sunset-sky:#0066AB;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
@@ -30,19 +30,19 @@ body{font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,"Segoe UI",san
 /* ── Header ── */
 .header{
   background:url('images/header_neu.jpg') 64% center/cover no-repeat;
-  border-bottom:3px solid rgba(200,80,10,.7);
+  border-bottom:4px solid var(--egmond-red);
   color:#fff;
   padding:0;
   position:sticky;top:0;z-index:200;
-  box-shadow:0 4px 28px rgba(10,6,2,.45);
+  box-shadow:0 4px 28px rgba(169,1,0,.35);
   overflow:hidden;
   min-height:320px;
 }
 .header::before{
   content:'';position:absolute;inset:0;
   background:
-    linear-gradient(to bottom, rgba(10,6,2,.45) 0%, rgba(10,6,2,.0) 35%, rgba(10,6,2,.0) 65%, rgba(10,6,2,.55) 100%),
-    linear-gradient(to right, rgba(10,6,2,.5) 0%, rgba(10,6,2,.0) 40%, rgba(10,6,2,.0) 100%);
+    linear-gradient(to bottom, rgba(10,6,2,.5) 0%, rgba(10,6,2,.1) 35%, rgba(10,6,2,.05) 65%, rgba(10,6,2,.6) 100%),
+    linear-gradient(to right, rgba(169,1,0,.3) 0%, rgba(169,1,0,.0) 40%, rgba(0,102,171,.0) 100%);
   z-index:0;
 }
 .header-inner{
@@ -59,12 +59,12 @@ body{font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,"Segoe UI",san
 .header-icon{width:48px;height:48px;background:rgba(10,6,2,.3);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.3);border:1px solid rgba(255,220,120,.2);backdrop-filter:blur(6px);padding:4px}
 .header h1{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;letter-spacing:.5px;line-height:1;color:rgba(255,245,225,.95);text-shadow:0 2px 20px rgba(0,0,0,.7)}
 .header p{font-size:10px;color:rgba(255,210,140,.85);margin-top:5px;letter-spacing:1.8px;font-weight:600;text-transform:uppercase;text-shadow:0 1px 8px rgba(0,0,0,.6)}
-.admin-badge{background:rgba(200,130,10,.3);border:1.5px solid rgba(200,180,80,.6);color:#FFE090;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;letter-spacing:.3px;backdrop-filter:blur(4px)}
+.admin-badge{background:rgba(169,1,0,.25);border:1.5px solid rgba(169,1,0,.5);color:#FFF;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;letter-spacing:.3px;backdrop-filter:blur(4px)}
 
 /* ── Tabs ── */
 .tabs{display:flex;background:#F2F7FC;border-bottom:2px solid var(--border);position:sticky;top:323px;z-index:199;box-shadow:0 2px 8px rgba(26,18,8,.06)}
 .tab{flex:1;padding:13px 6px 11px;text-align:center;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;letter-spacing:.3px;text-transform:uppercase;user-select:none}
-.tab.on{color:var(--sunset-orange);border-bottom-color:var(--sunset-orange);background:linear-gradient(to bottom,transparent,rgba(232,101,10,.06))}
+.tab.on{color:var(--egmond-red);border-bottom-color:var(--egmond-red);background:linear-gradient(to bottom,transparent,rgba(169,1,0,.06))}
 
 /* ── Layout ── */
 .wrap{padding:0 20px 60px;max-width:680px;margin:0 auto}
@@ -75,13 +75,13 @@ body{font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,"Segoe UI",san
 /* ── Jahr-Nav ── */
 .year-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .year-nav h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;letter-spacing:-.5px;color:var(--text)}
-.yn-btn{width:38px;height:38px;border-radius:50%;border:2px solid var(--sunset-orange);background:#fff;color:var(--sunset-orange);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:var(--shadow-sm)}
-.yn-btn:hover{background:var(--sunset-orange);color:#fff}.yn-btn:active{background:var(--sunset-orange);color:#fff;transform:scale(.92)}
+.yn-btn{width:38px;height:38px;border-radius:50%;border:2px solid var(--egmond-red);background:#fff;color:var(--egmond-red);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:var(--shadow-sm)}
+.yn-btn:hover{background:var(--egmond-red);color:#fff}.yn-btn:active{background:var(--egmond-red);color:#fff;transform:scale(.92)}
 
 /* ── Matrix ── */
 .mx-outer{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .mx-mo{background:#fff;border-radius:var(--r-sm);box-shadow:var(--shadow-sm);padding:9px 10px;border:1px solid var(--border)}
-.mx-ttl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--sunset-orange);border-bottom:1.5px solid rgba(232,101,10,.2);padding-bottom:3px}
+.mx-ttl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--egmond-red);border-bottom:1.5px solid rgba(169,1,0,.2);padding-bottom:3px}
 .mx-stat{font-size:9px;font-weight:700}
 .mx-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
 .mx-h{text-align:center;font-size:7px;color:var(--muted);font-weight:700;padding:1px 0}
