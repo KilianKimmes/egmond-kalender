@@ -729,14 +729,16 @@ const MNL2=["Januar","Februar","März","April","Mai","Juni","Juli","August","Sep
 // ── Header Slideshow ────────────────────────
 const HEADER_IMAGES = [
   'images/header_neu.jpg',
-  'images/Header_fenster.jpg'
+  'images/Header_fenster.jpg',
+  'images/header_duenen.jpg',
+  'images/Header_strandkorb.jpg'
 ];
 let headerIdx = 0;
 function rotateHeaderImage() {
   headerIdx = (headerIdx + 1) % HEADER_IMAGES.length;
   document.querySelector('.header').style.backgroundImage = `url('${HEADER_IMAGES[headerIdx]}')`;
 }
-setInterval(rotateHeaderImage, 6000); // Wechsel alle 6 Sekunden
+setInterval(rotateHeaderImage, 5000); // Wechsel alle 5 Sekunden
 
 // ── Galerie / Lightbox ────────────────────────
 const PHOTOS = [
