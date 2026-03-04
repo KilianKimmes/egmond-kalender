@@ -1086,8 +1086,8 @@ function renderMatrix(year){
       else if(sp2?.type==='school')cls+=' mx-school';
       else cls+=' mx-free';
       if(isTd)cls+=' mx-today';
-      cls+=' click';
-      const nameShort=isB&&IS_ADMIN&&info.name?x(info.name.split(' ')[0]):'';cells+=`<div class="${cls}" onclick="dayClick(${year},${m},${day})" title="${isB&&!IS_ADMIN?'Belegt':(isB?x(info.name)||'Belegt':(sp2?x(sp2.name):'Frei'))}"><span>${day}</span>${nameShort?`<span class="mx-name">${nameShort}</span>`:''}</div>`;
+      if(IS_ADMIN)cls+=' click';
+      const nameShort=isB&&IS_ADMIN&&info.name?x(info.name.split(' ')[0]):'';cells+=`<div class="${cls}"${IS_ADMIN?` onclick="dayClick(${year},${m},${day})"`:''} title="${isB&&!IS_ADMIN?'Belegt':(isB?x(info.name)||'Belegt':(sp2?x(sp2.name):'Frei'))}"><span>${day}</span>${nameShort?`<span class="mx-name">${nameShort}</span>`:''}</div>`;
     }
     html+=`<div class="mx-mo"><div class="mx-ttl"><span>${MNS[m]}</span></div><div class="mx-grid">${cells}</div></div>`;
   }
@@ -1098,12 +1098,8 @@ function renderMatrix(year){
 }
 
 function dayClick(year,month,day){
+  if(!IS_ADMIN) return;
   const d=new Date(year,month,day);
-  if(!IS_ADMIN){
-    // Public: Klick auf Matrix → zum Buchen-Tab wechseln
-    sw(4);
-    return;
-  }
   if(picking==='from'){selF=d;selT=null;picking='to';}
   else{if(d<selF){selT=selF;selF=d;}else selT=d;picking='from';}
   bookYear=year;bookMonth=month;
