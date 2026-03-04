@@ -53,6 +53,7 @@ body{font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,"Segoe UI",san
 }
 .header-left{display:flex;align-items:center;gap:10px}
 .header-icon{width:48px;height:48px;background:rgba(10,6,2,.3);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.3);border:1px solid rgba(255,220,120,.2);backdrop-filter:blur(6px);padding:4px}
+.header-icon img{width:34px;height:auto;display:block;filter:drop-shadow(0 1px 4px rgba(0,0,0,.4))}
 .header h1{font-family:'Playfair Display',serif;font-size:36px;font-weight:700;letter-spacing:.5px;line-height:1;color:rgba(255,245,225,.95);text-shadow:0 2px 20px rgba(0,0,0,.7)}
 .header p{font-size:10px;color:rgba(255,210,140,.85);margin-top:5px;letter-spacing:1.8px;font-weight:600;text-transform:uppercase;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 .admin-badge{background:rgba(169,1,0,.25);border:1.5px solid rgba(169,1,0,.5);color:#FFF;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;letter-spacing:.3px;backdrop-filter:blur(4px)}
@@ -125,6 +126,16 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 @media(min-width:481px){
   .print-btn{display:block!important}
 }
+.print-btn{flex-shrink:0;background:#fff;border:1.5px solid var(--egmond-red);color:var(--egmond-red);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;display:none}
+.print-btn:hover{background:var(--egmond-red);color:#fff}
+.mx-h.we{opacity:.45}
+input[readonly]{background:var(--bg);cursor:default}
+.back-link{margin-top:8px;background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:4px 0}
+.back-link:hover{text-decoration:underline}
+.pk-nights{text-align:center;font-size:13px;font-weight:700;color:var(--egmond-gold);margin-bottom:12px;min-height:20px}
+.pk-modal-status{text-align:center;font-size:14px;font-weight:700;color:var(--egmond-red);margin-bottom:16px}
+.hint-text{font-size:12px;color:#3A2810;line-height:1.7}
+}
 .btn-red{background:#fff;border:2px solid var(--egmond-red)!important;color:var(--egmond-red);box-shadow:none;margin-top:10px}
 .spin-sm{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
 
@@ -134,6 +145,10 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 .result.err{background:#FDF0EE;color:var(--egmond-red);border-color:#EEBAB5;display:block}
 
 /* ── Anfragen ── */
+.inq-header{padding:12px 18px;display:flex;align-items:center;justify-content:space-between}
+.inq-header .card-title{margin:0}
+.btn-reload{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;color:var(--muted);transition:all .15s}
+.btn-reload:hover{border-color:var(--muted)}
 .inq{padding:16px;border-radius:var(--r-sm);background:#fff;border:1.5px solid var(--border);margin-bottom:10px;transition:box-shadow .2s}
 .inq.new{border-color:var(--egmond-gold);background:#FFFCF5;box-shadow:0 2px 12px rgba(212,150,10,.15)}
 .inq-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
@@ -155,6 +170,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 /* ── Legende ── */
 .legend-bar{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;font-size:10px;font-weight:700}
+#legendBar{align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:6px;margin-bottom:12px}
 .legend-chip{padding:4px 10px;border-radius:20px;white-space:nowrap}
 .legend-chip.booked{background:#FDF0EC;color:var(--egmond-red);border:1px solid #EEC8A8}
 .legend-chip.holiday{background:var(--holiday);color:var(--holiday-t);border:1px solid var(--holiday-t)}
@@ -395,7 +411,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
   <div class="header-bg inactive" id="hdrBgB"></div>
   <div class="header-inner">
     <div class="header-left">
-      <div class="header-icon"><img src="images/wappen_neu.png" style="width:34px;height:auto;display:block;filter:drop-shadow(0 1px 4px rgba(0,0,0,.4))"></div>
+      <div class="header-icon"><img src="images/wappen_neu.png" alt="Wappen"></div>
       <div>
         <h1>Egmond aan Zee</h1>
       </div>
@@ -417,21 +433,18 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 0: KALENDER -->
 <div id="tab0" class="tc on">
-  <div id="adminHint" class="hint-box" style="display:none">
-    <div class="hint-box-title">💡 Kurzanleitung</div>
-    <p><strong>📝 Alle Buchungen erfolgen im Tab „Buchung eintragen"</strong><br>Zeitraum wählen → Mieter eintragen (oder „nicht belegt") → Speichern<br><br><strong>✅ Anfragen:</strong> Tab „Anfragen" → Annehmen → zu „Buchung eintragen"</p>
-  </div>
+  <div id="adminHint" class="admin-hint" style="display:none"></div>
   <div id="pubHint" class="hint-box" style="display:none">
     <div class="hint-box-title">📅 Verfügbarkeit</div>
     <p>Hier siehst du die Jahresübersicht. Freie Zeiträume buchst du im Tab „Buchen".</p>
   </div>
-  <div id="legendBar" style="display:none;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:6px;margin-bottom:12px">
+  <div id="legendBar" style="display:none">
     <div class="legend-bar">
       <span class="legend-chip booked">🔴 Belegt</span>
       <span class="legend-chip holiday">🎉 Feier- &amp; Brückentage</span>
       <span class="legend-chip school">🏖️ Ferien NRW</span>
     </div>
-    <button onclick="printCal()" style="flex-shrink:0;background:#fff;border:1.5px solid var(--egmond-red);color:var(--egmond-red);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;display:none" class="print-btn">🖨️ Drucken</button>
+    <button onclick="printCal()" class="print-btn">🖨️ Drucken</button>
   </div>
   <div class="card" style="padding:14px 18px">
     <div class="year-nav">
@@ -451,7 +464,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
   <div id="pkView">
     <div class="hint-box">
       <div class="hint-box-title">💡 Zeitraum wählen</div>
-      <p style="font-size:12px;color:#3A2810;line-height:1.7">Anreise- &amp; Abreisedatum auswählen.<br>Anfrage senden tippen.</p>
+      <p class="hint-text">Anreise- &amp; Abreisedatum auswählen.<br>Anfrage senden tippen.</p>
     </div>
     
     <!-- Compact Date Buttons -->
@@ -466,7 +479,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
       </button>
     </div>
     
-    <div id="pkNightsInfo" style="text-align:center;font-size:13px;font-weight:700;color:var(--egmond-gold);margin-bottom:12px;min-height:20px"></div>
+    <div id="pkNightsInfo" class="pk-nights"></div>
     
     <button class="pk-btn" id="pkBtn" onclick="pkSubmit()" disabled>Anfrage senden →</button>
     
@@ -490,7 +503,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
       </div>
       
       <!-- Status-Text im Modal -->
-      <div id="pkModalStatus" style="text-align:center;font-size:14px;font-weight:700;color:var(--egmond-red);margin-bottom:16px">Anreisedatum wählen</div>
+      <div id="pkModalStatus" class="pk-modal-status">Anreisedatum wählen</div>
       
       <div class="pk-wrap" style="margin-bottom:0;max-width:none">
         <div class="pk-months">
@@ -518,7 +531,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
   <div id="pkForm" style="display:none">
     <div class="hint-box">
       <div class="hint-box-title">📩 Anfrage absenden</div>
-      <p style="font-size:12px;color:#3A2810;line-height:1.7">Zeitraum überprüfen – Kontaktdaten ergänzen – Anfrage senden.<br>Wir tragen die Anfrage ein und melden uns.</p>
+      <p class="hint-text">Zeitraum überprüfen – Kontaktdaten ergänzen – Anfrage senden.<br>Wir tragen die Anfrage ein und melden uns.</p>
     </div>
     <div class="card">
       <div class="card-title">📩 Verfügbarkeit anfragen</div>
@@ -526,18 +539,18 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
       <div class="field"><label class="field-lbl">Dein Name</label><input id="rName" type="text" placeholder="Vor- und Nachname" autocomplete="name"></div>
       <div class="field"><label class="field-lbl">E-Mail</label><input id="rEmail" type="email" placeholder="name@beispiel.de" autocomplete="email"></div>
       <div class="field"><label class="field-lbl">Telefonnummer</label><input id="rPhone" type="tel" placeholder="+49 (0) 123 456789" autocomplete="tel"></div>
-      <div class="field"><label class="field-lbl">Von</label><input id="rFrom" type="text" placeholder="TT.MM.JJJJ" readonly style="background:#F5F3F0;cursor:default"></div>
-      <div class="field"><label class="field-lbl">Bis</label><input id="rTo" type="text" placeholder="TT.MM.JJJJ" readonly style="background:#F5F3F0;cursor:default"></div>
+      <div class="field"><label class="field-lbl">Von</label><input id="rFrom" type="text" placeholder="TT.MM.JJJJ" readonly></div>
+      <div class="field"><label class="field-lbl">Bis</label><input id="rTo" type="text" placeholder="TT.MM.JJJJ" readonly></div>
       <div class="field"><label class="field-lbl">Nachricht (optional)</label><textarea id="rMsg" placeholder="Anzahl Personen, Fragen…"></textarea></div>
       <button class="btn btn-green" id="reqBtn" onclick="sendInquiry()">Anfrage senden</button>
     </div>
-    <button onclick="pkBackToPicker()" style="margin-top:8px;background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:4px 0">← Zurück zur Kalenderauswahl</button>
+    <button onclick="pkBackToPicker()" class="back-link">← Zurück zur Kalenderauswahl</button>
   </div>
 </div>
 
 <!-- TAB 2: BUCHEN (Admin) -->
 <div id="tab2" class="tc">
-  <div class="hint-box"><div class="hint-box-title">💡 Kurzanleitung</div><p><strong>📝 Alle Buchungen erfolgen im Tab „Buchung eintragen"</strong><br>Zeitraum wählen → Mieter eintragen (oder „nicht belegt") → Speichern<br><br><strong>✅ Anfragen:</strong> Tab „Anfragen" → Annehmen → zu „Buchung eintragen"</p></div>
+  <div class="admin-hint"></div>
   <div class="legend-bar" style="margin-bottom:10px">
     <span class="legend-chip booked">🔴 Belegt</span>
     <span class="legend-chip holiday">🎉 Feier- &amp; Brückentage</span>
@@ -586,10 +599,10 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
 
 <!-- TAB 3: ANFRAGEN (Admin) -->
 <div id="tab3" class="tc">
-  <div class="hint-box"><div class="hint-box-title">💡 Kurzanleitung</div><p><strong>📝 Alle Buchungen erfolgen im Tab „Buchung eintragen"</strong><br>Zeitraum wählen → Mieter eintragen (oder „nicht belegt") → Speichern<br><br><strong>✅ Anfragen:</strong> Tab „Anfragen" → Annehmen → zu „Buchung eintragen"</p></div>
-  <div class="card" style="padding:12px 18px;display:flex;align-items:center;justify-content:space-between">
-    <span class="card-title" style="margin:0">📋 Eingehende Anfragen</span>
-    <button onclick="loadInquiries()" style="background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;color:var(--muted);transition:all .15s">↻ Laden</button>
+  <div class="admin-hint"></div>
+  <div class="card inq-header">
+    <span class="card-title">📋 Eingehende Anfragen</span>
+    <button onclick="loadInquiries()" class="btn-reload">↻ Laden</button>
   </div>
   <div id="inqList"><div class="loading"><div class="spin"></div></div></div>
 </div>
@@ -725,14 +738,14 @@ if(!IS_ADMIN && location.pathname.endsWith('/admin')) {
     alert('❌ Falsches Passwort.');
   }
 }
-const TODAY    = new Date();
-let curYear    = TODAY.getFullYear();
+function today(){return new Date()}
+let curYear    = today().getFullYear();
 let bk         = {};   // bookings cache { "YYYY-MM-DD": {status,name} }
 let selF=null, selT=null, picking='from', curSt='Frei';
 // Public Booking Picker globals (must be declared before init logic)
-let pkYear=TODAY.getFullYear(), pkMonth=TODAY.getMonth();
+let pkYear=today().getFullYear(), pkMonth=today().getMonth();
 let pkF=null, pkT=null, pkPicking='from';
-const MNL2=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+const MN=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
 
 // ── Header Slideshow (Crossfade) ────────────
 const HEADER_IMAGES = [
@@ -884,7 +897,11 @@ async function loadYear(year){
   try{
     const snap=await getDoc(doc(db,'bookings',String(year)));
     bk=snap.exists()?(snap.data().days||{}):{};
-  }catch(e){bk={};toast('Verbindungsfehler – offline?');}
+  }catch(e){
+    bk={};
+    if(!navigator.onLine) toast('⚠️ Keine Internetverbindung');
+    else toast('⚠️ Verbindungsfehler – später erneut versuchen');
+  }
   renderMatrix(year);
 }
 
@@ -895,14 +912,19 @@ async function saveBooking(){
   const name=document.getElementById('bookName').value.trim();
   if(curSt==='Belegt'&&!name){res.className='result err';res.textContent='Bitte Mietername eingeben.';return;}
   btn.disabled=true;btn.innerHTML='<span class="spin-sm"></span>Speichern…';
-  const updates={};
+  // Group updates by year for cross-year bookings
+  const byYear={};
   for(let d=new Date(selF);d<=selT;d.setDate(d.getDate()+1)){
-    if(d.getFullYear()!==curYear)continue;
-    updates[dk(d)]={status:curSt,name:curSt==='Belegt'?name:''};
+    const y=d.getFullYear();
+    if(!byYear[y])byYear[y]={};
+    byYear[y][dk(d)]={status:curSt,name:curSt==='Belegt'?name:''};
   }
   try{
-    await setDoc(doc(db,'bookings',String(curYear)),{days:updates},{merge:true});
-    Object.assign(bk,updates);
+    for(const [y,updates] of Object.entries(byYear)){
+      await setDoc(doc(db,'bookings',String(y)),{days:updates},{merge:true});
+    }
+    // Update local cache for current year
+    if(byYear[curYear]) Object.assign(bk,byYear[curYear]);
     renderMatrix(curYear);clearSel();
     document.getElementById('bookName').value='';
     res.className='result ok';res.textContent='Gespeichert!';
@@ -914,14 +936,18 @@ async function saveBooking(){
 async function deleteBooking(){
   if(!selF||!selT)return;
   if(!confirm('Buchung wirklich loeschen?'))return;
-  const updates={};
+  const byYear={};
   for(let d=new Date(selF);d<=selT;d.setDate(d.getDate()+1)){
-    if(d.getFullYear()!==curYear)continue;
-    updates[dk(d)]={status:'Frei',name:''};
+    const y=d.getFullYear();
+    if(!byYear[y])byYear[y]={};
+    byYear[y][dk(d)]={status:'Frei',name:''};
   }
   try{
-    await setDoc(doc(db,'bookings',String(curYear)),{days:updates},{merge:true});
-    Object.assign(bk,updates);renderMatrix(curYear);clearSel();toast('Geloescht');
+    for(const [y,updates] of Object.entries(byYear)){
+      await setDoc(doc(db,'bookings',String(y)),{days:updates},{merge:true});
+    }
+    if(byYear[curYear]) Object.assign(bk,byYear[curYear]);
+    renderMatrix(curYear);clearSel();toast('Geloescht');
   }catch(e){toast('Fehler: '+e.message);}
 }
 
@@ -1033,22 +1059,21 @@ function acceptInq(id,from,to,name){
 }
 
 // ── Kalender rendern ──────────────────────────
-const MNS=["Jan","Feb","Mar","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
-const MNL=["Januar","Februar","Maerz","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+const MNS=["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
 
 function renderMatrix(year){
-  const sp=getSpecial(year),wrap=document.getElementById('matrix');
+  const sp=getSpecial(year),wrap=document.getElementById('matrix'),now=today();
   let html='';
   for(let m=0;m<12;m++){
     const dim=new Date(year,m+1,0).getDate(),fw=(new Date(year,m,1).getDay()+6)%7;
     let fc=0,bc=0,cells='';
-    cells+='<div class="mx-h">Mo</div><div class="mx-h">Di</div><div class="mx-h">Mi</div><div class="mx-h">Do</div><div class="mx-h">Fr</div><div class="mx-h" style="opacity:.45">Sa</div><div class="mx-h" style="opacity:.45">So</div>';
+    cells+='<div class="mx-h">Mo</div><div class="mx-h">Di</div><div class="mx-h">Mi</div><div class="mx-h">Do</div><div class="mx-h">Fr</div><div class="mx-h we">Sa</div><div class="mx-h we">So</div>';
     for(let i=0;i<fw;i++)cells+='<div class="mx-em"></div>';
     for(let day=1;day<=dim;day++){
       const d=new Date(year,m,day),dow=(d.getDay()+6)%7,key=dk(d);
       const info=bk[key]||{},sp2=sp[key],isB=info.status==='Belegt';
       isB?bc++:fc++;
-      const isTd=d.toDateString()===TODAY.toDateString();
+      const isTd=d.toDateString()===now.toDateString();
       const isSF=selF&&dk(d)===dk(selF),isST=selT&&dk(d)===dk(selT),isSR=selF&&selT&&d>selF&&d<selT;
       let cls='mx-d';
       if(isSF&&isST)cls+=' mx-sf mx-st';
@@ -1062,7 +1087,7 @@ function renderMatrix(year){
       else cls+=' mx-free';
       if(isTd)cls+=' mx-today';
       cls+=' click';
-      const nameShort=isB&&IS_ADMIN&&info.name?info.name.split(' ')[0]:'';cells+=`<div class="${cls}" onclick="dayClick(${year},${m},${day})" title="${isB&&!IS_ADMIN?'Belegt':(isB?info.name||'Belegt':(sp2?sp2.name:'Frei'))}"><span>${day}</span>${nameShort?`<span class="mx-name">${nameShort}</span>`:''}</div>`;
+      const nameShort=isB&&IS_ADMIN&&info.name?x(info.name.split(' ')[0]):'';cells+=`<div class="${cls}" onclick="dayClick(${year},${m},${day})" title="${isB&&!IS_ADMIN?'Belegt':(isB?x(info.name)||'Belegt':(sp2?x(sp2.name):'Frei'))}"><span>${day}</span>${nameShort?`<span class="mx-name">${nameShort}</span>`:''}</div>`;
     }
     html+=`<div class="mx-mo"><div class="mx-ttl"><span>${MNS[m]}</span></div><div class="mx-grid">${cells}</div></div>`;
   }
@@ -1114,7 +1139,7 @@ function setSt(s){
 function changeYear(d){curYear+=d;document.getElementById('yearTitle').textContent=curYear;loadYear(curYear);}
 
 // ── Buchungs-Kalender ─────────────────────────
-let bookYear=TODAY.getFullYear(), bookMonth=TODAY.getMonth();
+let bookYear=today().getFullYear(), bookMonth=today().getMonth();
 
 function changeBookMonth(d){
   bookMonth+=d;
@@ -1124,11 +1149,12 @@ function changeBookMonth(d){
 }
 
 function renderBookCal(){
+  const now=today(),startOfDay=new Date(now.getFullYear(),now.getMonth(),now.getDate());
   for(let mi=0;mi<2;mi++){
     let y=bookYear,m=bookMonth+mi;
     if(m>11){m-=12;y++;}
     const sp=getSpecial(y);
-    document.getElementById('bkT'+mi).textContent=MNL[m]+' '+y;
+    document.getElementById('bkT'+mi).textContent=MN[m]+' '+y;
     const dim=new Date(y,m+1,0).getDate();
     const fw=(new Date(y,m,1).getDay()+6)%7;
     let cells='<div class="pk-h">Mo</div><div class="pk-h">Di</div><div class="pk-h">Mi</div><div class="pk-h">Do</div><div class="pk-h">Fr</div><div class="pk-h">Sa</div><div class="pk-h">So</div>';
@@ -1136,8 +1162,8 @@ function renderBookCal(){
     for(let day=1;day<=dim;day++){
       const d=new Date(y,m,day),key=dk(d);
       const info=bk[key]||{},sp2=sp[key],isB=info.status==='Belegt';
-      const isTd=d.toDateString()===TODAY.toDateString();
-      const isPast=d<new Date(TODAY.getFullYear(),TODAY.getMonth(),TODAY.getDate());
+      const isTd=d.toDateString()===now.toDateString();
+      const isPast=d<startOfDay;
       const dkD=dk(d);
       const isSF=selF&&dkD===dk(selF),isST=selT&&dkD===dk(selT);
       const isSR=selF&&selT&&d>selF&&d<selT;
@@ -1152,7 +1178,7 @@ function renderBookCal(){
       else cls+=' pk-free';
       if(isTd&&!isSF&&!isST)cls+=' pk-today';
       if(isPast&&!isSF&&!isST&&!isSR)cls+=' pk-past';
-      cells+=`<div class="${cls}" onclick="bookDayClick(${y},${m},${day})" title="${isB?info.name||'Belegt':''}">${day}</div>`;
+      cells+=`<div class="${cls}" onclick="bookDayClick(${y},${m},${day})" title="${isB?x(info.name)||'Belegt':''}">${day}</div>`;
     }
     document.getElementById('bkG'+mi).innerHTML=cells;
   }
@@ -1186,6 +1212,8 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 function x(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 // ── Start ─────────────────────────────────────
+const ADMIN_HINT='<div class="hint-box-title">💡 Kurzanleitung</div><p><strong>📝 Alle Buchungen erfolgen im Tab „Buchung eintragen"</strong><br>Zeitraum wählen → Mieter eintragen (oder „nicht belegt") → Speichern<br><br><strong>✅ Anfragen:</strong> Tab „Anfragen" → Annehmen → zu „Buchung eintragen"</p>';
+
 if(IS_ADMIN){
   document.getElementById('adminBadge').style.display='block';
   document.body.classList.add('is-admin');
@@ -1195,6 +1223,7 @@ if(IS_ADMIN){
   document.getElementById('t1').style.display='none';
   document.getElementById('adminHint').style.display='block';
   document.getElementById('legendBar').style.display='flex';
+  document.querySelectorAll('.admin-hint').forEach(el=>{el.classList.add('hint-box');el.innerHTML=ADMIN_HINT;});
 
 } else {
   // Public: Kalender + Buchen + Info Tabs zeigen
@@ -1208,26 +1237,25 @@ if(IS_ADMIN){
 // Expose to global scope (required for onclick handlers with type="module")
 
 function printCal(){
-  const sp=getSpecial(curYear);
-  const MNS_FULL=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+  const sp=getSpecial(curYear),now=today();
   const DAYS=['Mo','Di','Mi','Do','Fr','Sa','So'];
   let html=`<div class="pr-header"><div class="pr-title">🏡 Egmond – Belegungskalender</div><div class="pr-year">${curYear}</div></div><div class="pr-grid">`;
   for(let m=0;m<12;m++){
     const dim=new Date(curYear,m+1,0).getDate();
     const fw=(new Date(curYear,m,1).getDay()+6)%7;
-    html+=`<div class="pr-mo"><div class="pr-mo-title">${MNS_FULL[m]}</div><div class="pr-days">`;
+    html+=`<div class="pr-mo"><div class="pr-mo-title">${MN[m]}</div><div class="pr-days">`;
     DAYS.forEach(d=>html+=`<div class="pr-h">${d}</div>`);
     for(let i=0;i<fw;i++)html+=`<div class="pr-em"></div>`;
     for(let day=1;day<=dim;day++){
       const d=new Date(curYear,m,day),dow=(d.getDay()+6)%7,key=dk(d);
       const info=bk[key]||{},sp2=sp[key],isB=info.status==='Belegt';
-      const isTd=d.toDateString()===TODAY.toDateString();
+      const isTd=d.toDateString()===now.toDateString();
       const isWe=dow>=5;
       let cls='pr-d';
       let extra='';
       if(isB){
         cls+=' pr-booked';
-        const firstName=info.name?(info.name.split(' ')[0]):'';
+        const firstName=info.name?x(info.name.split(' ')[0]):'';
         if(firstName)extra=`<span class="pr-name">${firstName}</span>`;
       } else if(sp2?.type==='holiday') cls+=' pr-holiday';
       else if(sp2?.type==='school') cls+=' pr-school';
@@ -1254,8 +1282,8 @@ function openCalendarModal(mode){
   } else {
     pkPicking='from';
   }
-  pkMonth=pkF?pkF.getMonth():TODAY.getMonth();
-  pkYear=pkF?pkF.getFullYear():TODAY.getFullYear();
+  pkMonth=pkF?pkF.getMonth():today().getMonth();
+  pkYear=pkF?pkF.getFullYear():today().getFullYear();
   renderPicker();
   document.getElementById('pkModalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
@@ -1274,10 +1302,11 @@ function pkNav(d){
 }
 
 function renderPicker(){
+  const now=today(),startOfDay=new Date(now.getFullYear(),now.getMonth(),now.getDate());
   for(let mi=0;mi<2;mi++){
     let y=pkYear,m=pkMonth+mi;
     if(m>11){m-=12;y++;}
-    document.getElementById('pkT'+mi).textContent=MNL2[m]+' '+y;
+    document.getElementById('pkT'+mi).textContent=MN[m]+' '+y;
     const sp=getSpecial(y);
     const dim=new Date(y,m+1,0).getDate();
     const fw=(new Date(y,m,1).getDay()+6)%7;
@@ -1286,8 +1315,8 @@ function renderPicker(){
     for(let day=1;day<=dim;day++){
       const d=new Date(y,m,day),key=dk(d);
       const info=bk[key]||{},sp2=sp[key],isB=info.status==='Belegt';
-      const isPast=d<new Date(TODAY.getFullYear(),TODAY.getMonth(),TODAY.getDate());
-      const isTd=d.toDateString()===TODAY.toDateString();
+      const isPast=d<startOfDay;
+      const isTd=d.toDateString()===now.toDateString();
       const dkD=dk(d);
       const isSF=pkF&&dkD===dk(pkF),isST=pkT&&dkD===dk(pkT);
       const isSR=pkF&&pkT&&d>pkF&&d<pkT;
@@ -1389,6 +1418,12 @@ window.addEventListener('scroll',()=>{
     else if(y<10)headerEl.classList.remove('collapsed');
   });
 },{passive:true});
+
+// ── Auto-Reload bei Reconnect / Tab-Wechsel ──
+window.addEventListener('online',()=>{toast('Wieder online');loadYear(curYear);});
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden&&Object.keys(bk).length===0)loadYear(curYear);
+});
 </script>
 </body>
 </html>
