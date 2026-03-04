@@ -37,6 +37,7 @@ body{font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,"Segoe UI",san
   box-shadow:0 4px 28px rgba(169,1,0,.35);
   overflow:hidden;
   min-height:320px;
+  transition:background-image 1s ease-in-out;
 }
 .header::before{
   content:'';position:absolute;inset:0;
@@ -723,6 +724,18 @@ let selF=null, selT=null, picking='from', curSt='Frei';
 let pkYear=TODAY.getFullYear(), pkMonth=TODAY.getMonth();
 let pkF=null, pkT=null, pkPicking='from';
 const MNL2=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+
+// ── Header Slideshow ────────────────────────
+const HEADER_IMAGES = [
+  'images/header_neu.jpg',
+  'images/Header_fenster.jpg'
+];
+let headerIdx = 0;
+function rotateHeaderImage() {
+  headerIdx = (headerIdx + 1) % HEADER_IMAGES.length;
+  document.querySelector('.header').style.backgroundImage = `url('${HEADER_IMAGES[headerIdx]}')`;
+}
+setInterval(rotateHeaderImage, 6000); // Wechsel alle 6 Sekunden
 
 // ── Galerie / Lightbox ────────────────────────
 const PHOTOS = [
