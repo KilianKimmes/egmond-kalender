@@ -649,6 +649,10 @@ const TODAY    = new Date();
 let curYear    = TODAY.getFullYear();
 let bk         = {};   // bookings cache { "YYYY-MM-DD": {status,name} }
 let selF=null, selT=null, picking='from', curSt='Frei';
+// Public Booking Picker globals (must be declared before init logic)
+let pkYear=TODAY.getFullYear(), pkMonth=TODAY.getMonth();
+let pkF=null, pkT=null, pkPicking='from';
+const MNL2=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
 
 // ── NRW Sondertage ────────────────────────────
 function getSpecial(year) {
@@ -1052,10 +1056,6 @@ function printCal(){
 
 
 // ── Public Booking Picker ──────────────────────
-let pkYear=TODAY.getFullYear(), pkMonth=TODAY.getMonth();
-let pkF=null, pkT=null, pkPicking='from';
-const MNL2=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
-
 function pkNav(d){
   pkMonth+=d;
   if(pkMonth>11){pkMonth=0;pkYear++;}
