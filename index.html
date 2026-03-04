@@ -693,20 +693,19 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
     </div>
   </div>
 
+</div><!-- /wrap -->
+</div><!-- /body Haupt-Container -->
 
-
-</div>
-</div>
-  <!-- Lightbox -->
-  <div id="lightbox" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;align-items:center;justify-content:center;flex-direction:column">
-    <div style="position:relative;width:100%;max-width:500px;padding:0 16px;box-sizing:border-box">
-      <div id="lbImg" style="width:100%;aspect-ratio:1;border-radius:12px;background:#2a2a2a;background-size:cover;background-position:center;overflow:hidden"></div>
-      <div id="lbCaption" style="text-align:center;color:#fff;font-size:13px;margin-top:10px;opacity:.7"></div>
-      <button onclick="event.stopPropagation();lbNav(-1)" style="position:absolute;left:20px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;color:#fff;font-size:22px;width:40px;height:40px;border-radius:50%;cursor:pointer">‹</button>
-      <button onclick="event.stopPropagation();lbNav(1)"  style="position:absolute;right:20px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;color:#fff;font-size:22px;width:40px;height:40px;border-radius:50%;cursor:pointer">›</button>
-    </div>
-    <div style="color:rgba(255,255,255,.4);font-size:12px;margin-top:16px">Tippen zum Schließen</div>
+<!-- Lightbox - Außerhalb aller Tabs! -->
+<div id="lightbox" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;align-items:center;justify-content:center;flex-direction:column">
+  <div style="position:relative;width:100%;max-width:500px;padding:0 16px;box-sizing:border-box">
+    <div id="lbImg" style="width:100%;aspect-ratio:1;border-radius:12px;background:#2a2a2a;background-size:cover;background-position:center;overflow:hidden"></div>
+    <div id="lbCaption" style="text-align:center;color:#fff;font-size:13px;margin-top:10px;opacity:.7"></div>
+    <button onclick="event.stopPropagation();lbNav(-1)" style="position:absolute;left:20px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;color:#fff;font-size:22px;width:40px;height:40px;border-radius:50%;cursor:pointer">‹</button>
+    <button onclick="event.stopPropagation();lbNav(1)"  style="position:absolute;right:20px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;color:#fff;font-size:22px;width:40px;height:40px;border-radius:50%;cursor:pointer">›</button>
   </div>
+  <div style="color:rgba(255,255,255,.4);font-size:12px;margin-top:16px">Tippen zum Schließen</div>
+</div>
 <div class="toast" id="toast"></div>
 <div id="printArea"></div>
 
