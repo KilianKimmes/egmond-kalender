@@ -148,6 +148,8 @@ input[readonly]{background:var(--bg);cursor:default}
 .pk-nights{text-align:center;font-size:17px;font-weight:800;color:var(--egmond-blue);margin-bottom:14px;min-height:24px;letter-spacing:.2px}
 .pk-modal-status{text-align:center;font-size:14px;font-weight:700;color:var(--egmond-red);margin-bottom:16px}
 .hint-text{font-size:12px;color:#3A2810;line-height:1.7}
+.br-mobile{display:none}
+@media(max-width:480px){.br-mobile{display:block}}
 }
 .btn-red{background:#fff;border:2px solid var(--egmond-red)!important;color:var(--egmond-red);box-shadow:none;margin-top:10px}
 .spin-sm{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
@@ -205,6 +207,14 @@ input[readonly]{background:var(--bg);cursor:default}
 .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .gallery-grid .gp{aspect-ratio:1;border-radius:8px;overflow:hidden;cursor:pointer;background-size:cover;background-position:center;transition:transform .15s ease,box-shadow .15s ease;box-shadow:0 1px 4px rgba(0,0,0,.1)}
 .gallery-grid .gp:hover{transform:scale(1.03);box-shadow:0 4px 16px rgba(0,0,0,.2)}
+
+/* ── PWA Install Banner ── */
+.pwa-banner{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:16px 20px;box-shadow:0 -4px 24px rgba(0,0,0,.15);z-index:500;display:flex;align-items:center;gap:14px;animation:slideUp .3s ease;border-top:3px solid var(--egmond-red)}
+.pwa-banner-icon{font-size:28px;flex-shrink:0}
+.pwa-banner-text{flex:1;font-size:13px;color:var(--text);line-height:1.5}
+.pwa-banner-text strong{display:block;font-size:15px;margin-bottom:2px}
+.pwa-banner-btn{padding:10px 18px;background:var(--egmond-red);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.pwa-banner-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px;flex-shrink:0}
 
 /* ── Buchungsliste ── */
 .bl-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
@@ -455,7 +465,7 @@ input[readonly]{background:var(--bg);cursor:default}
         <h1>Egmond aan Zee</h1>
       </div>
     </div>
-    <span class="admin-badge" id="adminBadge" style="display:none">✏️ Familie</span>
+    <span class="admin-badge" id="adminBadge" style="display:none;cursor:pointer" onclick="adminLogout()">✏️ Familie</span>
   </div>
 </div>
 
@@ -475,7 +485,7 @@ input[readonly]{background:var(--bg);cursor:default}
   <div id="adminHint" class="admin-hint" style="display:none"></div>
   <div id="pubHint" class="hint-box" style="display:none">
     <div class="hint-box-title">💡 So geht's</div>
-    <p>📍 Anreise &amp; Abreise wählen → ✅ Zeitraum bestätigen → 📝 Kontaktdaten ergänzen → ✉️ Anfrage absenden</p>
+    <p>📍 Anreise &amp; Abreise wählen → ✅ Zeitraum bestätigen <span class="br-mobile"></span>📝 Kontaktdaten ergänzen → ✉️ Anfrage absenden</p>
   </div>
   <div id="legendBar" style="display:none">
     <div class="legend-bar">
@@ -511,7 +521,7 @@ input[readonly]{background:var(--bg);cursor:default}
   <div id="pkView">
     <div class="hint-box">
       <div class="hint-box-title">💡 So geht's</div>
-      <p class="hint-text">📍 Anreise &amp; Abreise wählen → ✅ Zeitraum bestätigen → 📝 Kontaktdaten ergänzen → ✉️ Anfrage absenden</p>
+      <p class="hint-text">📍 Anreise &amp; Abreise wählen → ✅ Zeitraum bestätigen <span class="br-mobile"></span>📝 Kontaktdaten ergänzen → ✉️ Anfrage absenden</p>
     </div>
     
     <!-- Compact Date Buttons -->
@@ -580,7 +590,7 @@ input[readonly]{background:var(--bg);cursor:default}
     <div id="reqFormFields">
     <div class="hint-box">
       <div class="hint-box-title">💡 So geht's</div>
-      <p class="hint-text">📍 Anreise &amp; Abreise wählen → ✅ Zeitraum bestätigen → 📝 Kontaktdaten ergänzen → ✉️ Anfrage absenden</p>
+      <p class="hint-text">📍 Anreise &amp; Abreise wählen → ✅ Zeitraum bestätigen <span class="br-mobile"></span>📝 Kontaktdaten ergänzen → ✉️ Anfrage absenden</p>
     </div>
     <div class="card">
       <div class="card-title">📝 Kontaktdaten</div>
@@ -777,11 +787,13 @@ const db = getFirestore(initializeApp({
   appId:             "1:841553122795:web:81aa058d4a5dc049b675ae"
 }));
 
-// Admin via URL param (legacy) oder /admin Pfad mit Passwort
-let IS_ADMIN = new URLSearchParams(location.search).get('admin') === ADMIN_KEY;
+// Admin via URL param, /admin Pfad, oder gespeicherte Session
+let IS_ADMIN = new URLSearchParams(location.search).get('admin') === ADMIN_KEY
+              || localStorage.getItem('egmond-admin') === ADMIN_KEY;
 
 // URL sofort säubern – Passwort nicht sichtbar lassen
-if(IS_ADMIN){
+if(new URLSearchParams(location.search).get('admin') === ADMIN_KEY){
+  localStorage.setItem('egmond-admin', ADMIN_KEY);
   const url=new URL(location);url.searchParams.delete('admin');
   history.replaceState(null,'',url.pathname+url.search+url.hash||'/');
 }
@@ -790,6 +802,7 @@ if(!IS_ADMIN && location.pathname.endsWith('/admin')) {
   const pw = prompt('🔐 Admin-Passwort:');
   if(pw === ADMIN_KEY) {
     IS_ADMIN = true;
+    localStorage.setItem('egmond-admin', ADMIN_KEY);
     history.replaceState(null,'',location.pathname.replace('/admin','') || '/');
   } else if(pw !== null) {
     alert('❌ Falsches Passwort.');
@@ -1436,7 +1449,7 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 function x(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 // ── Start ─────────────────────────────────────
-const ADMIN_HINT='<div class="hint-box-title">💡 Kurzanleitung</div><p>📝 Zeitraum wählen → Mieter → Speichern · ✅ Anfragen annehmen → wird übernommen · ✖️ „Nicht belegt" = Buchung löschen</p>';
+const ADMIN_HINT='<div class="hint-box-title">💡 Kurzanleitung</div><p>📝 Zeitraum wählen → Mieter → Speichern <span class="br-mobile"></span>✅ Anfragen annehmen → wird übernommen · ✖️ „Nicht belegt" = Buchung löschen</p>';
 
 if(IS_ADMIN){
   document.getElementById('adminBadge').style.display='block';
@@ -1448,6 +1461,35 @@ if(IS_ADMIN){
   document.getElementById('adminHint').style.display='block';
   document.getElementById('legendBar').style.display='flex';
   document.querySelectorAll('.admin-hint').forEach(el=>{el.classList.add('hint-box');el.innerHTML=ADMIN_HINT;});
+
+  // PWA Install Prompt für Admin
+  let _pwaEvent=null;
+  window.addEventListener('beforeinstallprompt',e=>{
+    e.preventDefault();
+    _pwaEvent=e;
+    // Nur zeigen wenn nicht schon installiert oder weggeklickt
+    if(localStorage.getItem('pwa-dismissed'))return;
+    if(window.matchMedia('(display-mode:standalone)').matches)return;
+    showPwaBanner();
+  });
+  function showPwaBanner(){
+    if(document.getElementById('pwaBanner'))return;
+    const b=document.createElement('div');
+    b.id='pwaBanner';b.className='pwa-banner';
+    b.innerHTML=`<span class="pwa-banner-icon">📲</span><div class="pwa-banner-text"><strong>App installieren</strong>Egmond Admin als App auf dem Homescreen – schneller Zugriff ohne Browser.</div><button class="pwa-banner-btn" id="pwaInstall">Installieren</button><button class="pwa-banner-close" id="pwaClose">✕</button>`;
+    document.body.appendChild(b);
+    document.getElementById('pwaInstall').onclick=async()=>{
+      if(!_pwaEvent)return;
+      _pwaEvent.prompt();
+      const r=await _pwaEvent.userChoice;
+      if(r.outcome==='accepted')localStorage.setItem('pwa-dismissed','1');
+      b.remove();_pwaEvent=null;
+    };
+    document.getElementById('pwaClose').onclick=()=>{
+      localStorage.setItem('pwa-dismissed','1');
+      b.remove();
+    };
+  }
 
 } else {
   // Public: Kalender + Buchen + Info Tabs zeigen
@@ -1641,6 +1683,8 @@ function pkBackToPicker(){
   document.getElementById('pkView').style.display='block';
 }
 
+function adminLogout(){if(!confirm('Admin-Sitzung beenden?'))return;localStorage.removeItem('egmond-admin');location.reload();}
+
 window.sw=sw;window.changeYear=changeYear;window.changeBookMonth=changeBookMonth;
 window.clearSel=clearSel;window.setSt=setSt;window.saveBooking=saveBooking;
 window.deleteBooking=deleteBooking;window.sendInquiry=sendInquiry;window.loadInquiries=loadInquiries;
@@ -1648,6 +1692,7 @@ window.dayClick=dayClick;window.bookDayClick=bookDayClick;
 window.updInq=updInq;window.acceptInq=acceptInq;window.printCal=printCal;window.pkDay=pkDay;window.pkNav=pkNav;window.pkSubmit=pkSubmit;window.pkBackToPicker=pkBackToPicker;
 window.openCalendarModal=openCalendarModal;window.closeCalendarModal=closeCalendarModal;
 window.openLightbox=openLightbox;window.closeLightbox=closeLightbox;window.lbNav=lbNav;
+window.adminLogout=adminLogout;
 
 setSt('Belegt');
 loadYear(curYear);
@@ -1674,6 +1719,9 @@ window.addEventListener('online',()=>{toast('Wieder online');loadYear(curYear);}
 document.addEventListener('visibilitychange',()=>{
   if(!document.hidden&&Object.keys(bk).length===0)loadYear(curYear);
 });
+
+// ── Service Worker für PWA ──
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
 </html>
