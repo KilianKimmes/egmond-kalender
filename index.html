@@ -1449,7 +1449,7 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 function x(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 // ── Start ─────────────────────────────────────
-const ADMIN_HINT='<div class="hint-box-title">💡 Kurzanleitung</div><p>📝 Zeitraum wählen → Mieter → Speichern <span class="br-mobile"></span>✅ Anfragen annehmen → wird übernommen · ✖️ „Nicht belegt" = Buchung löschen</p>';
+const ADMIN_HINT='<div class="hint-box-title">💡 Kurzanleitung</div><p><strong>✏️ Buchung:</strong> Zeitraum → Mieter → Speichern<br><strong>✅ Anfrage:</strong> Annehmen → Speichern<br><strong>✖️ Löschen:</strong> Zeitraum → Nicht belegt → Speichern</p>';
 
 if(IS_ADMIN){
   document.getElementById('adminBadge').style.display='block';
