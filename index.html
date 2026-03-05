@@ -80,7 +80,7 @@ body{font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,"Segoe UI",san
 .tc{display:none}.tc.on{display:block;max-width:680px;margin:0 auto;padding-top:16px}
 
 /* ── Jahr-Nav ── */
-.year-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.year-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
 .year-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin:0}
 .year-nav h2{font-family:'Source Sans 3',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.5px;color:var(--egmond-red)}
 .yn-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--egmond-red);background:#fff;color:var(--egmond-red);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:none}
@@ -549,6 +549,13 @@ input[readonly]{background:var(--bg);cursor:default}
 
 #pubFunnel .legend-bar{justify-content:flex-start!important}
 #pubFunnel .pub-legend{justify-content:flex-start!important;text-align:left}
+
+/* Info: Share button aligned with address line */
+.info-address-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.share-btn{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:12px;border:1px solid rgba(0,0,0,.08);background:rgba(255,255,255,.85);cursor:pointer}
+.share-btn:hover{background:#fff}
+.share-btn:active{transform:scale(.98)}
+
 </style>
 </head>
 <body>
@@ -774,8 +781,8 @@ input[readonly]{background:var(--bg);cursor:default}
 
   <!-- Adresse -->
   <div class="card">
-    <div class="card-title" style="display:flex;align-items:center;justify-content:space-between;gap:12px"><span>📍 Adresse</span><button class="icon-btn" type="button" onclick="shareApp()" aria-label="Teilen">Teilen</button></div>
-    <div class="info-address">Kennedyboulevard 604</div>
+    <div class="card-title" style="display:flex;align-items:center;justify-content:space-between;gap:12px"><span>📍 Adresse</span></div>
+    <div class="info-address-row"><div class="info-address">Kennedyboulevard 604</div><button class="share-btn" type="button" onclick="shareApp()" aria-label="Teilen"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M16 8l-4-4-4 4M12 4v12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
     <div class="info-address-sub">1931 XM Egmond aan Zee</div>
     <a href="https://maps.google.com/?q=Kennedyboulevard+604,+1931+XM+Egmond+aan+Zee" target="_blank" class="info-map-link">
       🗺️ In Google Maps öffnen
@@ -1325,7 +1332,7 @@ function acceptInq(id,from,to,name){
 }
 
 // ── Kalender rendern ──────────────────────────
-const MNS=["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
+const MNS=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
 
 function renderMatrix(year){
   const sp=getSpecial(year),wrap=document.getElementById('matrix'),now=today();
