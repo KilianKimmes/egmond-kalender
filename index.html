@@ -261,13 +261,11 @@ input[readonly]{background:var(--bg);cursor:default}
 .legend-chip.holiday{background:var(--holiday);color:var(--holiday-t);border:1px solid var(--holiday-t)}
 .legend-chip.school{background:var(--school);color:var(--school-t);border:1px solid var(--school-t)}
 
-/* ── Mobile legend: no dots + wrap (avoid horizontal scroll in popup) ── */
+/* ── Mobile legend: wrap to avoid horizontal scroll ── */
 @media(max-width:520px){
   .legend-bar{flex-wrap:wrap;overflow-x:hidden}
   .legend-chip{padding:4px 8px}
-  .legend-chip:before{display:none;width:0;height:0;margin-right:0}
 }
-
 
 /* ── Info-Tab ── */
 
@@ -570,7 +568,7 @@ input[readonly]{background:var(--bg);cursor:default}
 <!-- TAB 0: KALENDER -->
 <div id="tab0" class="tc on">
   <div id="adminHint" class="admin-hint" style="display:none"></div>
-  <div id="legendBar" style="display:none">
+  <div id="legendBar">
     <div class="legend-bar">
       <span class="legend-chip booked">Belegt</span>
       <span class="legend-chip holiday">Feier- &amp; Brückentage</span>
@@ -600,12 +598,6 @@ input[readonly]{background:var(--bg);cursor:default}
       <div class="pub-actions">
         <button class="pub-btn primary" id="pubContinueBtn" onclick="pubContinue()" disabled>Weiter zu Kontaktdaten</button>
       </div>
-<div class="pub-funnel-legend">
-        <div class="legend-bar">
-          <span class="legend-chip booked">Belegt</span>
-          <span class="legend-chip holiday">Feier- &amp; Brückentage</span>
-          <span class="legend-chip school">Ferien NRW</span>
-        </div>
       </div>
     </div>
   </div>
@@ -656,15 +648,7 @@ input[readonly]{background:var(--bg);cursor:default}
   <div class="pk-modal-overlay" id="pkModalOverlay" onclick="if(event.target===this) closeCalendarModal()">
     <div class="pk-modal">
       <button class="pk-modal-close" onclick="closeCalendarModal()">✕</button>
-      
-      <!-- Legende nur im Modal -->
-      <div class="legend-bar" style="margin-bottom:16px">
-        <span class="legend-chip booked">Belegt</span>
-        <span class="legend-chip holiday">Feier- &amp; Brückentage</span>
-        <span class="legend-chip school">Ferien NRW</span>
-      </div>
-      
-      <!-- Status-Text im Modal -->
+<!-- Status-Text im Modal -->
       <div id="pkModalStatus" class="pk-modal-status">Anreisedatum wählen</div>
       
       <div class="pk-wrap" style="margin-bottom:0;max-width:none">
@@ -716,12 +700,7 @@ input[readonly]{background:var(--bg);cursor:default}
 <!-- TAB 2: BUCHEN (Admin) -->
 <div id="tab2" class="tc">
   <div class="admin-hint"></div>
-  <div class="legend-bar" style="margin-bottom:10px">
-    <span class="legend-chip booked">Belegt</span>
-    <span class="legend-chip holiday">Feier- &amp; Brückentage</span>
-    <span class="legend-chip school">Ferien NRW</span>
-  </div>
-  <div class="pk-wrap" style="max-width:680px;margin-left:auto;margin-right:auto">
+<div class="pk-wrap" style="max-width:680px;margin-left:auto;margin-right:auto">
     <div class="pk-months" id="adminPickerMonths">
       <div class="pk-month" id="bkM0">
         <div class="pk-nav">
