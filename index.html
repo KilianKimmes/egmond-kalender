@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Egmond">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#A90100">
@@ -1686,6 +1687,8 @@ if(IS_ADMIN){
   const pb = document.getElementById('pubBadges'); if(pb) pb.style.display='flex';
 }
 
+  sw(0);
+
 
 // PWA Install Prompt für Admin
   let _pwaEvent=null;
@@ -1716,14 +1719,6 @@ if(IS_ADMIN){
     };
   }
 
-} else {
-   // Public: Kalender + Info
-   const lb=document.getElementById('legendBar'); if(lb) lb.style.display='flex';
-   const pb=document.getElementById('pubBadges'); if(pb) pb.style.display='flex';
-   setupTabs();
-  sw(0);
-  
-}
 
 // Expose to global scope (required for onclick handlers with type="module")
 
