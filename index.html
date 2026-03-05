@@ -282,11 +282,6 @@ input[readonly]{background:var(--bg);cursor:default}
 }
 
 /* ── Info-Tab ── */
-/* Ensure Info tab aligns with Kalender width */
-#tab5{max-width:680px;margin-left:auto;margin-right:auto}
-#tab5 .card{width:100%;max-width:680px;margin-left:auto;margin-right:auto}
-#tab5 .info-grid{width:100%;max-width:680px;margin-left:auto;margin-right:auto}
-
 
 /* ── Info tab: tighten spacing to tab bar ── */
 #tab5{margin-top:6px}
@@ -1578,6 +1573,11 @@ if(IS_ADMIN){
   document.getElementById('t1').style.display='none';
   document.getElementById('adminHint').style.display='block';
   document.getElementById('legendBar').style.display='flex';
+  // Admin: Public-only booking overview/funnel ausblenden
+  const bl=document.getElementById('bookingList'); if(bl) bl.style.display='none';
+  const pf=document.getElementById('pubFunnelOverlay'); if(pf) pf.style.display='none';
+  const pubBadges=document.getElementById('pubBadges'); if(pubBadges) pubBadges.style.display='none';
+
   document.querySelectorAll('.admin-hint').forEach(el=>{el.classList.add('hint-box');el.innerHTML=ADMIN_HINT;});
 
   // PWA Install Prompt für Admin
@@ -1613,6 +1613,11 @@ if(IS_ADMIN){
   // Public: Kalender + Buchen + Info Tabs zeigen
   document.getElementById('t5').style.display='';
   document.getElementById('legendBar').style.display='flex';
+  // Admin: Public-only booking overview/funnel ausblenden
+  const bl=document.getElementById('bookingList'); if(bl) bl.style.display='none';
+  const pf=document.getElementById('pubFunnelOverlay'); if(pf) pf.style.display='none';
+  const pubBadges=document.getElementById('pubBadges'); if(pubBadges) pubBadges.style.display='none';
+
   document.getElementById('pubBadges').style.display='none';
   document.getElementById('pubBadges').style.display='flex';
   document.getElementById('t4').style.display='none';
