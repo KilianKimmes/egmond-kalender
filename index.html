@@ -80,7 +80,8 @@ body{font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,"Segoe UI",san
 .tc{display:none}.tc.on{display:block;max-width:680px;margin:0 auto;padding-top:16px}
 
 /* ── Jahr-Nav ── */
-.year-nav{display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:12px}
+.year-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.year-nav{display:flex;align-items:center;justify-content:flex-start;gap:14px;margin:0}
 .year-nav h2{font-family:'Source Sans 3',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.5px;color:var(--egmond-red)}
 .yn-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--egmond-red);background:#fff;color:var(--egmond-red);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:none}
 .yn-btn:hover{background:var(--egmond-red);color:#fff}.yn-btn:active{background:var(--egmond-red);color:#fff;transform:scale(.92)}
@@ -150,6 +151,11 @@ input[readonly]{background:var(--bg);cursor:default}
 .hint-text{font-size:12px;color:#3A2810;line-height:1.7}
 .br-mobile{display:none}
 @media(max-width:480px){.br-mobile{display:block}}
+@media(max-width:720px){
+  #legendBar{justify-content:flex-start;min-width:0;width:100%}
+  .legend-bar{justify-content:flex-start}
+}
+
 .btn-red{background:#fff;border:2px solid var(--egmond-red)!important;color:var(--egmond-red);box-shadow:none;margin-top:10px}
 .spin-sm{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
 
@@ -210,7 +216,7 @@ input[readonly]{background:var(--bg);cursor:default}
 .pub-btn:disabled{opacity:.45;cursor:not-allowed}
 .pub-btn:active{transform:scale(.98)}
 .pub-funnel-legend{margin-top:10px}
-.legend-bar{display:flex;gap:6px;flex-wrap:wrap;overflow-x:visible;font-size:10px;font-weight:750}
+.legend-bar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;justify-content:flex-end;overflow:visible;font-size:10px;font-weight:700}
 .legend-chip{padding:4px 10px;border-radius:999px;white-space:nowrap;display:inline-flex;align-items:center}
 .legend-chip:before{content:"";width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
 .legend-chip.booked:before{background:var(--egmond-red)}
@@ -255,7 +261,7 @@ input[readonly]{background:var(--bg);cursor:default}
 
 /* ── Legende ── */
 .legend-bar{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;font-size:10px;font-weight:700}
-#legendBar{align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:6px;margin-bottom:12px}
+#legendBar{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex:1;min-width:260px}
 .legend-chip{padding:4px 10px;border-radius:20px;white-space:nowrap}
 .legend-chip.booked{background:var(--egmond-red);color:#fff;border:1px solid var(--egmond-red)}
 .legend-chip.holiday{background:var(--holiday);color:var(--holiday-t);border:1px solid var(--holiday-t)}
@@ -568,19 +574,20 @@ input[readonly]{background:var(--bg);cursor:default}
 <!-- TAB 0: KALENDER -->
 <div id="tab0" class="tc on">
   <div id="adminHint" class="admin-hint" style="display:none"></div>
-  <div id="legendBar">
-    <div class="legend-bar">
-      <span class="legend-chip booked">Belegt</span>
-      <span class="legend-chip holiday">Feier- &amp; Brückentage</span>
-      <span class="legend-chip school">Ferien NRW</span>
-    </div>
-    <button onclick="printCal()" class="print-btn">🖨️ Drucken</button>
-  </div>
   <div class="card" style="padding:14px 18px">
-    <div class="year-nav">
-      <button class="yn-btn" onclick="changeYear(-1)">&#8249;</button>
-      <h2 id="yearTitle">2026</h2>
-      <button class="yn-btn" onclick="changeYear(1)">&#8250;</button>
+    <div class="year-row">
+      <div class="year-nav">
+        <button class="yn-btn" onclick="changeYear(-1)">&#8249;</button>
+        <h2 id="yearTitle">2026</h2>
+        <button class="yn-btn" onclick="changeYear(1)">&#8250;</button>
+      </div>
+      <div id="legendBar" class="legend-inline" aria-label="Legende">
+        <div class="legend-bar">
+          <span class="legend-chip booked">🔴 Belegt</span>
+          <span class="legend-chip holiday">🎉 Feier- &amp; Brückentage</span>
+          <span class="legend-chip school">🏫 Ferien NRW</span>
+        </div>
+      </div>
     </div>
     <div id="calLoading" class="loading"><div class="spin"></div><br><br>Lade…</div>
     <div id="matrixWrap" style="display:none"><div class="mx-outer" id="matrix"></div></div>
@@ -1583,7 +1590,8 @@ if(IS_ADMIN){
 } else {
   // Public: Kalender + Buchen + Info Tabs zeigen
   document.getElementById('t5').style.display='';
-  document.getElementById('legendBar').style.display='none';
+  document.getElementById('legendBar').style.display='flex';
+  document.getElementById('pubBadges').style.display='none';
   document.getElementById('pubBadges').style.display='flex';
   document.getElementById('t4').style.display='none';
   sw(0);
