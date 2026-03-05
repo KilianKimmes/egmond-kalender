@@ -608,12 +608,10 @@ main.content{width:100%;}
 </div>
 
 <div class="tabs" id="tabBar">
-  <div class="tab on"  id="t0" onclick="sw(0)">📅 Kalender</div>
-  <div class="tab"     id="t4" onclick="sw(4)">🗓️ Anfragen</div>
-  <div class="tab"     id="t5" onclick="sw(5)" style="display:none">🏠 Info</div>
-  <div class="tab"     id="t1" onclick="sw(1)" style="display:none">📩 Anfrage</div>
-  <div class="tab"    id="t2" onclick="sw(2)" style="display:none">✏️ Buchung eintragen</div>
-  <div class="tab"     id="t3" onclick="sw(3)" style="display:none">📋 Anfragen</div>
+  <div class="tab on" id="t0" onclick="sw(0)">📅 Kalender</div>
+  <div class="tab" id="t1" onclick="sw(1)"></div>
+  <div class="tab" id="t2" onclick="sw(2)"></div>
+</div>
 </div>
 
 <div class="wrap">
@@ -1589,26 +1587,61 @@ function bookDayClick(year,month,day){
 
 // ── UI Helpers ────────────────────────────────
 function sw(n){
-  for(let i=0;i<6;i++){
-    document.getElementById('t'+i)?.classList.toggle('on',i===n);
-    document.getElementById('tab'+i)?.classList.toggle('on',i===n);
+  // Map visible tab indices to actual panel ids depending on mode
+  const map = (IS_ADMIN ? ['tab0','tab2','tab3'] : ['tab0','tab5']);
+  const max = (IS_ADMIN ? 3 : 2);
+
+  // Guard: clamp to available tabs
+  if(n < 0) n = 0;
+  if(n >= max) n = 0;
+
+  // Toggle tab buttons
+  for(let i=0;i<3;i++){
+    const btn = document.getElementById('t'+i);
+    if(btn) btn.classList.toggle('on', i===n);
   }
 
+  // Toggle panels
+  const allPanels = ['tab0','tab2','tab3','tab5'];
+  allPanels.forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.classList.toggle('on', id === map[n]);
+  });
+
   // Prevent the admin booking overview from visually "taking over" other tabs.
-  // In admin mode, show bookingList only on Kalender (tab 0).
   const bl = document.getElementById('bookingList');
   if(bl){
-    if(typeof IS_ADMIN !== 'undefined' && IS_ADMIN){
-      bl.style.display = (n===0 ? 'block' : 'none');
+    if(IS_ADMIN){
+      bl.style.display = (map[n]==='tab0' ? 'block' : 'none');
     } else {
       bl.style.display = 'none';
     }
   }
 
-    if(n===3)loadInquiries();
-  if(n===2)renderBookCal();
-  if(n===4){renderPicker();}
+  // Tab-specific hooks
+  if(IS_ADMIN && map[n]==='tab3') loadInquiries();
+  if(IS_ADMIN && map[n]==='tab2') renderBookCal();
 }
+
+function setupTabs(){
+  const t1 = document.getElementById('t1');
+  const t2 = document.getElementById('t2');
+  if(!t1 || !t2) return;
+
+  if(IS_ADMIN){
+    t1.textContent = "✏️ Buchung eintragen";
+    t1.style.display = "block";
+    t2.textContent = "📋 Anfragen";
+    t2.style.display = "block";
+    // Hide public info panel button
+  } else {
+    t1.textContent = "🏠 Info";
+    t1.style.display = "block";
+    t2.style.display = "none";
+  }
+}
+
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 function x(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
@@ -1662,6 +1695,7 @@ if(IS_ADMIN){
   document.getElementById('pubBadges').style.display='none';
   document.getElementById('pubBadges').style.display='flex';
   document.getElementById('t4').style.display='none';
+  setupTabs();
   sw(0);
   
 }
@@ -1872,7 +1906,7 @@ function syncRequestSummary(){
 
 function pubContinue(){
   if(!(pkF&&pkT)) return;
-  sw(4);
+  sw(0);
   pkSubmit();
 }
 
