@@ -11,8 +11,7 @@
     {
       "src": "images/wappen_neu.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     }
   ]
 }
