@@ -600,6 +600,13 @@ main.content{width:100%;}
 @media(max-width:720px){#tab2 .pk-months{grid-template-columns:1fr !important;}}
 /* remove border separator that can look odd in grid layout */
 #tab2 .pk-month+.pk-month{border-left:none !important;border-top:none !important;}
+
+/* Admin booking: two-month calendar matrix layout */
+#tab2 .bk2-head{display:flex;align-items:center;justify-content:center;gap:12px;margin:6px 0 10px}
+#tab2 .bk2-range{font-weight:800;color:var(--egmond-red)}
+#tab2 .bk2-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+@media(max-width:720px){#tab2 .bk2-grid{grid-template-columns:1fr}}
+#tab2 .mx-mo{width:100%}
 </style>
 </head>
 <body>
@@ -771,27 +778,16 @@ main.content{width:100%;}
 <div id="tab2" class="tc">
   <div class="container"><div class="admin-hint"></div>
 <div class="pk-wrap" style="max-width:680px;margin-left:auto;margin-right:auto">
-    <div class="pk-months" id="adminPickerMonths">
-      <div class="pk-month" id="bkM0">
-        <div class="pk-nav">
-          <button class="pk-nav-btn" id="bkPrev" onclick="changeBookMonth(-1)">&#8249;</button>
-          <span class="pk-month-title" id="bkT0"></span>
-          <button class="pk-nav-btn" style="visibility:hidden">&#8250;</button>
-        </div>
-        <div class="pk-grid" id="bkG0">
-  </div>
-</div>
-      </div>
-      <div class="pk-month" id="bkM1">
-        <div class="pk-nav">
-          <button class="pk-nav-btn" style="visibility:hidden">&#8249;</button>
-          <span class="pk-month-title" id="bkT1"></span>
-          <button class="pk-nav-btn" id="bkNext" onclick="changeBookMonth(1)">&#8250;</button>
-        </div>
-        <div class="pk-grid" id="bkG1"></div>
-      </div>
+    <div class="bk2-head">
+      <button class="pk-nav-btn" id="bkPrev" onclick="changeBookMonth(-1)">&#8249;</button>
+      <div class="bk2-range" id="bkRange"></div>
+      <button class="pk-nav-btn" id="bkNext" onclick="changeBookMonth(1)">&#8250;</button>
     </div>
-    <div class="pk-chips">
+    <div class="bk2-months" id="adminPickerMonths">
+      <div id="bk2Matrix"></div>
+    </div>
+  </div>
+  <div class="pk-chips>
       <div class="pk-chip" id="chipF"><div class="pk-chip-lbl">Von</div><div class="pk-chip-val" id="chipFv">—</div></div>
       <div class="pk-chip" id="chipT"><div class="pk-chip-lbl">Bis</div><div class="pk-chip-val" id="chipTv">—</div></div>
     </div>
@@ -1543,54 +1539,66 @@ function changeBookMonth(d){
 }
 
 function renderBookCal(){
-  const now=today(),startOfDay=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  // Two-month view using the same calendar matrix visuals as tab Kalender (mx-*)
+  const wrap=document.getElementById('bk2Matrix');
+  if(!wrap) return;
+
+  const months=[];
   for(let mi=0;mi<2;mi++){
-    let y=bookYear,m=bookMonth+mi;
+    let y=bookYear, m=bookMonth+mi;
     if(m>11){m-=12;y++;}
+    months.push({y,m});
+  }
+  const rEl=document.getElementById('bkRange');
+  if(rEl){
+    const a=months[0], b=months[1];
+    rEl.textContent = `${MNS[a.m]} ${a.y} – ${MNS[b.m]} ${b.y}`;
+  }
+
+  let out='<div class="bk2-grid">';
+  for(const mm of months){
+    const y=mm.y, m=mm.m;
     const sp=getSpecial(y);
-    document.getElementById('bkT'+mi).textContent=MN[m]+' '+y;
     const dim=new Date(y,m+1,0).getDate();
     const fw=(new Date(y,m,1).getDay()+6)%7;
-    let cells='<div class="pk-h">Mo</div><div class="pk-h">Di</div><div class="pk-h">Mi</div><div class="pk-h">Do</div><div class="pk-h">Fr</div><div class="pk-h">Sa</div><div class="pk-h">So</div>';
-    for(let i=0;i<fw;i++)cells+='<div class="pk-em"></div>';
+    let cells='';
+    cells+='<div class="mx-h">Mo</div><div class="mx-h">Di</div><div class="mx-h">Mi</div><div class="mx-h">Do</div><div class="mx-h">Fr</div><div class="mx-h we">Sa</div><div class="mx-h we">So</div>';
+    for(let i=0;i<fw;i++) cells+='<div class="mx-em"></div>';
+
     for(let day=1;day<=dim;day++){
       const d=new Date(y,m,day),key=dk(d);
-      const info=bk[key]||{},sp2=sp[key],isB=info.status==='Belegt';
-      const dt=dayType(info,key);
-      const isTd=d.toDateString()===now.toDateString();
-      const isPast=d<startOfDay;
-      const dkD=dk(d);
-      const isSF=selF&&dkD===dk(selF),isST=selT&&dkD===dk(selT);
-      const isSR=selF&&selT&&d>selF&&d<selT;
-      let cls='pk-d';
-      if(isSF&&isST)cls+=' pk-sf pk-st';
-      else if(isSF)cls+=' pk-sf';
-      else if(isST)cls+=' pk-st';
-      else if(isSR)cls+=' pk-sr';
-      else if(dt==='changeover')cls+=' pk-changeover';
-      else if(dt==='arr')cls+=' pk-booked-arr';
-      else if(dt==='dep')cls+=' pk-booked-dep';
-      else if(dt==='full')cls+=' pk-booked';
-      else if(sp2?.type==='holiday'||sp2?.type==='bridge')cls+=' pk-free pk-holiday';
-      else if(sp2?.type==='school')cls+=' pk-free pk-school';
-      else cls+=' pk-free';
-      if(isTd&&!isSF&&!isST)cls+=' pk-today';
-      if(isPast&&!isSF&&!isST&&!isSR)cls+=' pk-past';
+      const info=bk[key]||{},sp2=sp[key],dt=dayType(info,key);
+      const sF=selF, sT=selT;
+      const isSF=sF&&dk(d)===dk(sF), isST=sT&&dk(d)===dk(sT), isSR=sF&&sT&&d>sF&&d<sT;
+      let cls='mx-d click';
+      if(isSF&&isST)cls+=' mx-sf mx-st';
+      else if(isSF)cls+=' mx-sf';
+      else if(isST)cls+=' mx-st';
+      else if(isSR)cls+=' mx-sr';
+      else if(dt==='changeover')cls+=' mx-changeover';
+      else if(dt==='arr')cls+=' mx-booked-arr';
+      else if(dt==='dep')cls+=' mx-booked-dep';
+      else if(dt==='full')cls+=' mx-booked';
+      else if(sp2?.type==='holiday')cls+=' mx-holiday';
+      else if(sp2?.type==='bridge')cls+=' mx-bridge';
+      else if(sp2?.type==='school')cls+=' mx-school';
+      else cls+=' mx-free';
+
       let title='';
-      if(dt==='changeover')title=`${x(info.name)} → ${x(info.name2)}`;
-      else if(isB)title=x(info.name)||'Belegt';
-      cells+=`<div class="${cls}" onclick="bookDayClick(${y},${m},${day})" title="${title}">${day}</div>`;
+      if(dt==='changeover') title=`${x(info.name)} → ${x(info.name2)}`;
+      else if(dt==='dep') title=`Abreise: ${x(info.name)}`;
+      else if(dt==='arr') title=`Anreise: ${x(info.name)}`;
+      else if(dt==='full') title=x(info.name)||'Belegt';
+      else if(sp2) title=x(sp2.name);
+      else title='Frei';
+
+      cells+=`<div class="${cls}" onclick="bookDayClick(${y},${m},${day})" title="${title}"><span>${day}</span></div>`;
     }
 
-    /* pad to 6 weeks */
-    const used = fw + dim;
-    let total = used;
-    // pad to full weeks
-    while(total % 7 !== 0){ cells+='<div class="pk-em"></div>'; total++; }
-    // pad to 6 rows (42 cells) so two months have equal height
-    while(total < 42){ cells+='<div class="pk-em"></div>'; total++; }
-    document.getElementById('bkG'+mi).innerHTML=cells;
+    out+=`<div class="mx-mo"><div class="mx-ttl"><span>${MNS[m]} ${y}</span></div><div class="mx-grid">${cells}</div></div>`;
   }
+  out+='</div>';
+  wrap.innerHTML=out;
 }
 
 function bookDayClick(year,month,day){
