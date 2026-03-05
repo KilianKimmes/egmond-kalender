@@ -158,15 +158,17 @@ input[readonly]{background:var(--bg);cursor:default}
 /* ── Public Funnel (Matrix-first) ── */
 .pub-funnel{
   position:fixed;
-  left:0; right:0;
+  left:50%;
+  transform:translateX(-50%);
   bottom:0;
+  width:100%;
   z-index:120;
   padding:12px;
-  display:flex;
-  justify-content:center;
+  display:block;
   pointer-events:none; /* only the card should be clickable */
 }
 .pub-funnel-card{
+  margin:0 auto;
   pointer-events:auto;
   width:min(760px, calc(100% - 24px));
   background:#fff;
@@ -208,8 +210,12 @@ input[readonly]{background:var(--bg);cursor:default}
 .pub-btn:disabled{opacity:.45;cursor:not-allowed}
 .pub-btn:active{transform:scale(.98)}
 .pub-funnel-legend{margin-top:10px}
-.legend-bar{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;font-size:10px;font-weight:750}
-.legend-chip{padding:4px 10px;border-radius:999px;white-space:nowrap}
+.legend-bar{display:flex;gap:6px;flex-wrap:wrap;overflow-x:visible;font-size:10px;font-weight:750}
+.legend-chip{padding:4px 10px;border-radius:999px;white-space:nowrap;display:inline-flex;align-items:center}
+.legend-chip:before{content:"";width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+.legend-chip.booked:before{background:var(--egmond-red)}
+.legend-chip.holiday:before{background:var(--holiday-t)}
+.legend-chip.school:before{background:var(--school-t)}
 
 /* Make it feel identical on desktop/mobile, only spacing changes */
 @media(min-width:900px){
@@ -553,9 +559,9 @@ input[readonly]{background:var(--bg);cursor:default}
   <div id="adminHint" class="admin-hint" style="display:none"></div>
   <div id="legendBar" style="display:none">
     <div class="legend-bar">
-      <span class="legend-chip booked">🔴 Belegt</span>
-      <span class="legend-chip holiday">🎉 Feier- &amp; Brückentage</span>
-      <span class="legend-chip school">🏖️ Ferien NRW</span>
+      <span class="legend-chip booked">Belegt</span>
+      <span class="legend-chip holiday">Feier- &amp; Brückentage</span>
+      <span class="legend-chip school">Ferien NRW</span>
     </div>
     <button onclick="printCal()" class="print-btn">🖨️ Drucken</button>
   </div>
@@ -583,9 +589,9 @@ input[readonly]{background:var(--bg);cursor:default}
       </div>
 <div class="pub-funnel-legend">
         <div class="legend-bar">
-          <span class="legend-chip booked">🔴 Belegt</span>
-          <span class="legend-chip holiday">🎉 Feier- &amp; Brückentage</span>
-          <span class="legend-chip school">🏖️ Ferien NRW</span>
+          <span class="legend-chip booked">Belegt</span>
+          <span class="legend-chip holiday">Feier- &amp; Brückentage</span>
+          <span class="legend-chip school">Ferien NRW</span>
         </div>
       </div>
     </div>
@@ -607,15 +613,17 @@ input[readonly]{background:var(--bg);cursor:default}
   <div id="pkView">
 <p class="hint-text"></p>
     </div>
+    <div id="legacyBooker">
+
     
     <!-- Compact Date Buttons -->
     <div class="pk-date-buttons">
       <button class="pk-date-btn" id="pkFromBtn" onclick="openCalendarModal('from')">
-        <span class="pk-date-btn-lbl">📍 Anreise</span>
+        <span class="pk-date-btn-lbl">Anreise</span>
         <span class="pk-date-btn-val" id="pkFromDisplay">—</span>
       </button>
       <button class="pk-date-btn" id="pkToBtn" onclick="openCalendarModal('to')">
-        <span class="pk-date-btn-lbl">📍 Abreise</span>
+        <span class="pk-date-btn-lbl">Abreise</span>
         <span class="pk-date-btn-val" id="pkToDisplay">—</span>
       </button>
     </div>
@@ -638,9 +646,9 @@ input[readonly]{background:var(--bg);cursor:default}
       
       <!-- Legende nur im Modal -->
       <div class="legend-bar" style="margin-bottom:16px">
-        <span class="legend-chip booked">🔴 Belegt</span>
-        <span class="legend-chip holiday">🎉 Feier- &amp; Brückentage</span>
-        <span class="legend-chip school">🏖️ Ferien NRW</span>
+        <span class="legend-chip booked">Belegt</span>
+        <span class="legend-chip holiday">Feier- &amp; Brückentage</span>
+        <span class="legend-chip school">Ferien NRW</span>
       </div>
       
       <!-- Status-Text im Modal -->
@@ -668,6 +676,8 @@ input[readonly]{background:var(--bg);cursor:default}
       </div>
     </div>
   </div>
+      </div>
+
   <!-- VIEW B: Anfrage-Formular (innerhalb Tab4, ersetzt Picker) -->
   <div id="pkForm" style="display:none">
     <div id="reqResult" class="result"></div>
@@ -694,9 +704,9 @@ input[readonly]{background:var(--bg);cursor:default}
 <div id="tab2" class="tc">
   <div class="admin-hint"></div>
   <div class="legend-bar" style="margin-bottom:10px">
-    <span class="legend-chip booked">🔴 Belegt</span>
-    <span class="legend-chip holiday">🎉 Feier- &amp; Brückentage</span>
-    <span class="legend-chip school">🏖️ Ferien NRW</span>
+    <span class="legend-chip booked">Belegt</span>
+    <span class="legend-chip holiday">Feier- &amp; Brückentage</span>
+    <span class="legend-chip school">Ferien NRW</span>
   </div>
   <div class="pk-wrap" style="max-width:680px;margin-left:auto;margin-right:auto">
     <div class="pk-months" id="adminPickerMonths">
@@ -726,7 +736,7 @@ input[readonly]{background:var(--bg);cursor:default}
   <div class="card">
     <div class="card-title">🏷️ Status</div>
     <div class="st-row">
-      <button class="st-btn ab" id="stB" onclick="setSt('Belegt')">🔴 Belegt</button>
+      <button class="st-btn ab" id="stB" onclick="setSt('Belegt')">Belegt</button>
       <button class="st-btn"   id="stF" onclick="setSt('Frei')">✖️ Nicht belegt</button>
     </div>
   </div>
@@ -1632,7 +1642,7 @@ function printCal(){
     html+=`</div></div>`;
   }
   html+=`</div>`;
-  html+=`<div class="pr-legend"><span>🔴 Belegt (Name)</span><span style="color:#c06000">🎉 Feiertag</span><span style="color:#888">🏖 Schulferien</span><span style="color:#aaa">Sa/So</span></div>`;
+  html+=`<div class="pr-legend"><span>Belegt (Name)</span><span style="color:#c06000">🎉 Feiertag</span><span style="color:#888">🏖 Schulferien</span><span style="color:#aaa">Sa/So</span></div>`;
   document.getElementById('printArea').innerHTML=html;
   document.getElementById('printArea').style.display='block';
   window.print();
@@ -1805,6 +1815,7 @@ function pkSubmit(){
   syncRequestSummary();
   document.getElementById('reqResult').className='result';
   document.getElementById('pkView').style.display='none';
+  const lb=document.getElementById('legacyBooker'); if(lb) lb.style.display='none';
   document.getElementById('pkForm').style.display='block';
   document.getElementById('pkForm').scrollIntoView({behavior:'smooth',block:'start'});
 }
