@@ -593,6 +593,13 @@ main.content{width:100%;}
 #tab2 .pk-wrap{max-width:980px;margin-left:auto;margin-right:auto}
 
 .pk-month{width:100%}
+
+/* v5 admin booking layout: force two months side-by-side on desktop */
+#tab2 .pk-wrap{max-width:980px !important;margin-left:auto;margin-right:auto;}
+#tab2 .pk-months{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:14px !important;}
+@media(max-width:720px){#tab2 .pk-months{grid-template-columns:1fr !important;}}
+/* remove border separator that can look odd in grid layout */
+#tab2 .pk-month+.pk-month{border-left:none !important;border-top:none !important;}
 </style>
 </head>
 <body>
@@ -793,7 +800,7 @@ main.content{width:100%;}
   <div class="card">
     <div class="card-title">🏷️ Status</div>
     <div class="st-row">
-      <button class="st-btn ab" id="stB" onclick="setSt('Belegt')">Belegt</button>
+      <button class="st-btn ab" id="stB" onclick="setSt('Belegt')">Eintragen</button>
       <button class="st-btn"   id="stF" onclick="setSt('Frei')">✖️ Löschen</button>
     </div>
   </div>
