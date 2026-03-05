@@ -564,6 +564,18 @@ input[readonly]{background:var(--bg);cursor:default}
 
 #pkForm{width:100%;max-width:var(--content-w);margin:0 auto}
 #pkForm .card{width:100%}
+
+/* Layout system v18: keep all tab content aligned */
+:root{--content-w:680px;}
+main.content{width:100%;}
+.container{width:100%;max-width:var(--content-w);margin:0 auto;padding:0 14px;box-sizing:border-box;}
+.tc{width:100%;}
+.tc.on{width:100%;}
+.tc.on > .container{width:100%;}
+/* prevent accidental full-bleed blocks */
+.tc.on > *:not(.container){max-width:none;}
+/* contact form + info cards must not exceed container */
+#pkForm, #tab5, #tab5 .card, #tab5 .info-grid{max-width:100%;}
 </style>
 </head>
 <body>
@@ -598,14 +610,16 @@ input[readonly]{background:var(--bg);cursor:default}
 
 <!-- TAB 0: KALENDER -->
 <div id="tab0" class="tc on">
-  <div id="adminHint" class="admin-hint" style="display:none"></div>
+  <div class="container"><div id="adminHint" class="admin-hint" style="display:none"></div>
   <div class="card" style="padding:14px 18px">
     <div class="year-row">
       <div class="year-nav">
         <button class="yn-btn" onclick="changeYear(-1)">&#8249;</button>
         <h2 id="yearTitle">2026</h2>
         <button class="yn-btn" onclick="changeYear(1)">&#8250;</button>
-      </div>
+      
+  </div>
+</div>
 </div>
     <div id="calLoading" class="loading"><div class="spin"></div><br><br>Lade…</div>
     <div id="matrixWrap" style="display:none"><div class="mx-outer" id="matrix"></div></div>
@@ -646,7 +660,7 @@ input[readonly]{background:var(--bg);cursor:default}
 
 <!-- TAB 4: BUCHEN (Public Picker) -->
 <div id="tab4" class="tc">
-  <!-- VIEW A: Kalender-Picker (compact) -->
+  <div class="container"><!-- VIEW A: Kalender-Picker (compact) -->
   <div id="pkView">
 <p class="hint-text"></p>
     </div>
@@ -672,7 +686,9 @@ input[readonly]{background:var(--bg);cursor:default}
     <!-- Fotogalerie (JS-generiert) -->
     <div class="card" style="margin-bottom:14px;margin-top:20px">
       <div class="card-title">📸 Fotos</div>
-      <div id="gallery1" class="gallery-grid"></div>
+      <div id="gallery1" class="gallery-grid">
+  </div>
+</div>
     </div>
   </div>
   
@@ -731,7 +747,7 @@ input[readonly]{background:var(--bg);cursor:default}
 
 <!-- TAB 2: BUCHEN (Admin) -->
 <div id="tab2" class="tc">
-  <div class="admin-hint"></div>
+  <div class="container"><div class="admin-hint"></div>
 <div class="pk-wrap" style="max-width:680px;margin-left:auto;margin-right:auto">
     <div class="pk-months" id="adminPickerMonths">
       <div class="pk-month" id="bkM0">
@@ -740,7 +756,9 @@ input[readonly]{background:var(--bg);cursor:default}
           <span class="pk-month-title" id="bkT0"></span>
           <button class="pk-nav-btn" style="visibility:hidden">&#8250;</button>
         </div>
-        <div class="pk-grid" id="bkG0"></div>
+        <div class="pk-grid" id="bkG0">
+  </div>
+</div>
       </div>
       <div class="pk-month" id="bkM1">
         <div class="pk-nav">
@@ -775,19 +793,20 @@ input[readonly]{background:var(--bg);cursor:default}
 
 <!-- TAB 3: ANFRAGEN (Admin) -->
 <div id="tab3" class="tc">
-  <div class="admin-hint"></div>
+  <div class="container"><div class="admin-hint"></div>
   <div class="card inq-header">
     <span class="card-title">📋 Eingehende Anfragen</span>
     <button onclick="loadInquiries()" class="btn-reload">↻ Laden</button>
   </div>
-  <div id="inqList"><div class="loading"><div class="spin"></div></div></div>
+  <div id="inqList"><div class="loading"><div class="spin">
+  </div>
+</div></div></div>
 </div>
 
 
 <!-- TAB 5: INFO (Public) -->
 <div id="tab5" class="tc">
-
-  <!-- Adresse -->
+  <div class="container"><!-- Adresse -->
   <div class="card">
     <div class="card-title" style="display:flex;align-items:center;justify-content:space-between;gap:12px"><span>📍 Adresse</span></div>
     <div class="info-address-row"><div class="info-address">Kennedyboulevard 604</div><button class="share-btn" type="button" onclick="shareApp()" aria-label="Teilen"><svg viewBox="0 0 24 24" width="26" height=">26" aria-hidden="true"><path d="M16 8l-4-4-4 4M12 4v12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
@@ -801,7 +820,9 @@ input[readonly]{background:var(--bg);cursor:default}
         <div class="info-list">
           <div class="info-item">
             <span class="info-icon-lg">🅿️</span>
-            <div class="info-text"><strong>Parken:</strong><br>Am Südende des Innenhofs. Vorletzte Garage rechts – Nummer 21.</div>
+            <div class="info-text"><strong>Parken:</strong><br>Am Südende des Innenhofs. Vorletzte Garage rechts – Nummer 21.
+  </div>
+</div>
           </div>
           <div class="info-item">
             <span class="info-icon-lg">🚪</span>
