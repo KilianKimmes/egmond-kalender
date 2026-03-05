@@ -575,7 +575,17 @@ main.content{width:100%;}
 /* prevent accidental full-bleed blocks */
 .tc.on > *:not(.container){max-width:none;}
 /* contact form + info cards must not exceed container */
-#pkForm, #tab5, #tab5 .card, #tab5 .info-grid{max-width:100%;}
+
+/* v19: enforce consistent content width across tabs (public + admin) */
+#tab5{padding-top:10px;}
+#tab5 .card{max-width:var(--content-w);margin:0 auto 14px;}
+#tab5 .card:first-child{margin-top:0;}
+#tab5 .info-grid{max-width:var(--content-w);margin:0 auto;}
+#tab5 .info-list{max-width:var(--content-w);margin:0 auto;}
+/* admin panels */
+#tab2 .card, #tab3 .card{max-width:var(--content-w);margin:0 auto 14px;}
+#tab2 .tableWrap, #tab3 .tableWrap{max-width:var(--content-w);margin:0 auto;}
+#tab2 .admin-wrap, #tab3 .admin-wrap{max-width:var(--content-w);margin:0 auto;}
 </style>
 </head>
 <body>
