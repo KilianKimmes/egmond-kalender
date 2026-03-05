@@ -157,7 +157,7 @@ input[readonly]{background:var(--bg);cursor:default}
 
 /* ── Public Funnel (Matrix-first) ── */
 .pub-funnel{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:120;margin:0;width:min(760px,calc(100% - 24px));}
-@media(min-width:900px){.pub-funnel{top:120px;bottom:auto;transform:translateX(-50%);} .pub-funnel-card{padding:14px 16px}}
+@media(min-width:900px){.pub-funnel{top:88px;bottom:auto;transform:translateX(-50%);} .pub-funnel-card{padding:14px 16px}}
 .pub-funnel-card{background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 28px rgba(20,12,4,.14);padding:12px}
 .pub-funnel-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
 .pub-step{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
@@ -509,9 +509,6 @@ input[readonly]{background:var(--bg);cursor:default}
 <!-- TAB 0: KALENDER -->
 <div id="tab0" class="tc on">
   <div id="adminHint" class="admin-hint" style="display:none"></div>
-  <div id="pubHint" style="display:none"></div>
-<p>📍 Anreise &amp; Abreise wählen → ✅ Zeitraum prüfen <span class="br-mobile"></span>📝 Kontaktdaten ergänzen → ✉️ Anfrage absenden</p>
-  </div>
   <div id="legendBar" style="display:none">
     <div class="legend-bar">
       <span class="legend-chip booked">🔴 Belegt</span>
@@ -567,9 +564,7 @@ input[readonly]{background:var(--bg);cursor:default}
 <div id="tab4" class="tc">
   <!-- VIEW A: Kalender-Picker (compact) -->
   <div id="pkView">
-    <div class="hint-box">
-      <div class="hint-box-title">💡 So geht's</div>
-      <p class="hint-text">📍 Anreise &amp; Abreise wählen → ✅ Zeitraum bestätigen <span class="br-mobile"></span>📝 Kontaktdaten ergänzen → ✉️ Anfrage absenden</p>
+<p class="hint-text"></p>
     </div>
     
     <!-- Compact Date Buttons -->
@@ -636,9 +631,7 @@ input[readonly]{background:var(--bg);cursor:default}
   <div id="pkForm" style="display:none">
     <div id="reqResult" class="result"></div>
     <div id="reqFormFields">
-    <div class="hint-box">
-      <div class="hint-box-title">💡 So geht's</div>
-      <p class="hint-text">📍 Anreise &amp; Abreise wählen → ✅ Zeitraum bestätigen <span class="br-mobile"></span>📝 Kontaktdaten ergänzen → ✉️ Anfrage absenden</p>
+<p class="hint-text"></p>
     </div>
     <div class="card">
       <div class="card-title">📝 Anfrage senden</div>
@@ -1324,7 +1317,7 @@ function renderMatrix(year){
   wrap.innerHTML=html;
   document.getElementById('calLoading').style.display='none';
   document.getElementById('matrixWrap').style.display='block';
-  if(!IS_ADMIN && document.getElementById('pubHint')) if(document.getElementById('pubHint')) document.getElementById('pubHint').style.display='block';
+  
   if(!IS_ADMIN) updatePublicFunnel();
   if(IS_ADMIN) renderBookingList(year);
 }
@@ -1551,7 +1544,7 @@ if(IS_ADMIN){
   document.getElementById('pubBadges').style.display='flex';
   document.getElementById('t4').style.display='none';
   sw(0);
-  if(document.getElementById('pubHint')) document.getElementById('pubHint').style.display='block';
+  
 }
 
 // Expose to global scope (required for onclick handlers with type="module")
