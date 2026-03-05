@@ -1587,9 +1587,11 @@ function bookDayClick(year,month,day){
 
 // ── UI Helpers ────────────────────────────────
 function sw(n){
+  const isAdmin = (typeof IS_ADMIN !== 'undefined' && IS_ADMIN) || (typeof window !== 'undefined' && window.IS_ADMIN===true);
+
   // Map visible tab indices to actual panel ids depending on mode
-  const map = (IS_ADMIN ? ['tab0','tab2','tab3'] : ['tab0','tab5']);
-  const max = (IS_ADMIN ? 3 : 2);
+  const map = (isAdmin ? ['tab0','tab2','tab3'] : ['tab0','tab5']);
+  const max = (isAdmin ? 3 : 2);
 
   // Guard: clamp to available tabs
   if(n < 0) n = 0;
@@ -1612,7 +1614,7 @@ function sw(n){
   // Prevent the admin booking overview from visually "taking over" other tabs.
   const bl = document.getElementById('bookingList');
   if(bl){
-    if(IS_ADMIN){
+    if(isAdmin){
       bl.style.display = (map[n]==='tab0' ? 'block' : 'none');
     } else {
       bl.style.display = 'none';
@@ -1620,21 +1622,21 @@ function sw(n){
   }
 
   // Tab-specific hooks
-  if(IS_ADMIN && map[n]==='tab3') loadInquiries();
-  if(IS_ADMIN && map[n]==='tab2') renderBookCal();
+  if(isAdmin && map[n]==='tab3') loadInquiries?.();
+  if(isAdmin && map[n]==='tab2') renderBookCal?.();
 }
 
 function setupTabs(){
+  const isAdmin = (typeof IS_ADMIN !== 'undefined' && IS_ADMIN) || (typeof window !== 'undefined' && window.IS_ADMIN===true);
   const t1 = document.getElementById('t1');
   const t2 = document.getElementById('t2');
   if(!t1 || !t2) return;
 
-  if(IS_ADMIN){
+  if(isAdmin){
     t1.textContent = "✏️ Buchung eintragen";
     t1.style.display = "block";
     t2.textContent = "📋 Anfragen";
     t2.style.display = "block";
-    // Hide public info panel button
   } else {
     t1.textContent = "🏠 Info";
     t1.style.display = "block";
@@ -1979,6 +1981,8 @@ document.addEventListener('visibilitychange',()=>{
 
 // ── Service Worker für PWA ──
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+window.sw = sw;
+window.setupTabs = setupTabs;
 </script>
 </body>
 </html>
