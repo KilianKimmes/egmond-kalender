@@ -157,15 +157,18 @@ input[readonly]{background:var(--bg);cursor:default}
 
 /* ── Public Funnel (Matrix-first) ── */
 .pub-funnel{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:120;margin:0;width:min(760px,calc(100% - 24px));}
-@media(min-width:900px){.pub-funnel{top:55vh;bottom:auto;transform:translate(-50%,-50%);} .pub-funnel-card{padding:14px 16px}}
+@media(min-width:900px){.pub-funnel{top:120px;bottom:auto;transform:translateX(-50%);} .pub-funnel-card{padding:14px 16px}}
 .pub-funnel-card{background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 28px rgba(20,12,4,.14);padding:12px}
 .pub-funnel-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
 .pub-step{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
 .pub-summary{font-size:14px;font-weight:800;color:var(--text)}
 .pub-summary small{display:block;font-size:12px;font-weight:600;color:var(--muted)}
 .pub-actions{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:900px){.pub-actions{display:flex;justify-content:flex-end}}
+
 .pub-btn{padding:12px;border-radius:10px;border:2px solid var(--border);background:#fff;color:var(--text);font-weight:700;cursor:pointer}
-.pub-btn.primary{background:linear-gradient(135deg,var(--egmond-red),#B84A04);border:none;color:#fff;box-shadow:0 4px 14px rgba(169,1,0,.22);text-align:center;line-height:1.1;padding:14px 12px;}
+.pub-btn.primary{background:linear-gradient(135deg,var(--egmond-red),#B84A04);border:none;color:#fff;box-shadow:0 4px 14px rgba(169,1,0,.22);text-align:center;line-height:1.15;padding:12px 12px;}
+@media(min-width:900px){.pub-btn.primary{width:320px;max-width:100%}}
 .pub-btn.primary span{display:block}
 .pub-btn:disabled{opacity:.45;cursor:not-allowed}
 .pub-btn:active{transform:scale(.98)}
@@ -506,9 +509,8 @@ input[readonly]{background:var(--bg);cursor:default}
 <!-- TAB 0: KALENDER -->
 <div id="tab0" class="tc on">
   <div id="adminHint" class="admin-hint" style="display:none"></div>
-  <div id="pubHint" class="hint-box" style="display:none">
-    <div class="hint-box-title">💡 So geht's</div>
-    <p>📍 Anreise &amp; Abreise wählen → ✅ Zeitraum prüfen <span class="br-mobile"></span>📝 Kontaktdaten ergänzen → ✉️ Anfrage absenden</p>
+  <div id="pubHint" style="display:none"></div>
+<p>📍 Anreise &amp; Abreise wählen → ✅ Zeitraum prüfen <span class="br-mobile"></span>📝 Kontaktdaten ergänzen → ✉️ Anfrage absenden</p>
   </div>
   <div id="legendBar" style="display:none">
     <div class="legend-bar">
@@ -538,7 +540,7 @@ input[readonly]{background:var(--bg);cursor:default}
         </div>
       </div>
       <div class="pub-actions">
-        <button class="pub-btn primary" id="pubContinueBtn" onclick="pubContinue()" disabled><span style="display:block">Weiter zu</span><span style="display:block">Kontaktdaten</span></button>
+        <button class="pub-btn primary" id="pubContinueBtn" onclick="pubContinue()" disabled>Weiter zu Kontaktdaten</button>
       </div>
       <div class="pub-note" id="pubFunnelNote">Tipp: Du kannst direkt freie Tage in der Monatsansicht antippen.</div>
       <div class="pub-funnel-legend">
@@ -1322,7 +1324,7 @@ function renderMatrix(year){
   wrap.innerHTML=html;
   document.getElementById('calLoading').style.display='none';
   document.getElementById('matrixWrap').style.display='block';
-  if(!IS_ADMIN && document.getElementById('pubHint')) document.getElementById('pubHint').style.display='block';
+  if(!IS_ADMIN && document.getElementById('pubHint')) if(document.getElementById('pubHint')) document.getElementById('pubHint').style.display='block';
   if(!IS_ADMIN) updatePublicFunnel();
   if(IS_ADMIN) renderBookingList(year);
 }
@@ -1549,7 +1551,7 @@ if(IS_ADMIN){
   document.getElementById('pubBadges').style.display='flex';
   document.getElementById('t4').style.display='none';
   sw(0);
-  document.getElementById('pubHint').style.display='block';
+  if(document.getElementById('pubHint')) document.getElementById('pubHint').style.display='block';
 }
 
 // Expose to global scope (required for onclick handlers with type="module")
