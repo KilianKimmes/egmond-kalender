@@ -497,7 +497,7 @@ input[readonly]{background:var(--bg);cursor:default}
 
 /* ── Public Booking Picker ── */
 .pk-wrap{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin-bottom:14px;border:1px solid var(--border)}
-.pk-months{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.pk-months{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
 @media(max-width:480px){.pk-months{grid-template-columns:1fr}}
 .pk-month{padding:16px}
 .pk-month+.pk-month{border-left:1px solid var(--border)}
@@ -587,6 +587,8 @@ main.content{width:100%;}
 #tab2 .card, #tab3 .card{max-width:var(--content-w);margin:0 auto 14px;}
 #tab2 .tableWrap, #tab3 .tableWrap{max-width:var(--content-w);margin:0 auto;}
 #tab2 .admin-wrap, #tab3 .admin-wrap{max-width:var(--content-w);margin:0 auto;}
+
+@media(max-width:840px){.pk-months{grid-template-columns:1fr;gap:12px}}
 </style>
 </head>
 <body>
@@ -1274,9 +1276,9 @@ async function sendInquiry(){
     res.scrollIntoView({behavior:'smooth',block:'center'});
     // Reset Picker-State
     pkF=null;pkT=null;pkPicking='from';
-    // Nach 3 Sekunden alles zurücksetzen und zum Info-Tab
-    setTimeout(()=>{ 
-      sw(5);
+    // Nach 3 Sekunden zurücksetzen und zum Info-Tab
+    setTimeout(()=>{
+      sw(1);
       res.className='result';res.textContent='';
       document.getElementById('reqFormFields').style.display='';
       document.getElementById('rName').value='';
@@ -1363,7 +1365,7 @@ function acceptInq(id,from,to,name){
   setSt('Belegt');
   document.getElementById('bookName').value=name;
   updInq(id,'accepted');
-  sw(2);
+  sw(1);
   renderMatrix(curYear);
   renderBookCal();
   toast('Zeitraum gewählt – jetzt speichern');
@@ -1472,7 +1474,7 @@ function dayClick(year,month,day){
       let hasB=false;
       for(let x=new Date(selF);x<=selT;x.setDate(x.getDate()+1)){if(bk[dk(x)]?.status==='Belegt'){hasB=true;break;}}
       document.getElementById('delBtn').style.display=hasB?'block':'none';
-      sw(2);
+      sw(1);
     }
   } else {
     // Public: Datumsauswahl → zum Buchen-Tab
@@ -1926,11 +1928,15 @@ function syncRequestSummary(){
 
 function pubContinue(){
   if(!(pkF&&pkT)) return;
+  // Hide bottom funnel so it doesn't cover the submit button
+  const f=document.getElementById('pubFunnel');
+  if(f) f.style.display='none';
   sw(0);
   pkSubmit();
 }
 
 function pkSubmit(){
+  const f=document.getElementById('pubFunnel'); if(f) f.style.display='none';
   if(!pkF||!pkT)return;
   document.getElementById('rFrom').value=fmt(pkF);
   document.getElementById('rTo').value=fmt(pkT);
