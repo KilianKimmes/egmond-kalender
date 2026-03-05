@@ -156,25 +156,67 @@ input[readonly]{background:var(--bg);cursor:default}
 
 
 /* ── Public Funnel (Matrix-first) ── */
-.pub-funnel{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:120;margin:0;width:min(760px,calc(100% - 24px));}
-@media(min-width:900px){.pub-funnel-card{padding:14px 16px}}
-.pub-funnel-card{background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 28px rgba(20,12,4,.14);padding:12px}
-.pub-funnel-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.pub-funnel{
+  position:fixed;
+  left:0; right:0;
+  bottom:0;
+  z-index:120;
+  padding:12px;
+  display:flex;
+  justify-content:center;
+  pointer-events:none; /* only the card should be clickable */
+}
+.pub-funnel-card{
+  pointer-events:auto;
+  width:min(760px, calc(100% - 24px));
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:0 10px 32px rgba(20,12,4,.16);
+  padding:14px 14px 12px;
+}
+.pub-funnel-card:before{
+  content:"";
+  display:block;
+  width:44px;
+  height:4px;
+  border-radius:999px;
+  background:rgba(0,0,0,.12);
+  margin:0 auto 10px;
+}
+.pub-funnel-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
 .pub-step{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
-.pub-summary{font-size:14px;font-weight:800;color:var(--text)}
-.pub-summary small{display:block;font-size:12px;font-weight:600;color:var(--muted)}
-.pub-actions{display:grid;grid-template-columns:1fr;gap:10px}
-@media(min-width:900px){.pub-actions{display:flex;justify-content:flex-end}}
-
-.pub-btn{padding:12px;border-radius:10px;border:2px solid var(--border);background:#fff;color:var(--text);font-weight:700;cursor:pointer}
-.pub-btn.primary{background:linear-gradient(135deg,var(--egmond-red),#B84A04);border:none;color:#fff;box-shadow:0 4px 14px rgba(169,1,0,.22);text-align:center;line-height:1.15;padding:12px 12px;}
-@media(min-width:900px){.pub-btn.primary{width:320px;max-width:100%}}
-.pub-btn.primary span{display:block}
+.pub-summary{font-size:15px;font-weight:900;color:var(--text);line-height:1.15}
+.pub-summary small{display:block;margin-top:4px;font-size:12px;font-weight:650;color:var(--muted);line-height:1.35}
+.pub-actions{display:flex;gap:10px;align-items:center;margin-top:10px}
+.pub-btn{
+  flex:1;
+  padding:12px 14px;
+  border-radius:12px;
+  border:2px solid var(--border);
+  background:#fff;
+  color:var(--text);
+  font-weight:800;
+  cursor:pointer;
+}
+.pub-btn.primary{
+  border:none;
+  color:#fff;
+  background:linear-gradient(135deg,var(--egmond-red),#B84A04);
+  box-shadow:0 6px 16px rgba(169,1,0,.22);
+}
 .pub-btn:disabled{opacity:.45;cursor:not-allowed}
 .pub-btn:active{transform:scale(.98)}
-.pub-note{font-size:12px;color:var(--muted);margin-top:6px;text-align:center}
-.form-summary{padding:10px 12px;background:#F7F3EC;border:1px solid var(--border);border-radius:10px;margin-bottom:12px;font-size:13px;color:var(--text);line-height:1.45}
-.form-summary strong{color:var(--egmond-red)}
+.pub-funnel-legend{margin-top:10px}
+.legend-bar{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;font-size:10px;font-weight:750}
+.legend-chip{padding:4px 10px;border-radius:999px;white-space:nowrap}
+
+/* Make it feel identical on desktop/mobile, only spacing changes */
+@media(min-width:900px){
+  .pub-funnel{padding:16px}
+  .pub-funnel-card{padding:16px 16px 14px}
+}
+
 
 /* ── Result ── */
 .result{border-radius:var(--r-sm);padding:14px 16px;margin-bottom:14px;font-size:14px;font-weight:700;display:none;border:1px solid transparent}
@@ -533,7 +575,7 @@ input[readonly]{background:var(--bg);cursor:default}
       <div class="pub-funnel-top">
         <div>
           <div class="pub-step" id="pubStepLabel">Zeitraum wählen</div>
-          <div class="pub-summary" id="pubSummary">Tag im Kalender antippen<small>Dann Abreisetag wählen</small></div>
+          <div class="pub-summary" id="pubSummary">Anreise wählen<small>Tippe ein freies Datum im Kalender.</small></div>
         </div>
       </div>
       <div class="pub-actions">
