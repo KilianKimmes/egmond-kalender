@@ -466,10 +466,6 @@ input[readonly]{background:var(--bg);cursor:default}
       </div>
     </div>
     <span class="admin-badge" id="adminBadge" style="display:none;cursor:pointer" onclick="adminLogout()">✏️ Familie</span>
-    <div id="pubBadges" style="display:none;align-items:center;gap:8px">
-      <span class="admin-badge" style="cursor:pointer;opacity:.7" onclick="shareApp()">↗</span>
-      <span class="admin-badge" style="cursor:pointer" onclick="guestLogin()">👤 Gast</span>
-    </div>
   </div>
 </div>
 
@@ -1500,7 +1496,6 @@ if(IS_ADMIN){
   document.getElementById('t5').style.display='';
   document.getElementById('legendBar').style.display='flex';
   document.querySelector('#legendBar .print-btn')?.remove(); // kein Drucken für Public
-  document.getElementById('pubBadges').style.display='flex';
   sw(4);
   document.getElementById('pubHint').style.display='block';
 }
@@ -1689,16 +1684,6 @@ function pkBackToPicker(){
 }
 
 function adminLogout(){if(!confirm('Admin-Sitzung beenden?'))return;localStorage.removeItem('egmond-admin');location.reload();}
-function guestLogin(){
-  const pw=prompt('🔐 Admin-Passwort:');
-  if(pw===ADMIN_KEY){localStorage.setItem('egmond-admin',ADMIN_KEY);location.reload();}
-  else if(pw!==null) toast('❌ Falsches Passwort');
-}
-function shareApp(){
-  const url=location.origin+location.pathname;
-  if(navigator.share){navigator.share({title:'Ferienwohnung Egmond aan Zee',url}).catch(()=>{});}
-  else{navigator.clipboard.writeText(url).then(()=>toast('Link kopiert')).catch(()=>toast('Link: '+url));}
-}
 
 window.sw=sw;window.changeYear=changeYear;window.changeBookMonth=changeBookMonth;
 window.clearSel=clearSel;window.setSt=setSt;window.saveBooking=saveBooking;
@@ -1708,7 +1693,6 @@ window.updInq=updInq;window.acceptInq=acceptInq;window.printCal=printCal;window.
 window.openCalendarModal=openCalendarModal;window.closeCalendarModal=closeCalendarModal;
 window.openLightbox=openLightbox;window.closeLightbox=closeLightbox;window.lbNav=lbNav;
 window.adminLogout=adminLogout;
-window.guestLogin=guestLogin;window.shareApp=shareApp;
 
 setSt('Belegt');
 loadYear(curYear);
