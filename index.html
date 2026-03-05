@@ -1581,6 +1581,14 @@ function renderBookCal(){
       else if(isB)title=x(info.name)||'Belegt';
       cells+=`<div class="${cls}" onclick="bookDayClick(${y},${m},${day})" title="${title}">${day}</div>`;
     }
+
+    /* pad to 6 weeks */
+    const used = fw + dim;
+    let total = used;
+    // pad to full weeks
+    while(total % 7 !== 0){ cells+='<div class="pk-em"></div>'; total++; }
+    // pad to 6 rows (42 cells) so two months have equal height
+    while(total < 42){ cells+='<div class="pk-em"></div>'; total++; }
     document.getElementById('bkG'+mi).innerHTML=cells;
   }
 }
