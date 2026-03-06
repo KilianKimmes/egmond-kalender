@@ -12,11 +12,16 @@
 <body class="admin-body">
   <div class="admin-shell">
     <header class="admin-topbar">
-      <a href="#admin-top" class="brand admin-brand" id="admin-top" aria-label="Admin Start">
+      <a href="#admin-top" class="brand admin-brand" id="admin-top">
         <img src="images/wappen_neu.png" alt="Wappen Egmond" class="brand-logo admin-logo">
-        <div><div class="eyebrow">Egmond</div><div class="brand-title">Admin</div></div>
+        <div>
+          <div class="eyebrow">Egmond</div>
+          <div class="brand-title">Admin</div>
+        </div>
       </a>
-      <div class="admin-topbar-actions"><a href="index.html" class="nav-pill admin">Public-App</a></div>
+      <div class="admin-topbar-actions">
+        <a href="index.html" class="nav-pill admin">Public-App</a>
+      </div>
     </header>
 
     <section class="panel admin-login" id="adminLoginPanel">
@@ -30,7 +35,10 @@
 
     <section class="dashboard hidden" id="dashboardPanel">
       <header class="dashboard-header">
-        <div><div class="eyebrow">Egmond</div><h1>Admin-Dashboard</h1></div>
+        <div>
+          <div class="eyebrow">Egmond</div>
+          <h1>Admin-Dashboard</h1>
+        </div>
         <div class="dashboard-actions">
           <button type="button" class="nav-pill admin" data-action="print-year">Drucken</button>
           <button type="button" class="nav-pill admin danger" data-action="logout">Abmelden</button>
@@ -48,7 +56,10 @@
       <section class="tab-panel" data-panel="overview">
         <article class="panel">
           <div class="section-head">
-            <div><div class="kicker">Jahresübersicht</div><h2 id="overviewYearTitle">2026</h2></div>
+            <div>
+              <div class="kicker">Jahresübersicht</div>
+              <h2 id="overviewYearTitle">2026</h2>
+            </div>
             <div class="month-nav">
               <button type="button" class="icon-btn" data-action="prev-year" aria-label="Vorheriges Jahr">‹</button>
               <button type="button" class="icon-btn" data-action="next-year" aria-label="Nächstes Jahr">›</button>
@@ -74,7 +85,10 @@
               <label class="field"><span>Abreise</span><input type="date" id="adminEnd" required /></label>
             </div>
             <label class="field"><span>Name</span><input type="text" id="adminLabel" placeholder="Mietername" required /></label>
-            <div class="action-row split"><button type="submit" class="primary-btn">Speichern</button><div id="bookingAdminFeedback" class="notice hidden"></div></div>
+            <div class="action-row split">
+              <button type="submit" class="primary-btn">Speichern</button>
+              <div id="bookingAdminFeedback" class="notice hidden"></div>
+            </div>
           </form>
           <div id="bookingList" class="data-list"></div>
         </article>
@@ -88,6 +102,7 @@
       </section>
     </section>
   </div>
+
   <script src="admin.js"></script>
 </body>
 </html>

@@ -18,6 +18,7 @@
         <div class="hero-layer" id="heroB"></div>
         <div class="hero-overlay"></div>
       </div>
+
       <div class="topbar">
         <a href="#top" class="brand" data-scroll-target="#top" aria-label="Zur Startseite">
           <img src="images/wappen_neu.png" alt="Wappen Egmond" class="brand-logo">
@@ -32,6 +33,7 @@
           <a href="admin.html" class="nav-pill on-dark">Admin</a>
         </nav>
       </div>
+
       <div class="hero-card">
         <div class="eyebrow on-dark">Am Meer</div>
         <h1 class="on-dark">Ruhig wohnen.</h1>
@@ -80,13 +82,22 @@
           <span class="legend-item"><span class="legend-swatch bridge"></span>Brückentag</span>
         </div>
 
-        <div class="calendar-wrap" id="calendarWrap"><div id="calendarMount" class="calendar-grid" aria-live="polite"></div></div>
+        <div class="calendar-wrap" id="calendarWrap">
+          <div id="calendarMount" class="calendar-grid" aria-live="polite"></div>
+        </div>
+
         <div id="nextSlotBox" class="notice notice-success">Nächster freier Zeitraum wird berechnet …</div>
       </section>
 
       <section class="split-grid">
         <section class="panel panel-form">
-          <div class="section-head"><div><div class="kicker">Anfrage</div><h2>Kontakt</h2></div></div>
+          <div class="section-head">
+            <div>
+              <div class="kicker">Anfrage</div>
+              <h2>Kontakt</h2>
+            </div>
+          </div>
+
           <form id="bookingForm" class="stack" novalidate>
             <div class="field-grid">
               <label class="field"><span>Anreise</span><input id="arrivalInput" type="text" readonly aria-readonly="true" /></label>
@@ -131,6 +142,7 @@
     <div class="lightbox-stage"><div class="lightbox-image" id="lightboxImage"></div><div class="lightbox-caption" id="lightboxCaption"></div></div>
     <button class="lightbox-nav next" id="lightboxNext" aria-label="Nächstes Bild">›</button>
   </div>
+
   <script src="app.js"></script>
 </body>
 </html>
