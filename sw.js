@@ -1,4 +1,4 @@
-const CACHE = "egmond-airbnb-v2";
+const CACHE = "egmond-premium-v5";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

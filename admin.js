@@ -1,36 +1,32 @@
 const ADMIN_STORAGE_KEYS = {
-  bookings: "egmond_bookings_v2",
-  requests: "egmond_requests_v2",
-  session: "egmond_admin_session_v2"
+  bookings: "egmond_bookings_v5",
+  requests: "egmond_requests_v5",
+  session: "egmond_admin_session_v5"
 };
 
 const ADMIN_PASSWORD = "FiegePils";
+let currentYear = new Date().getFullYear();
 
 const loginPanel = document.getElementById("adminLoginPanel");
 const dashboardPanel = document.getElementById("dashboardPanel");
 const loginForm = document.getElementById("adminLoginForm");
 const loginError = document.getElementById("adminLoginError");
 const statGrid = document.getElementById("statGrid");
-const adminCalendarPreview = document.getElementById("adminCalendarPreview");
 const bookingList = document.getElementById("bookingList");
 const requestList = document.getElementById("requestList");
+const adminYearGrid = document.getElementById("adminYearGrid");
+const overviewYearTitle = document.getElementById("overviewYearTitle");
 
 function getBookings() {
-  try {
-    return JSON.parse(localStorage.getItem(ADMIN_STORAGE_KEYS.bookings) || "[]");
-  } catch {
-    return [];
-  }
+  try { return JSON.parse(localStorage.getItem(ADMIN_STORAGE_KEYS.bookings) || "[]"); }
+  catch { return []; }
 }
 function setBookings(bookings) {
   localStorage.setItem(ADMIN_STORAGE_KEYS.bookings, JSON.stringify(bookings));
 }
 function getRequests() {
-  try {
-    return JSON.parse(localStorage.getItem(ADMIN_STORAGE_KEYS.requests) || "[]");
-  } catch {
-    return [];
-  }
+  try { return JSON.parse(localStorage.getItem(ADMIN_STORAGE_KEYS.requests) || "[]"); }
+  catch { return []; }
 }
 function setRequests(requests) {
   localStorage.setItem(ADMIN_STORAGE_KEYS.requests, JSON.stringify(requests));
@@ -63,17 +59,58 @@ function setLoggedIn(value) {
   if (value) localStorage.setItem(ADMIN_STORAGE_KEYS.session, "active");
   else localStorage.removeItem(ADMIN_STORAGE_KEYS.session);
 }
-function showDashboard() {
-  loginPanel.classList.add("hidden");
-  dashboardPanel.classList.remove("hidden");
-  renderStats();
-  renderCalendarPreview();
-  renderBookingList();
-  renderRequestList();
+function nextArrivalLabel(bookings) {
+  const today = new Date();
+  const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const future = bookings.filter((b) => parseISO(b.start) >= startOfToday).sort((a, b) => parseISO(a.start) - parseISO(b.start))[0];
+  return future ? formatDate(future.start).slice(0, 5) : "–";
 }
-function showLogin() {
-  loginPanel.classList.remove("hidden");
-  dashboardPanel.classList.add("hidden");
+function buildAvailability(bookings) {
+  const map = new Map();
+  const ensure = (iso) => {
+    if (!map.has(iso)) map.set(iso, { booked: false, halfStart: false, halfEnd: false, label: "" });
+    return map.get(iso);
+  };
+
+  bookings.forEach((booking) => {
+    const start = parseISO(booking.start);
+    const end = parseISO(booking.end);
+    const lastNight = addDays(end, -1);
+
+    if (booking.type === "arrival-departure") {
+      ensure(formatISO(start)).halfStart = true;
+      ensure(formatISO(lastNight)).halfEnd = true;
+      ensure(formatISO(start)).label = booking.label;
+      ensure(formatISO(lastNight)).label = booking.label;
+    }
+
+    let cursor = new Date(start);
+    while (cursor < end) {
+      const iso = formatISO(cursor);
+      const state = ensure(iso);
+      if (booking.type === "full") {
+        state.booked = true;
+        state.label = booking.label;
+      } else if (iso !== formatISO(start) && iso !== formatISO(lastNight)) {
+        state.booked = true;
+        state.label = booking.label;
+      }
+      cursor = addDays(cursor, 1);
+    }
+  });
+
+  return map;
+}
+function dayStateFor(map, iso) {
+  const entry = map.get(iso);
+  if (!entry) return "free";
+  if (entry.booked) return "booked";
+  if (entry.halfStart) return "half-start";
+  if (entry.halfEnd) return "half-end";
+  return "free";
+}
+function labelFor(map, iso) {
+  return map.get(iso)?.label || "";
 }
 
 loginForm.addEventListener("submit", (event) => {
@@ -88,7 +125,6 @@ loginForm.addEventListener("submit", (event) => {
   setLoggedIn(true);
   showDashboard();
 });
-
 document.getElementById("logoutBtn").addEventListener("click", () => {
   setLoggedIn(false);
   showLogin();
@@ -103,6 +139,25 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
   });
 });
 
+document.getElementById("prevYearBtn").addEventListener("click", () => {
+  currentYear -= 1;
+  renderYearOverview();
+});
+document.getElementById("nextYearBtn").addEventListener("click", () => {
+  currentYear += 1;
+  renderYearOverview();
+});
+
+function showDashboard() {
+  loginPanel.classList.add("hidden");
+  dashboardPanel.classList.remove("hidden");
+  refreshDashboard();
+}
+function showLogin() {
+  loginPanel.classList.remove("hidden");
+  dashboardPanel.classList.add("hidden");
+}
+
 function renderStats() {
   const bookings = getBookings();
   const requests = getRequests();
@@ -111,7 +166,7 @@ function renderStats() {
   const monthBookings = bookings.filter((b) => parseISO(b.start).getMonth() === currentMonth).length;
 
   const stats = [
-    { label: "Buchungen gesamt", value: bookings.length },
+    { label: "Buchungen", value: bookings.length },
     { label: "Anfragen offen", value: openRequests },
     { label: "Start diesen Monat", value: monthBookings },
     { label: "Nächste Anreise", value: nextArrivalLabel(bookings) }
@@ -121,110 +176,72 @@ function renderStats() {
   stats.forEach((stat) => {
     const card = document.createElement("article");
     card.className = "stat-card";
-    card.innerHTML = `<div class="stat-label">${stat.label}</div><div class="stat-value">${stat.value}</div>`;
+    card.innerHTML = `<div class="label">${stat.label}</div><div class="value">${stat.value}</div>`;
     statGrid.appendChild(card);
   });
 }
 
-function nextArrivalLabel(bookings) {
-  const today = new Date();
-  const future = bookings
-    .filter((b) => parseISO(b.start) >= new Date(today.getFullYear(), today.getMonth(), today.getDate()))
-    .sort((a, b) => parseISO(a.start) - parseISO(b.start))[0];
-  return future ? formatDate(future.start).slice(0, 5) : "–";
-}
-
-function buildAvailability(bookings) {
-  const map = new Map();
-  const ensure = (iso) => {
-    if (!map.has(iso)) map.set(iso, { booked: false, halfStart: false, halfEnd: false });
-    return map.get(iso);
-  };
-  bookings.forEach((booking) => {
-    const start = parseISO(booking.start);
-    const end = parseISO(booking.end);
-    const lastNight = addDays(end, -1);
-    if (booking.type === "arrival-departure") {
-      ensure(formatISO(start)).halfStart = true;
-      ensure(formatISO(lastNight)).halfEnd = true;
-    }
-    let cursor = new Date(start);
-    while (cursor < end) {
-      const iso = formatISO(cursor);
-      const state = ensure(iso);
-      if (booking.type === "full") {
-        state.booked = true;
-      } else if (iso !== formatISO(start) && iso !== formatISO(lastNight)) {
-        state.booked = true;
-      }
-      cursor = addDays(cursor, 1);
-    }
-  });
-  return map;
-}
-
-function dayStateFor(map, iso) {
-  const entry = map.get(iso);
-  if (!entry) return "free";
-  if (entry.booked) return "booked";
-  if (entry.halfStart) return "half-start";
-  if (entry.halfEnd) return "half-end";
-  return "free";
-}
-
-function renderCalendarPreview() {
-  adminCalendarPreview.innerHTML = "";
+function renderYearOverview() {
   const bookings = getBookings();
   const availability = buildAvailability(bookings);
-  const today = new Date();
+  overviewYearTitle.textContent = String(currentYear);
+  adminYearGrid.innerHTML = "";
 
-  [0, 1].forEach((offset) => {
-    const monthDate = new Date(today.getFullYear(), today.getMonth() + offset, 1);
-    const monthEnd = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0);
+  for (let month = 0; month < 12; month += 1) {
+    const monthDate = new Date(currentYear, month, 1);
+    const monthEnd = new Date(currentYear, month + 1, 0);
     const firstWeekday = (monthDate.getDay() + 6) % 7;
 
     const card = document.createElement("article");
-    card.className = "month-card";
-    card.innerHTML = `<div class="month-head"><div class="month-title">${monthDate.toLocaleDateString("de-DE", { month: "long", year: "numeric" })}</div></div>`;
+    card.className = "year-month";
+    card.innerHTML = `<h3 class="year-title">${monthDate.toLocaleDateString("de-DE", { month: "long" })}</h3>`;
 
     const weekdays = document.createElement("div");
-    weekdays.className = "weekdays";
-    ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"].forEach((label) => {
-      const w = document.createElement("div");
-      w.className = "weekday";
-      w.textContent = label;
-      weekdays.appendChild(w);
+    weekdays.className = "mini-weekdays";
+    ["Mo","Di","Mi","Do","Fr","Sa","So"].forEach((label) => {
+      const node = document.createElement("div");
+      node.className = "mini-weekday";
+      node.textContent = label;
+      weekdays.appendChild(node);
     });
     card.appendChild(weekdays);
 
     const grid = document.createElement("div");
-    grid.className = "days-grid";
+    grid.className = "mini-days";
     for (let i = 0; i < firstWeekday; i += 1) {
       const spacer = document.createElement("div");
-      spacer.className = "day-spacer";
+      spacer.className = "mini-spacer";
       grid.appendChild(spacer);
     }
+
+    const names = new Set();
     for (let day = 1; day <= monthEnd.getDate(); day += 1) {
-      const iso = formatISO(new Date(monthDate.getFullYear(), monthDate.getMonth(), day));
+      const iso = formatISO(new Date(currentYear, month, day));
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "day-btn";
-      btn.disabled = true;
+      btn.className = "mini-day";
       btn.dataset.state = dayStateFor(availability, iso);
-      btn.innerHTML = `<span class="num">${day}</span>`;
+      btn.textContent = String(day);
+      const name = labelFor(availability, iso);
+      if (name) names.add(name);
       grid.appendChild(btn);
     }
     card.appendChild(grid);
-    adminCalendarPreview.appendChild(card);
-  });
+
+    const nameLine = document.createElement("div");
+    nameLine.className = "mini-name";
+    nameLine.textContent = Array.from(names).slice(0, 3).join(" · ");
+    card.appendChild(nameLine);
+
+    adminYearGrid.appendChild(card);
+  }
 }
 
 function renderBookingList() {
   const bookings = getBookings().sort((a, b) => parseISO(a.start) - parseISO(b.start));
   bookingList.innerHTML = "";
-
   if (!bookings.length) {
-    bookingList.innerHTML = `<div class="empty-state">Noch keine Buchungen vorhanden.</div>`;
+    bookingList.innerHTML = `<div class="empty-state">Keine Buchungen.</div>`;
     return;
   }
 
@@ -243,7 +260,7 @@ function renderBookingList() {
         <span class="pill ${booking.type === "arrival-departure" ? "" : "danger"}">${booking.type === "arrival-departure" ? "Halbtags-Wechsel" : "Normal"}</span>
       </div>
       <div class="data-actions">
-        <button type="button" class="ghost-btn" data-delete-booking="${booking.id}">Löschen</button>
+        <button type="button" class="nav-pill admin" data-delete-booking="${booking.id}">Löschen</button>
       </div>
     `;
     bookingList.appendChild(item);
@@ -261,9 +278,8 @@ function renderBookingList() {
 function renderRequestList() {
   const requests = getRequests();
   requestList.innerHTML = "";
-
   if (!requests.length) {
-    requestList.innerHTML = `<div class="empty-state">Noch keine Anfragen eingegangen.</div>`;
+    requestList.innerHTML = `<div class="empty-state">Keine Anfragen.</div>`;
     return;
   }
 
@@ -276,16 +292,16 @@ function renderRequestList() {
           <h3>${request.name}</h3>
           <div class="data-meta">
             <span>${request.email}</span>
+            <span>${request.phone || "–"}</span>
             <span>${formatDate(request.arrival)} – ${formatDate(request.departure)}</span>
-            <span>${request.nights} Nächte</span>
           </div>
         </div>
         <span class="pill ${request.status === "archiviert" ? "" : "danger"}">${request.status}</span>
       </div>
-      <div>${request.message || "Keine zusätzliche Nachricht."}</div>
+      <div>${request.message || "Keine Nachricht."}</div>
       <div class="data-actions">
-        <button type="button" class="ghost-btn" data-archive-request="${request.id}">Archivieren</button>
-        <button type="button" class="ghost-btn" data-delete-request="${request.id}">Löschen</button>
+        <button type="button" class="nav-pill admin" data-archive-request="${request.id}">Archivieren</button>
+        <button type="button" class="nav-pill admin" data-delete-request="${request.id}">Löschen</button>
       </div>
     `;
     requestList.appendChild(item);
@@ -298,7 +314,6 @@ function renderRequestList() {
       refreshDashboard();
     });
   });
-
   requestList.querySelectorAll("[data-delete-request]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const requests = getRequests().filter((req) => req.id !== btn.dataset.deleteRequest);
@@ -310,34 +325,8 @@ function renderRequestList() {
 
 function showFeedback(el, text, type = "success") {
   el.textContent = text;
-  el.className = `inline-notice ${type}`;
+  el.className = `notice notice-${type}`;
 }
-
-document.getElementById("quickBookingForm").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const start = document.getElementById("quickStart").value;
-  const end = document.getElementById("quickEnd").value;
-  const label = document.getElementById("quickLabel").value.trim();
-  const feedback = document.getElementById("quickFeedback");
-
-  if (!start || !end || !label || parseISO(end) <= parseISO(start)) {
-    showFeedback(feedback, "Bitte gültige Daten eingeben.", "error");
-    return;
-  }
-
-  const bookings = getBookings();
-  bookings.push({
-    id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-    start,
-    end,
-    label,
-    type: "full"
-  });
-  setBookings(bookings);
-  event.target.reset();
-  showFeedback(feedback, "Buchung eingetragen.", "success");
-  refreshDashboard();
-});
 
 document.getElementById("bookingAdminForm").addEventListener("submit", (event) => {
   event.preventDefault();
@@ -348,7 +337,7 @@ document.getElementById("bookingAdminForm").addEventListener("submit", (event) =
   const feedback = document.getElementById("bookingAdminFeedback");
 
   if (!start || !end || !label || parseISO(end) <= parseISO(start)) {
-    showFeedback(feedback, "Bitte gültige An- und Abreisedaten eingeben.", "error");
+    showFeedback(feedback, "Bitte gültige Daten eingeben.", "error");
     return;
   }
 
@@ -362,19 +351,95 @@ document.getElementById("bookingAdminForm").addEventListener("submit", (event) =
   });
   setBookings(bookings);
   event.target.reset();
-  showFeedback(feedback, "Buchung gespeichert.", "success");
+  showFeedback(feedback, "Gespeichert.", "success");
   refreshDashboard();
+});
+
+function buildPrintableHtml(year, bookings) {
+  const availability = buildAvailability(bookings);
+
+  const monthHtml = Array.from({ length: 12 }, (_, month) => {
+    const monthDate = new Date(year, month, 1);
+    const monthEnd = new Date(year, month + 1, 0);
+    const firstWeekday = (monthDate.getDay() + 6) % 7;
+    let cells = "";
+
+    for (let i = 0; i < firstWeekday; i += 1) cells += `<div class="c empty"></div>`;
+
+    for (let day = 1; day <= monthEnd.getDate(); day += 1) {
+      const iso = formatISO(new Date(year, month, day));
+      const state = dayStateFor(availability, iso);
+      const label = labelFor(availability, iso);
+      cells += `<div class="c ${state}"><div class="d">${day}</div><div class="n">${label || ""}</div></div>`;
+    }
+
+    return `
+      <section class="m">
+        <h3>${monthDate.toLocaleDateString("de-DE", { month: "long" })}</h3>
+        <div class="w">${["Mo","Di","Mi","Do","Fr","Sa","So"].map((d) => `<div>${d}</div>`).join("")}</div>
+        <div class="g">${cells}</div>
+      </section>
+    `;
+  }).join("");
+
+  return `
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Egmond Kalender ${year}</title>
+<style>
+@page{size:A4 landscape; margin:10mm}
+body{font-family:Arial,sans-serif; color:#1b140d; margin:0}
+h1{font-size:18px; margin:0 0 10px}
+.top{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:10px}
+.legend{display:flex; gap:12px; font-size:10px}
+.l{display:inline-flex; align-items:center; gap:5px}
+.s{width:11px; height:11px; border-radius:3px; display:inline-block; border:1px solid #cfc0ae}
+.b{background:#f5d3d1}.h{background:linear-gradient(135deg,#fff 0 50%, #f5d3d1 50% 100%)}
+.grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.m{border:1px solid #d9cec1; border-radius:10px; padding:8px; break-inside:avoid}
+.m h3{font-size:12px; margin:0 0 6px}
+.w,.g{display:grid; grid-template-columns:repeat(7,1fr); gap:2px}
+.w div{font-size:8px; text-align:center; color:#6f6253}
+.c{min-height:34px; border:1px solid #ece3da; border-radius:5px; padding:2px; background:#fff}
+.c.booked{background:#f5d3d1}
+.c.half-start{background:linear-gradient(135deg,#fff 0 50%, #f5d3d1 50% 100%)}
+.c.half-end{background:linear-gradient(135deg,#f5d3d1 0 50%, #fff 50% 100%)}
+.c.empty{border:none; background:transparent}
+.d{font-size:8px; font-weight:700}
+.n{font-size:7px; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+</style>
+</head>
+<body>
+  <div class="top">
+    <h1>Egmond – Belegungskalender ${year}</h1>
+    <div class="legend">
+      <span class="l"><span class="s b"></span>belegt</span>
+      <span class="l"><span class="s h"></span>halbtags</span>
+    </div>
+  </div>
+  <div class="grid">${monthHtml}</div>
+</body>
+</html>
+  `;
+}
+
+document.getElementById("printYearBtn").addEventListener("click", () => {
+  const printWindow = window.open("", "_blank", "width=1200,height=900");
+  if (!printWindow) return;
+  printWindow.document.write(buildPrintableHtml(currentYear, getBookings()));
+  printWindow.document.close();
+  printWindow.focus();
+  setTimeout(() => printWindow.print(), 250);
 });
 
 function refreshDashboard() {
   renderStats();
-  renderCalendarPreview();
+  renderYearOverview();
   renderBookingList();
   renderRequestList();
 }
 
-if (isLoggedIn()) {
-  showDashboard();
-} else {
-  showLogin();
-}
+if (isLoggedIn()) showDashboard();
+else showLogin();
