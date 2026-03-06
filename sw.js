@@ -1,4 +1,23 @@
-// Minimal Service Worker für PWA-Installation
-self.addEventListener('install', () => self.skipWaiting());
-self.addEventListener('activate', () => self.clients.claim());
-self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));
+
+const CACHE="egmond-v1"
+
+self.addEventListener("install",e=>{
+e.waitUntil(
+caches.open(CACHE).then(cache=>{
+return cache.addAll([
+"/",
+"/index.html",
+"/app.css",
+"/app.js"
+])
+})
+)
+})
+
+self.addEventListener("fetch",e=>{
+e.respondWith(
+caches.match(e.request).then(r=>{
+return r || fetch(e.request)
+})
+)
+})
