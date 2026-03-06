@@ -719,6 +719,30 @@ main.content{width:100%}
       <p class="hint-text"></p>
     </div>
 
+    <div id="pkForm" style="display:none">
+      <div class="card">
+        <div class="card-title">📩 Kontaktdaten</div>
+        <div id="reqRangeSummary" class="hint-text" style="margin-bottom:12px"></div>
+        <div id="reqResult" class="result"></div>
+        <div id="reqFormFields">
+          <div class="form-grid" style="display:grid;gap:10px">
+            <input id="rName" class="input" type="text" placeholder="Name *">
+            <input id="rEmail" class="input" type="email" placeholder="E-Mail *">
+            <input id="rPhone" class="input" type="text" placeholder="Telefon">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <input id="rFrom" class="input" type="text" placeholder="Anreise" readonly>
+              <input id="rTo" class="input" type="text" placeholder="Abreise" readonly>
+            </div>
+            <textarea id="rMsg" class="input" placeholder="Nachricht" rows="4" style="resize:vertical"></textarea>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn light" type="button" onclick="pkBackToPicker()">Zurück zum Kalender</button>
+              <button class="btn" id="reqBtn" type="button" onclick="sendInquiry()">Anfrage senden</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="legacyBooker">
       <div class="pk-date-buttons">
         <button class="pk-date-btn" id="pkFromBtn" onclick="openCalendarModal('from')">
@@ -1290,6 +1314,7 @@ async function sendInquiry(){
     pkF=null;pkT=null;pkPicking='from';
     // Nach 3 Sekunden zurücksetzen und zum Info-Tab
     setTimeout(()=>{
+      const t4=document.getElementById('tab4'); if(t4) t4.classList.remove('on');
       sw(1);
       res.className='result';res.textContent='';
       document.getElementById('reqFormFields').style.display='';
@@ -1721,7 +1746,7 @@ function sw(n){
   }
 
   // Toggle panels
-  const allPanels = ['tab0','tab2','tab3','tab5'];
+  const allPanels = ['tab0','tab2','tab3','tab4','tab5'];
   allPanels.forEach(id=>{
     const el = document.getElementById(id);
     if(!el) return;
@@ -2049,12 +2074,39 @@ function syncRequestSummary(){
   }
 }
 
+function showPublicRequestView(){
+  const t0=document.getElementById('tab0');
+  const t4=document.getElementById('tab4');
+  const t5=document.getElementById('tab5');
+  if(t0) t0.classList.remove('on');
+  if(t5) t5.classList.remove('on');
+  if(t4) t4.classList.add('on');
+  const b0=document.getElementById('t0');
+  const b1=document.getElementById('t1');
+  const b2=document.getElementById('t2');
+  if(b0) b0.classList.add('on');
+  if(b1) b1.classList.remove('on');
+  if(b2) b2.classList.remove('on');
+}
+
+function showPublicCalendarView(){
+  const t0=document.getElementById('tab0');
+  const t4=document.getElementById('tab4');
+  if(t4) t4.classList.remove('on');
+  if(t0) t0.classList.add('on');
+  const b0=document.getElementById('t0');
+  const b1=document.getElementById('t1');
+  const b2=document.getElementById('t2');
+  if(b0) b0.classList.add('on');
+  if(b1) b1.classList.remove('on');
+  if(b2) b2.classList.remove('on');
+}
+
 function pubContinue(){
   if(!(pkF&&pkT)) return;
-  // Hide bottom funnel so it doesn't cover the submit button
   const f=document.getElementById('pubFunnel');
   if(f) f.style.display='none';
-  sw(0);
+  showPublicRequestView();
   pkSubmit();
 }
 
@@ -2076,6 +2128,7 @@ function pkBackToPicker(){
   document.getElementById('reqFormFields').style.display='';
   document.getElementById('pkForm').style.display='none';
   document.getElementById('pkView').style.display='block';
+  showPublicCalendarView();
 }
 
 function adminLogout(){if(!confirm('Admin-Sitzung beenden?'))return;localStorage.removeItem('egmond-admin');location.reload();}
