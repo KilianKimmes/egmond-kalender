@@ -1,135 +1,264 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Egmond Admin</title>
-  <link rel="stylesheet" href="app.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Egmond Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --egmond-red: #A90100;
+  --egmond-gold: #FFDA4E;
+  --egmond-blue: #0066AB;
+  --text-dark: #1C1408;
+  --bg-light: #F5F3F0;
+  --border-color: #E0D9D0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #F5F3F0 0%, #E8DDD5 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 380px;
+}
+
+.login-box {
+  background: #FFF;
+  border-radius: 16px;
+  padding: 48px 32px;
+  box-shadow: 0 20px 60px rgba(26, 18, 8, 0.15), 
+              0 0 1px rgba(169, 1, 0, 0.1);
+  border: 1px solid var(--border-color);
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+
+.header-crest {
+  font-size: 56px;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 4px 8px rgba(169, 1, 0, 0.2));
+}
+
+.wappen-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(169, 1, 0, 0.25));
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--egmond-red);
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #7A6850;
+  margin-bottom: 32px;
+  letter-spacing: 0.3px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 16px 18px;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 16px;
+  font-family: 'Source Sans 3', sans-serif;
+  outline: none;
+  transition: all 0.2s ease;
+  letter-spacing: 1px;
+  text-align: center;
+  background: #FAFAF8;
+}
+
+input:focus {
+  border-color: var(--egmond-red);
+  background: #FFF;
+  box-shadow: 0 0 0 3px rgba(169, 1, 0, 0.08);
+}
+
+input::placeholder {
+  color: #B0A090;
+  letter-spacing: 2px;
+}
+
+.btn-login {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--egmond-red) 0%, #8B0000 100%);
+  color: #FFF;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(169, 1, 0, 0.25);
+  text-transform: uppercase;
+}
+
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(169, 1, 0, 0.35);
+}
+
+.btn-login:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(169, 1, 0, 0.25);
+}
+
+.error-message {
+  display: none;
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: rgba(169, 1, 0, 0.08);
+  border: 1.5px solid var(--egmond-red);
+  border-radius: 8px;
+  color: var(--egmond-red);
+  font-size: 13px;
+  font-weight: 600;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.decorative-accent {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+.accent-1 {
+  top: -40px;
+  right: -40px;
+  background: var(--egmond-red);
+}
+
+.accent-2 {
+  bottom: -50px;
+  left: -50px;
+  background: var(--egmond-blue);
+}
+
+.login-box {
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  .login-box {
+    padding: 36px 24px;
+  }
+  
+  h1 {
+    font-size: 24px;
+  }
+  
+  .subtitle {
+    margin-bottom: 24px;
+  }
+}
+</style>
 </head>
-<body class="admin-body">
-  <div class="admin-shell">
-    <header class="admin-topbar">
-      <a href="#admin-top" class="brand admin-brand" id="admin-top">
-        <img src="images/wappen_neu.png" alt="Wappen Egmond" class="brand-logo admin-logo">
-        <div>
-          <div class="eyebrow">Egmond</div>
-          <div class="brand-title">Admin</div>
-        </div>
-      </a>
-      <div class="admin-topbar-actions">
-        <a href="index.html" class="nav-pill admin">Public-App</a>
+<body>
+<div class="container">
+  <div class="login-box">
+    <div class="decorative-accent accent-1"></div>
+    <div class="decorative-accent accent-2"></div>
+    
+    <div class="header-crest">
+      <img src="images/wappen_neu.png" alt="Egmond Wappen" class="wappen-img">
+    </div>
+    <h1>Egmond Admin</h1>
+    <p class="subtitle">Authentifizierung erforderlich</p>
+    
+    <form onsubmit="login(event)">
+      <div class="form-group">
+        <input 
+          id="pw" 
+          type="password" 
+          placeholder="••••••••"
+          autocomplete="current-password"
+          aria-label="Admin-Passwort"
+        >
       </div>
-    </header>
-
-    <section class="panel admin-login" id="adminLoginPanel">
-      <div class="section-head">
-        <div>
-          <div class="kicker">Intern</div>
-          <h1>Login</h1>
-        </div>
-      </div>
-      <form id="adminLoginForm" class="stack">
-        <label class="field">
-          <span>Passwort</span>
-          <input id="adminPassword" type="password" autocomplete="current-password" required />
-        </label>
-        <button type="submit" class="primary-btn">Anmelden</button>
-        <div id="adminLoginError" class="notice notice-error hidden"></div>
-      </form>
-    </section>
-
-    <section class="dashboard hidden" id="dashboardPanel">
-      <header class="dashboard-header">
-        <div>
-          <div class="eyebrow">Egmond</div>
-          <h1>Admin-Dashboard</h1>
-        </div>
-        <div class="dashboard-actions">
-          <button type="button" class="nav-pill admin" data-action="print-year">Drucken</button>
-          <button type="button" class="nav-pill admin danger" data-action="logout">Abmelden</button>
-        </div>
-      </header>
-
-      <div class="stat-grid" id="statGrid"></div>
-
-      <nav class="dashboard-tabs" aria-label="Admin Bereiche">
-        <button type="button" class="tab-btn is-active" data-tab="overview">Jahr</button>
-        <button type="button" class="tab-btn" data-tab="bookings">Buchungen</button>
-        <button type="button" class="tab-btn" data-tab="requests">Anfragen</button>
-      </nav>
-
-      <section class="tab-panel" data-panel="overview">
-        <article class="panel">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Jahresübersicht</div>
-              <h2 id="overviewYearTitle">2026</h2>
-            </div>
-            <div class="month-nav">
-              <button type="button" class="icon-btn" data-action="prev-year" aria-label="Vorheriges Jahr">‹</button>
-              <button type="button" class="icon-btn" data-action="next-year" aria-label="Nächstes Jahr">›</button>
-            </div>
-          </div>
-          <div class="legend compact">
-            <span class="legend-item"><span class="legend-swatch booked"></span>belegt</span>
-            <span class="legend-item"><span class="legend-swatch half"></span>halbtags</span>
-            <span class="legend-item"><span class="legend-swatch seasonal"></span>Ferien · Feiertag · Brückentag</span>
-          </div>
-          <div id="adminYearGrid" class="year-grid"></div>
-        </article>
-      </section>
-
-      <section class="tab-panel hidden" data-panel="bookings">
-        <article class="panel">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Buchungen</div>
-              <h2>Eintragen</h2>
-            </div>
-          </div>
-
-          <form id="bookingAdminForm" class="stack">
-            <div class="field-grid">
-              <label class="field">
-                <span>Anreise</span>
-                <input type="date" id="adminStart" required />
-              </label>
-              <label class="field">
-                <span>Abreise</span>
-                <input type="date" id="adminEnd" required />
-              </label>
-            </div>
-            <label class="field">
-              <span>Name</span>
-              <input type="text" id="adminLabel" placeholder="Mietername" required />
-            </label>
-            <div class="action-row split">
-              <button type="submit" class="primary-btn">Speichern</button>
-              <div id="bookingAdminFeedback" class="notice hidden"></div>
-            </div>
-          </form>
-
-          <div id="bookingList" class="data-list"></div>
-        </article>
-      </section>
-
-      <section class="tab-panel hidden" data-panel="requests">
-        <article class="panel">
-          <div class="section-head">
-            <div>
-              <div class="kicker">Anfragen</div>
-              <h2>Eingänge</h2>
-            </div>
-          </div>
-          <div id="requestList" class="data-list"></div>
-        </article>
-      </section>
-    </section>
+      <button type="submit" class="btn-login">Anmelden</button>
+    </form>
+    
+    <div class="error-message" id="err">
+      ❌ Falsches Passwort. Bitte erneut versuchen.
+    </div>
   </div>
+</div>
 
-  <script src="admin.js"></script>
+<script>
+function login(event) {
+  event.preventDefault();
+  const pw = document.getElementById('pw').value;
+  
+  if (pw === 'FiegePils') {
+    window.location.href = 'index.html?admin=FiegePils';
+  } else {
+    showError();
+  }
+}
+
+function showError() {
+  const errEl = document.getElementById('err');
+  const pwEl = document.getElementById('pw');
+  
+  errEl.style.display = 'block';
+  pwEl.value = '';
+  pwEl.focus();
+  
+  // Reset error display after 3 seconds
+  setTimeout(() => {
+    errEl.style.display = 'none';
+  }, 3000);
+}
+
+// Allow Enter key to submit
+document.getElementById('pw').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    login(e);
+  }
+});
+</script>
 </body>
 </html>

@@ -4,7 +4,7 @@
   "description": "Verfügbarkeit prüfen und Aufenthalt anfragen.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#F4F1EB",
+  "background_color": "#F5F3F0",
   "theme_color": "#A90100",
   "icons": [
     {

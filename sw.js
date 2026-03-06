@@ -1,4 +1,4 @@
-const CACHE="egmond-fix-v8";
-self.addEventListener("install",event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(["./","./index.html","./admin.html","./app.css","./app.js","./admin.js","./manifest.json"])));self.skipWaiting()});
-self.addEventListener("activate",event=>{event.waitUntil(self.clients.claim())});
-self.addEventListener("fetch",event=>{event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request)))});
+// Minimal Service Worker für PWA-Installation
+self.addEventListener('install', () => self.skipWaiting());
+self.addEventListener('activate', () => self.clients.claim());
+self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));
