@@ -617,6 +617,9 @@ main.content{width:100%;}
 #tab0 .container,#tab2 .container,#tab3 .container,#tab5 .container,#tab4 .container{display:flex;flex-direction:column;gap:0}
 #tab0 .card,#tab2 .card,#tab3 .card,#tab5 .card,#tab2 .pk-wrap,#tab2 .pk-chips,#tab2 .pk-hint,#tab2 #bookResult,#tab2 #bookBtn,#tab2 #delBtn,#tab3 #inqList,#tab0 #bookingList,#tab0 #matrixWrap{width:100%;margin-left:auto;margin-right:auto}
 #tab2 .pk-wrap,#tab2 .pk-chips,#tab2 .pk-hint,#tab2 #bookResult,#tab2 #bookBtn,#tab2 #delBtn{max-width:var(--content-w)}
+#tab2 .mx-sf,#tab2 .mx-st{background:var(--egmond-gold)!important;color:#fff!important;box-shadow:inset 0 0 0 2px rgba(138,96,0,.55),0 0 0 2px rgba(255,218,78,.22)}
+#tab2 .mx-sr{background:#FFF1B8!important;color:#6B4B00!important;box-shadow:inset 0 0 0 1px rgba(138,96,0,.18)}
+#tab2 .mx-d.click{font-weight:700}
 #tab0 .card:first-child,#tab2 .admin-hint,#tab3 .admin-hint,#tab5 .card:first-child{margin-top:0}
 #tab2 .pk-chips{margin-bottom:12px}
 #tab2 .pk-hint{margin-bottom:12px}
@@ -1609,15 +1612,46 @@ function renderBookCal(){
 
 function bookDayClick(year,month,day){
   const d=new Date(year,month,day);
-  if(picking==='from'){selF=d;selT=null;picking='to';}
-  else{if(d<=selF){selF=d;selT=null;picking='to';}else{selT=d;picking='from';}}
-  bookYear=year;bookMonth=month;
-  if(bookMonth>0)bookMonth--;  // zeige den Monat mit dem ersten gewählten Datum
-  updateChips();renderBookCal();renderMatrix(curYear);
+
+  if(picking==='from'){
+    selF=d;
+    selT=null;
+    picking='to';
+  } else {
+    if(d<selF){
+      selT=selF;
+      selF=d;
+      picking='from';
+    } else if(d.getTime()===selF.getTime()){
+      selF=d;
+      selT=null;
+      picking='to';
+    } else {
+      selT=d;
+      picking='from';
+    }
+  }
+
+  if(selF){
+    bookYear=selF.getFullYear();
+    bookMonth=selF.getMonth();
+  } else {
+    bookYear=year;
+    bookMonth=month;
+  }
+
+  updateChips();
+  renderBookCal();
+  renderMatrix(curYear);
+
   if(selF&&selT){
     let hasB=false;
-    for(let x=new Date(selF);x<=selT;x.setDate(x.getDate()+1)){if(bk[dk(x)]?.status==='Belegt'){hasB=true;break;}}
+    for(let x=new Date(selF);x<=selT;x.setDate(x.getDate()+1)){
+      if(bk[dk(x)]?.status==='Belegt'){hasB=true;break;}
+    }
     document.getElementById('delBtn').style.display=hasB?'block':'none';
+  } else {
+    document.getElementById('delBtn').style.display='none';
   }
 }
 
