@@ -962,6 +962,8 @@ if(new URLSearchParams(location.search).get('admin') === ADMIN_KEY){
   history.replaceState(null,'',url.pathname+url.search+url.hash||'/');
 }
 
+window.IS_ADMIN = IS_ADMIN;
+
 if(!IS_ADMIN && location.pathname.endsWith('/admin')) {
   const pw = prompt('🔐 Admin-Passwort:');
   if(pw === ADMIN_KEY) {
@@ -971,6 +973,7 @@ if(!IS_ADMIN && location.pathname.endsWith('/admin')) {
   } else if(pw !== null) {
     alert('❌ Falsches Passwort.');
   }
+  window.IS_ADMIN = IS_ADMIN;
 }
 function today(){return new Date()}
 let curYear    = today().getFullYear();
@@ -1514,8 +1517,7 @@ function dayClick(year,month,day){
         if(bk[dk(x)]?.status==='Belegt'){hasB=true;break;}
       }
       document.getElementById('delBtn').style.display=hasB?'block':'none';
-      sw(1);
-      setTimeout(()=>{ renderBookCal(); },0);
+      openAdminBookingTab();
     } else {
       document.getElementById('delBtn').style.display='none';
     }
@@ -1545,14 +1547,21 @@ function dayClick(year,month,day){
 function clearSel(){selF=null;selT=null;picking='from';updateChips();renderMatrix(curYear);document.getElementById('delBtn').style.display='none';}
 
 function updateChips(){
-  document.getElementById('chipFv').textContent=fmt(selF);
-  document.getElementById('chipTv').textContent=fmt(selT);
-  document.getElementById('chipF').className='pk-chip'+(selF?' sel':'');
-  document.getElementById('chipT').className='pk-chip'+(selT?' sel':'');
-  document.getElementById('pickHint').textContent=
+  const chipFv=document.getElementById('chipFv');
+  const chipTv=document.getElementById('chipTv');
+  const chipF=document.getElementById('chipF');
+  const chipT=document.getElementById('chipT');
+  const pickHint=document.getElementById('pickHint');
+  const rFrom=document.getElementById('rFrom');
+  const rTo=document.getElementById('rTo');
+  if(chipFv) chipFv.textContent=fmt(selF);
+  if(chipTv) chipTv.textContent=fmt(selT);
+  if(chipF) chipF.className='pk-chip'+(selF?' sel':'');
+  if(chipT) chipT.className='pk-chip'+(selT?' sel':'');
+  if(pickHint) pickHint.textContent=
     picking==='from'?(selF&&selT?'Zeitraum gewählt – jetzt speichern':'Von-Datum antippen'):'Bis-Datum antippen';
-  if(selF)document.getElementById('rFrom').value=fmt(selF);
-  if(selT)document.getElementById('rTo').value=fmt(selT);
+  if(selF && rFrom) rFrom.value=fmt(selF);
+  if(selT && rTo) rTo.value=fmt(selT);
 }
 
 function setSt(s){
@@ -1683,6 +1692,23 @@ function bookDayClick(year,month,day){
 }
 
 // ── UI Helpers ────────────────────────────────
+function openAdminBookingTab(){
+  sw(1);
+  const t0=document.getElementById('t0');
+  const t1=document.getElementById('t1');
+  const t2=document.getElementById('t2');
+  const tab0=document.getElementById('tab0');
+  const tab2=document.getElementById('tab2');
+  const tab3=document.getElementById('tab3');
+  if(t0) t0.classList.remove('on');
+  if(t1) t1.classList.add('on');
+  if(t2) t2.classList.remove('on');
+  if(tab0) tab0.classList.remove('on');
+  if(tab2) tab2.classList.add('on');
+  if(tab3) tab3.classList.remove('on');
+  renderBookCal?.();
+}
+
 function sw(n){
   const isAdmin = (typeof IS_ADMIN !== 'undefined' && IS_ADMIN) || (typeof window !== 'undefined' && window.IS_ADMIN===true);
 
@@ -2070,7 +2096,7 @@ function shareApp(){
   else{navigator.clipboard.writeText(url).then(()=>toast('Link kopiert')).catch(()=>toast('Link: '+url));}
 }
 
-window.sw=sw;window.changeYear=changeYear;window.changeBookMonth=changeBookMonth;
+window.sw=sw;window.openAdminBookingTab=openAdminBookingTab;window.changeYear=changeYear;window.changeBookMonth=changeBookMonth;
 window.clearSel=clearSel;window.setSt=setSt;window.saveBooking=saveBooking;
 window.deleteBooking=deleteBooking;window.sendInquiry=sendInquiry;window.loadInquiries=loadInquiries;
 window.dayClick=dayClick;window.bookDayClick=bookDayClick;
