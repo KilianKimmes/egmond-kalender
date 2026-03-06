@@ -25,9 +25,17 @@
     </header>
 
     <section class="panel admin-login" id="adminLoginPanel">
-      <div class="section-head"><div><div class="kicker">Intern</div><h1>Login</h1></div></div>
+      <div class="section-head">
+        <div>
+          <div class="kicker">Intern</div>
+          <h1>Login</h1>
+        </div>
+      </div>
       <form id="adminLoginForm" class="stack">
-        <label class="field"><span>Passwort</span><input id="adminPassword" type="password" autocomplete="current-password" required /></label>
+        <label class="field">
+          <span>Passwort</span>
+          <input id="adminPassword" type="password" autocomplete="current-password" required />
+        </label>
         <button type="submit" class="primary-btn">Anmelden</button>
         <div id="adminLoginError" class="notice notice-error hidden"></div>
       </form>
@@ -68,9 +76,7 @@
           <div class="legend compact">
             <span class="legend-item"><span class="legend-swatch booked"></span>belegt</span>
             <span class="legend-item"><span class="legend-swatch half"></span>halbtags</span>
-            <span class="legend-item"><span class="legend-swatch school"></span>Ferien NRW</span>
-            <span class="legend-item"><span class="legend-swatch holiday"></span>Feiertag</span>
-            <span class="legend-item"><span class="legend-swatch bridge"></span>Brückentag</span>
+            <span class="legend-item"><span class="legend-swatch seasonal"></span>Ferien · Feiertag · Brückentag</span>
           </div>
           <div id="adminYearGrid" class="year-grid"></div>
         </article>
@@ -78,25 +84,46 @@
 
       <section class="tab-panel hidden" data-panel="bookings">
         <article class="panel">
-          <div class="section-head"><div><div class="kicker">Buchungen</div><h2>Eintragen</h2></div></div>
+          <div class="section-head">
+            <div>
+              <div class="kicker">Buchungen</div>
+              <h2>Eintragen</h2>
+            </div>
+          </div>
+
           <form id="bookingAdminForm" class="stack">
             <div class="field-grid">
-              <label class="field"><span>Anreise</span><input type="date" id="adminStart" required /></label>
-              <label class="field"><span>Abreise</span><input type="date" id="adminEnd" required /></label>
+              <label class="field">
+                <span>Anreise</span>
+                <input type="date" id="adminStart" required />
+              </label>
+              <label class="field">
+                <span>Abreise</span>
+                <input type="date" id="adminEnd" required />
+              </label>
             </div>
-            <label class="field"><span>Name</span><input type="text" id="adminLabel" placeholder="Mietername" required /></label>
+            <label class="field">
+              <span>Name</span>
+              <input type="text" id="adminLabel" placeholder="Mietername" required />
+            </label>
             <div class="action-row split">
               <button type="submit" class="primary-btn">Speichern</button>
               <div id="bookingAdminFeedback" class="notice hidden"></div>
             </div>
           </form>
+
           <div id="bookingList" class="data-list"></div>
         </article>
       </section>
 
       <section class="tab-panel hidden" data-panel="requests">
         <article class="panel">
-          <div class="section-head"><div><div class="kicker">Anfragen</div><h2>Eingänge</h2></div></div>
+          <div class="section-head">
+            <div>
+              <div class="kicker">Anfragen</div>
+              <h2>Eingänge</h2>
+            </div>
+          </div>
           <div id="requestList" class="data-list"></div>
         </article>
       </section>
